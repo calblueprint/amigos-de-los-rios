@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import supabase from '../../actions/supabase/client';
+import { useState } from "react";
+import supabase from "../../actions/supabase/client";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSignUp = async () => {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -20,7 +20,7 @@ export default function Login() {
     return data;
   };
 
-  const signInWithEmail = async () => {
+  const handleSignIn = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -34,12 +34,21 @@ export default function Login() {
   };
 
   const handleSignOut = async () => {
-    const {error} = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error}`);
     }
-    console.log('Sign out successful');
+    console.log("Sign out successful");
+  };
+
+  const handleResetPassword = async () => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+    if (error) {
+      throw new Error(`An error occurred trying to reset password: ${error}`);
+    }
+    console.log("Reset password successful");
   };
 
   return (
@@ -58,11 +67,14 @@ export default function Login() {
       <button type="button" onClick={handleSignUp}>
         Sign up
       </button>
-      <button type="button" onClick={signInWithEmail}>
+      <button type="button" onClick={handleSignIn}>
         Sign in
       </button>
       <button type="button" onClick={handleSignOut}>
         Sign out
+      </button>
+      <button type="button" onClick={handleResetPassword}>
+        Reset password
       </button>
     </>
   );
