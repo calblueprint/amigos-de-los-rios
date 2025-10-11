@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import supabase from "../../actions/supabase/client";
+import whiteLogo from "../../assets/images/white_logo.png";
+import { loginStyles } from "./styles";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +12,8 @@ export default function Login() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [isSignUpMode, setIsSignUpMode] = useState(false);
+  const [isForgotPasswordMode, setIsForgotPasswordMode] = useState(false);
   const [message, setMessage] = useState("");
 
   // Check if user is in password reset flow
@@ -202,74 +207,190 @@ export default function Login() {
   };
 
   return (
-    <>
-      {message && (
-        <div
-          style={{
-            padding: "10px",
-            margin: "10px 0",
-            backgroundColor: message.includes("Error") ? "#ffebee" : "#e8f5e8",
-            border: `1px solid ${message.includes("Error") ? "#f44336" : "#4caf50"}`,
-            borderRadius: "4px",
-          }}
-        >
-          {message}
+    <div style={loginStyles.container}>
+      {/* Logo */}
+      <Image
+        src={whiteLogo}
+        alt="Amigos de los Rios"
+        width={300}
+        height={100}
+        style={loginStyles.logo}
+      />
+
+      {/* Login Card */}
+      <div style={loginStyles.card}>
+        {message && (
+          <div
+            style={{
+              ...loginStyles.message,
+              ...(message.includes("Error")
+                ? loginStyles.errorMessage
+                : loginStyles.successMessage),
+            }}
+          >
+            {message}
+          </div>
+        )}
+
+        {isResettingPassword ? (
+          // Password reset form
+          <>
+            <h2 style={loginStyles.heading}>Set New Password</h2>
+            <div style={loginStyles.underline} />
+
+            <div style={loginStyles.inputGroup}>
+              <label style={loginStyles.label}>
+                New Password<span style={loginStyles.requiredAsterisk}>*</span>
+              </label>
+              <input
+                type="password"
+                placeholder=""
+                onChange={e => setNewPassword(e.target.value)}
+                value={newPassword}
+                style={loginStyles.input}
+              />
+            </div>
+
+            <div style={loginStyles.inputGroup}>
+              <label style={loginStyles.label}>
+                Confirm New Password
+                <span style={loginStyles.requiredAsterisk}>*</span>
+              </label>
+              <input
+                type="password"
+                placeholder=""
+                onChange={e => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+                style={loginStyles.input}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleUpdatePassword}
+              style={loginStyles.primaryButtonWithMargin}
+            >
+              Update Password
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsResettingPassword(false)}
+              style={loginStyles.secondaryButton}
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          // Regular login/signup form
+          <>
+            <h2 style={loginStyles.heading}>
+              {isForgotPasswordMode
+                ? "Reset Password"
+                : isSignUpMode
+                  ? "Sign Up"
+                  : "Login"}
+            </h2>
+            <div style={loginStyles.underline} />
+
+            <div style={loginStyles.inputGroup}>
+              <label style={loginStyles.label}>
+                Email<span style={loginStyles.requiredAsterisk}>*</span>
+              </label>
+              <input
+                name="email"
+                type="email"
+                placeholder=""
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+                style={loginStyles.input}
+              />
+            </div>
+
+            {!isForgotPasswordMode && (
+              <div style={loginStyles.inputGroupSmall}>
+                <label style={loginStyles.label}>
+                  Password<span style={loginStyles.requiredAsterisk}>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder=""
+                  onChange={e => setPassword(e.target.value)}
+                  value={password}
+                  style={loginStyles.input}
+                />
+              </div>
+            )}
+
+            {!isSignUpMode && !isForgotPasswordMode && (
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordMode(true)}
+                style={loginStyles.forgotPasswordButton}
+              >
+                Forgot password?
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={
+                isForgotPasswordMode
+                  ? handleResetPassword
+                  : isSignUpMode
+                    ? handleSignUp
+                    : handleSignIn
+              }
+              style={loginStyles.primaryButton}
+            >
+              {isForgotPasswordMode
+                ? "Send Reset Link"
+                : isSignUpMode
+                  ? "Sign Up"
+                  : "Login"}
+            </button>
+
+            {isForgotPasswordMode && (
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordMode(false)}
+                style={loginStyles.secondaryButtonWithMargin}
+              >
+                Back to Login
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Sign up link */}
+      {!isResettingPassword && !isForgotPasswordMode && (
+        <div style={loginStyles.signUpContainer}>
+          {isSignUpMode ? (
+            <>
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => setIsSignUpMode(false)}
+                style={loginStyles.signUpButton}
+              >
+                Login
+              </button>
+            </>
+          ) : (
+            <>
+              No account?{" "}
+              <button
+                type="button"
+                onClick={() => setIsSignUpMode(true)}
+                style={loginStyles.signUpButton}
+              >
+                Sign up
+              </button>
+            </>
+          )}
         </div>
       )}
-
-      {isResettingPassword ? (
-        // Password reset form
-        <>
-          <h3>Set New Password</h3>
-          <input
-            type="password"
-            placeholder="New Password"
-            onChange={e => setNewPassword(e.target.value)}
-            value={newPassword}
-          />
-          <input
-            type="password"
-            placeholder="Confirm New Password"
-            onChange={e => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-          />
-          <button type="button" onClick={handleUpdatePassword}>
-            Update Password
-          </button>
-          <button type="button" onClick={() => setIsResettingPassword(false)}>
-            Cancel
-          </button>
-        </>
-      ) : (
-        // Regular login/signup form
-        <>
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={e => setPassword(e.target.value)}
-            value={password}
-          />
-          <button type="button" onClick={handleSignUp}>
-            Sign up
-          </button>
-          <button type="button" onClick={handleSignIn}>
-            Sign in
-          </button>
-          <button type="button" onClick={handleSignOut}>
-            Sign out
-          </button>
-          <button type="button" onClick={handleResetPassword}>
-            Reset password
-          </button>
-        </>
-      )}
-    </>
+    </div>
   );
 }
