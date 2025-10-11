@@ -1,31 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Property } from "@/types/schema";
 import supabase from "../../actions/supabase/client";
 
 export default function RoutePage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("user_id");
 
   useEffect(() => {
     async function fetchUserRouteProperties() {
+      if (!userId) {
+        setError("Missing user_id in URL.");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-
-        const {
-          data: { user },
-          error: userError,
-        } = await supabase.auth.getUser();
-        if (userError || !user) {
-          throw new Error("No authenticated user found.");
-        }
 
         const { data: assignments, error: assignmentError } = await supabase
           .from("Route User Assignments")
           .select("route_id")
-          .eq("user_id", user.id)
+          .eq("user_id", userId)
           .eq("published", true)
           .limit(1)
           .single();
@@ -65,9 +67,11 @@ export default function RoutePage() {
         <ol>
           {properties.map(p => (
             <li key={p.id}>
-              <strong>Address:</strong> {p.street_address || "Unknown"} <br />
-              <strong>Geo Ref:</strong> {p.planit_geo_reference || "N/A"} <br />
-              <strong>Order:</strong> {p.order_to_visit}
+              <strong>Street Address:</strong> {p.street_address || "Unknown"}{" "}
+              <br />
+              <strong>Planit Geo Ref:</strong> {p.planit_geo_reference || "N/A"}{" "}
+              <br />
+              <strong>Order To Visit:</strong> {p.order_to_visit}
             </li>
           ))}
         </ol>
