@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import supabase from "../../actions/supabase/client";
-import whiteLogo from "../../assets/images/white_logo.png";
+import whiteLogo from "../../assets/images/white_logo.svg";
 import { loginStyles } from "./styles";
 
 export default function Login() {

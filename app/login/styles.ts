@@ -31,6 +31,7 @@ export const loginStyles = {
     marginBottom: "1.25rem",
     borderRadius: "0.5rem",
     fontSize: "0.875rem",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   errorMessage: {
@@ -45,13 +46,14 @@ export const loginStyles = {
 
   heading: {
     fontSize: "2rem",
-    fontWeight: "400",
+    fontWeight: "500",
     marginBottom: "0.5rem",
     color: "#333",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   underline: {
-    width: "3.75rem",
+    width: "8rem",
     height: "0.1875rem",
     backgroundColor: COLORS.adlr_green,
     marginBottom: "1.875rem",
@@ -70,6 +72,7 @@ export const loginStyles = {
     fontSize: "1rem",
     marginBottom: "0.5rem",
     color: "#333",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   requiredAsterisk: {
@@ -83,6 +86,7 @@ export const loginStyles = {
     border: "1px solid #ccc",
     borderRadius: "0.5rem",
     boxSizing: "border-box",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   forgotPasswordButton: {
@@ -95,6 +99,7 @@ export const loginStyles = {
     textDecoration: "none",
     marginBottom: "1.5rem",
     display: "block",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   primaryButton: {
@@ -107,6 +112,7 @@ export const loginStyles = {
     border: "none",
     borderRadius: "0.5rem",
     cursor: "pointer",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   primaryButtonWithMargin: {
@@ -120,6 +126,7 @@ export const loginStyles = {
     borderRadius: "0.5rem",
     cursor: "pointer",
     marginBottom: "0.75rem",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   secondaryButton: {
@@ -132,6 +139,7 @@ export const loginStyles = {
     border: `2px solid ${COLORS.adlr_navy}`,
     borderRadius: "0.5rem",
     cursor: "pointer",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   secondaryButtonWithMargin: {
@@ -145,12 +153,13 @@ export const loginStyles = {
     borderRadius: "0.5rem",
     cursor: "pointer",
     marginTop: "0.75rem",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   signUpContainer: {
-    marginTop: "1.5rem",
     color: COLORS.white,
     fontSize: "1rem",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
   signUpButton: {
@@ -162,5 +171,6 @@ export const loginStyles = {
     padding: "0",
     textDecoration: "none",
     fontWeight: "500",
+    fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 };
