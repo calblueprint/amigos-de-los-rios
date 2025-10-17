@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import { AuthProvider } from "@/app/auth/AuthContext";
 import StyledComponentsRegistry from "@/lib/registry";
 import "@/styles/global.css";
 
@@ -12,7 +13,7 @@ const sans = DM_Sans({
 
 // site metadata - what shows up on embeds
 export const metadata: Metadata = {
-  title: "Project Name",
+  title: "Amigos de los Rios",
   description: "Description of project",
 };
 
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sans.className}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <AuthProvider>{children}</AuthProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

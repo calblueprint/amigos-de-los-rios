@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/supabase/queries/auth";
@@ -69,61 +68,53 @@ export default function Login() {
   };
 
   return (
-    <div style={S.containerStyle}>
+    <S.Container>
       {/* Logo */}
-      <Image
+      <S.Logo
         src={whiteLogo}
         alt="Amigos de los Rios"
         width={300}
         height={100}
-        style={S.logoStyle}
       />
 
       {/* Login Card */}
-      <div style={S.cardStyle}>
+      <S.Card>
         {message && (
-          <div
-            style={{
-              ...S.messageStyle,
-              ...(message.includes("Error") || message.includes("error")
-                ? S.errorMessageStyle
-                : S.successMessageStyle),
-            }}
+          <S.Message
+            $isError={message.includes("Error") || message.includes("error")}
           >
             {message}
-          </div>
+          </S.Message>
         )}
 
-        <h2 style={S.headingStyle}>Login</h2>
-        <div style={S.underlineStyle} />
+        <S.Heading>Login</S.Heading>
+        <S.Underline />
 
-        <div style={S.inputGroupStyle}>
-          <label style={S.labelStyle}>
-            Email<span style={S.requiredAsteriskStyle}>*</span>
-          </label>
-          <input
+        <S.InputGroup>
+          <S.Label>
+            Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+          </S.Label>
+          <S.Input
             name="email"
             type="email"
             placeholder=""
             onChange={e => setEmail(e.target.value)}
             value={email}
-            style={S.inputStyle}
           />
-        </div>
+        </S.InputGroup>
 
-        <div style={S.inputGroupSmallStyle}>
-          <label style={S.labelStyle}>
-            Password<span style={S.requiredAsteriskStyle}>*</span>
-          </label>
-          <input
+        <S.InputGroup $marginSmall>
+          <S.Label>
+            Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+          </S.Label>
+          <S.Input
             type="password"
             name="password"
             placeholder=""
             onChange={e => setPassword(e.target.value)}
             value={password}
-            style={S.inputStyle}
           />
-        </div>
+        </S.InputGroup>
 
         <Link href="/auth/reset_password">
           <S.LinkButton type="button">Forgot password?</S.LinkButton>
@@ -132,15 +123,15 @@ export default function Login() {
         <S.PrimaryButton type="button" onClick={handleSignIn}>
           Login
         </S.PrimaryButton>
-      </div>
+      </S.Card>
 
       {/* Sign up link */}
-      <div style={S.linkContainerStyle}>
+      <S.LinkContainer>
         No account?{" "}
-        <Link href="/auth/sign_up" style={S.linkButtonStyle}>
-          Sign up
+        <Link href="/auth/sign_up" passHref legacyBehavior>
+          <S.StyledLink>Sign up</S.StyledLink>
         </Link>
-      </div>
-    </div>
+      </S.LinkContainer>
+    </S.Container>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   resetPasswordForEmail,
@@ -92,68 +91,60 @@ export default function ResetPassword() {
   };
 
   return (
-    <div style={S.containerStyle}>
+    <S.Container>
       {/* Logo */}
-      <Image
+      <S.Logo
         src={whiteLogo}
         alt="Amigos de los Rios"
         width={300}
         height={100}
-        style={S.logoStyle}
       />
 
       {/* Reset Password Card */}
-      <div style={S.cardStyle}>
+      <S.Card>
         {message && (
-          <div
-            style={{
-              ...S.messageStyle,
-              ...(message.includes("Error") || message.includes("error")
-                ? S.errorMessageStyle
-                : S.successMessageStyle),
-            }}
+          <S.Message
+            $isError={message.includes("Error") || message.includes("error")}
           >
             {message}
-          </div>
+          </S.Message>
         )}
 
         {isResettingPassword ? (
           // Password update form (after clicking link in email)
           <>
-            <h2 style={S.headingStyle}>Set New Password</h2>
-            <div style={S.underlineStyle} />
+            <S.Heading>Set New Password</S.Heading>
+            <S.Underline />
 
-            <div style={S.inputGroupStyle}>
-              <label style={S.labelStyle}>
-                New Password<span style={S.requiredAsteriskStyle}>*</span>
-              </label>
-              <input
+            <S.InputGroup>
+              <S.Label>
+                New Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+              </S.Label>
+              <S.Input
                 type="password"
                 placeholder=""
                 onChange={e => setNewPassword(e.target.value)}
                 value={newPassword}
-                style={S.inputStyle}
               />
-            </div>
+            </S.InputGroup>
 
-            <div style={S.inputGroupStyle}>
-              <label style={S.labelStyle}>
+            <S.InputGroup>
+              <S.Label>
                 Confirm New Password
-                <span style={S.requiredAsteriskStyle}>*</span>
-              </label>
-              <input
+                <S.RequiredAsterisk>*</S.RequiredAsterisk>
+              </S.Label>
+              <S.Input
                 type="password"
                 placeholder=""
                 onChange={e => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
-                style={S.inputStyle}
               />
-            </div>
+            </S.InputGroup>
 
             <S.PrimaryButton
               type="button"
               onClick={handleUpdatePassword}
-              style={{ marginBottom: "0.75rem" }}
+              $marginBottom
             >
               Update Password
             </S.PrimaryButton>
@@ -164,45 +155,44 @@ export default function ResetPassword() {
         ) : (
           // Forgot password form (request reset link)
           <>
-            <h2 style={S.headingStyle}>Reset Password</h2>
-            <div style={S.underlineStyle} />
+            <S.Heading>Reset Password</S.Heading>
+            <S.Underline />
 
-            <div style={S.inputGroupStyle}>
-              <label style={S.labelStyle}>
-                Email<span style={S.requiredAsteriskStyle}>*</span>
-              </label>
-              <input
+            <S.InputGroup>
+              <S.Label>
+                Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+              </S.Label>
+              <S.Input
                 name="email"
                 type="email"
                 placeholder=""
                 onChange={e => setEmail(e.target.value)}
                 value={email}
-                style={S.inputStyle}
               />
-            </div>
+            </S.InputGroup>
 
             <S.PrimaryButton type="button" onClick={handleResetPassword}>
               Send Reset Link
             </S.PrimaryButton>
 
             <Link href="/auth/login">
-              <S.SecondaryButton type="button" style={{ marginTop: "0.75rem" }}>
+              <S.SecondaryButton type="button" $marginTop>
                 Back to Login
               </S.SecondaryButton>
             </Link>
           </>
         )}
-      </div>
+      </S.Card>
 
       {/* Login link */}
       {!isResettingPassword && (
-        <div style={S.linkContainerStyle}>
+        <S.LinkContainer>
           Remember your password?{" "}
-          <Link href="/auth/login" style={S.linkButtonStyle}>
-            Login
+          <Link href="/auth/login" passHref legacyBehavior>
+            <S.StyledLink>Login</S.StyledLink>
           </Link>
-        </div>
+        </S.LinkContainer>
       )}
-    </div>
+    </S.Container>
   );
 }

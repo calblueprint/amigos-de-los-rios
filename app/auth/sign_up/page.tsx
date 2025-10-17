@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { signUp } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
@@ -81,74 +80,66 @@ export default function SignUp() {
   };
 
   return (
-    <div style={S.containerStyle}>
+    <S.Container>
       {/* Logo */}
-      <Image
+      <S.Logo
         src={whiteLogo}
         alt="Amigos de los Rios"
         width={300}
         height={100}
-        style={S.logoStyle}
       />
 
       {/* Sign Up Card */}
-      <div style={S.cardStyle}>
+      <S.Card>
         {message && (
-          <div
-            style={{
-              ...S.messageStyle,
-              ...(message.includes("Error") || message.includes("error")
-                ? S.errorMessageStyle
-                : S.successMessageStyle),
-            }}
+          <S.Message
+            $isError={message.includes("Error") || message.includes("error")}
           >
             {message}
-          </div>
+          </S.Message>
         )}
 
-        <h2 style={S.headingStyle}>Sign Up</h2>
-        <div style={S.underlineStyle} />
+        <S.Heading>Sign Up</S.Heading>
+        <S.Underline />
 
-        <div style={S.inputGroupStyle}>
-          <label style={S.labelStyle}>
-            Email<span style={S.requiredAsteriskStyle}>*</span>
-          </label>
-          <input
+        <S.InputGroup>
+          <S.Label>
+            Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+          </S.Label>
+          <S.Input
             name="email"
             type="email"
             placeholder=""
             onChange={e => setEmail(e.target.value)}
             value={email}
-            style={S.inputStyle}
           />
-        </div>
+        </S.InputGroup>
 
-        <div style={S.inputGroupStyle}>
-          <label style={S.labelStyle}>
-            Password<span style={S.requiredAsteriskStyle}>*</span>
-          </label>
-          <input
+        <S.InputGroup>
+          <S.Label>
+            Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+          </S.Label>
+          <S.Input
             type="password"
             name="password"
             placeholder=""
             onChange={e => setPassword(e.target.value)}
             value={password}
-            style={S.inputStyle}
           />
-        </div>
+        </S.InputGroup>
 
         <S.PrimaryButton type="button" onClick={handleSignUp}>
           Sign Up
         </S.PrimaryButton>
-      </div>
+      </S.Card>
 
       {/* Login link */}
-      <div style={S.linkContainerStyle}>
+      <S.LinkContainer>
         Already have an account?{" "}
-        <Link href="/auth/login" style={S.linkButtonStyle}>
-          Login
+        <Link href="/auth/login" passHref legacyBehavior>
+          <S.StyledLink>Login</S.StyledLink>
         </Link>
-      </div>
-    </div>
+      </S.LinkContainer>
+    </S.Container>
   );
 }
