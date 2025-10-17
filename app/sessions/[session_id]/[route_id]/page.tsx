@@ -1,28 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Property } from "@/types/schema";
-import supabase from "../../actions/supabase/client";
+import supabase from "../../../../actions/supabase/client";
 
 export default function RoutePage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const searchParams = useSearchParams();
-  const userId = searchParams.get("user_id");
+  const [error] = useState<string | null>(null);
+  const HARDCODED_USER_ID = "e0f4594c-5081-4858-8a20-5dcecb3e3683";
 
   useEffect(() => {
     async function fetchUserRouteProperties() {
-      if (!userId) {
-        setError("Missing user_id in URL.");
-        setLoading(false);
-        return;
-      }
-
       try {
         setLoading(true);
+        const userId = HARDCODED_USER_ID;
 
         const { data: assignments, error: assignmentError } = await supabase
           .from("Route User Assignments")
