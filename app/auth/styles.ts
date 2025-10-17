@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import COLORS from "../../styles/colors";
 
-export const loginStyles = {
+export const authStyles = {
   container: {
     minHeight: "100vh",
     backgroundColor: COLORS.adlr_blue,
@@ -156,13 +156,13 @@ export const loginStyles = {
     fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
-  signUpContainer: {
+  linkContainer: {
     color: COLORS.white,
     fontSize: "1rem",
     fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 
-  signUpButton: {
+  linkButton: {
     background: "none",
     border: "none",
     color: COLORS.adlr_green,
@@ -174,3 +174,4 @@ export const loginStyles = {
     fontFamily: "DM Sans, sans-serif",
   } as CSSProperties,
 };
+
