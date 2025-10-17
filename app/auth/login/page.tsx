@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import supabase from "../../../actions/supabase/client";
 import whiteLogo from "../../../assets/images/white_logo.svg";
-import { authStyles } from "../styles";
+import * as S from "../styles";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -69,37 +69,37 @@ export default function Login() {
   };
 
   return (
-    <div style={authStyles.container}>
+    <div style={S.containerStyle}>
       {/* Logo */}
       <Image
         src={whiteLogo}
         alt="Amigos de los Rios"
         width={300}
         height={100}
-        style={authStyles.logo}
+        style={S.logoStyle}
       />
 
       {/* Login Card */}
-      <div style={authStyles.card}>
+      <div style={S.cardStyle}>
         {message && (
           <div
             style={{
-              ...authStyles.message,
+              ...S.messageStyle,
               ...(message.includes("Error") || message.includes("error")
-                ? authStyles.errorMessage
-                : authStyles.successMessage),
+                ? S.errorMessageStyle
+                : S.successMessageStyle),
             }}
           >
             {message}
           </div>
         )}
 
-        <h2 style={authStyles.heading}>Login</h2>
-        <div style={authStyles.underline} />
+        <h2 style={S.headingStyle}>Login</h2>
+        <div style={S.underlineStyle} />
 
-        <div style={authStyles.inputGroup}>
-          <label style={authStyles.label}>
-            Email<span style={authStyles.requiredAsterisk}>*</span>
+        <div style={S.inputGroupStyle}>
+          <label style={S.labelStyle}>
+            Email<span style={S.requiredAsteriskStyle}>*</span>
           </label>
           <input
             name="email"
@@ -107,13 +107,13 @@ export default function Login() {
             placeholder=""
             onChange={e => setEmail(e.target.value)}
             value={email}
-            style={authStyles.input}
+            style={S.inputStyle}
           />
         </div>
 
-        <div style={authStyles.inputGroupSmall}>
-          <label style={authStyles.label}>
-            Password<span style={authStyles.requiredAsterisk}>*</span>
+        <div style={S.inputGroupSmallStyle}>
+          <label style={S.labelStyle}>
+            Password<span style={S.requiredAsteriskStyle}>*</span>
           </label>
           <input
             type="password"
@@ -121,31 +121,26 @@ export default function Login() {
             placeholder=""
             onChange={e => setPassword(e.target.value)}
             value={password}
-            style={authStyles.input}
+            style={S.inputStyle}
           />
         </div>
 
-        <Link href="/auth/reset_password" style={authStyles.forgotPasswordButton}>
-          Forgot password?
+        <Link href="/auth/reset_password">
+          <S.LinkButton type="button">Forgot password?</S.LinkButton>
         </Link>
 
-        <button
-          type="button"
-          onClick={handleSignIn}
-          style={authStyles.primaryButton}
-        >
+        <S.PrimaryButton type="button" onClick={handleSignIn}>
           Login
-        </button>
+        </S.PrimaryButton>
       </div>
 
       {/* Sign up link */}
-      <div style={authStyles.linkContainer}>
+      <div style={S.linkContainerStyle}>
         No account?{" "}
-        <Link href="/auth/sign_up" style={authStyles.linkButton}>
+        <Link href="/auth/sign_up" style={S.linkButtonStyle}>
           Sign up
         </Link>
       </div>
     </div>
   );
 }
-

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import supabase from "../../../actions/supabase/client";
 import whiteLogo from "../../../assets/images/white_logo.svg";
-import { authStyles } from "../styles";
+import * as S from "../styles";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -73,10 +73,12 @@ export default function ResetPassword() {
       return;
     }
 
-    setMessage("Password updated successfully! You can now log in with your new password.");
+    setMessage(
+      "Password updated successfully! You can now log in with your new password.",
+    );
     setNewPassword("");
     setConfirmPassword("");
-    
+
     // Redirect to login after 2 seconds
     setTimeout(() => {
       window.location.href = "/auth/login";
@@ -84,25 +86,25 @@ export default function ResetPassword() {
   };
 
   return (
-    <div style={authStyles.container}>
+    <div style={S.containerStyle}>
       {/* Logo */}
       <Image
         src={whiteLogo}
         alt="Amigos de los Rios"
         width={300}
         height={100}
-        style={authStyles.logo}
+        style={S.logoStyle}
       />
 
       {/* Reset Password Card */}
-      <div style={authStyles.card}>
+      <div style={S.cardStyle}>
         {message && (
           <div
             style={{
-              ...authStyles.message,
+              ...S.messageStyle,
               ...(message.includes("Error") || message.includes("error")
-                ? authStyles.errorMessage
-                : authStyles.successMessage),
+                ? S.errorMessageStyle
+                : S.successMessageStyle),
             }}
           >
             {message}
@@ -112,58 +114,56 @@ export default function ResetPassword() {
         {isResettingPassword ? (
           // Password update form (after clicking link in email)
           <>
-            <h2 style={authStyles.heading}>Set New Password</h2>
-            <div style={authStyles.underline} />
+            <h2 style={S.headingStyle}>Set New Password</h2>
+            <div style={S.underlineStyle} />
 
-            <div style={authStyles.inputGroup}>
-              <label style={authStyles.label}>
-                New Password<span style={authStyles.requiredAsterisk}>*</span>
+            <div style={S.inputGroupStyle}>
+              <label style={S.labelStyle}>
+                New Password<span style={S.requiredAsteriskStyle}>*</span>
               </label>
               <input
                 type="password"
                 placeholder=""
                 onChange={e => setNewPassword(e.target.value)}
                 value={newPassword}
-                style={authStyles.input}
+                style={S.inputStyle}
               />
             </div>
 
-            <div style={authStyles.inputGroup}>
-              <label style={authStyles.label}>
+            <div style={S.inputGroupStyle}>
+              <label style={S.labelStyle}>
                 Confirm New Password
-                <span style={authStyles.requiredAsterisk}>*</span>
+                <span style={S.requiredAsteriskStyle}>*</span>
               </label>
               <input
                 type="password"
                 placeholder=""
                 onChange={e => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
-                style={authStyles.input}
+                style={S.inputStyle}
               />
             </div>
 
-            <button
+            <S.PrimaryButton
               type="button"
               onClick={handleUpdatePassword}
-              style={authStyles.primaryButtonWithMargin}
+              style={{ marginBottom: "0.75rem" }}
             >
               Update Password
-            </button>
+            </S.PrimaryButton>
             <Link href="/auth/login">
-              <button type="button" style={authStyles.secondaryButton}>
-                Cancel
-              </button>
+              <S.SecondaryButton type="button">Cancel</S.SecondaryButton>
             </Link>
           </>
         ) : (
           // Forgot password form (request reset link)
           <>
-            <h2 style={authStyles.heading}>Reset Password</h2>
-            <div style={authStyles.underline} />
+            <h2 style={S.headingStyle}>Reset Password</h2>
+            <div style={S.underlineStyle} />
 
-            <div style={authStyles.inputGroup}>
-              <label style={authStyles.label}>
-                Email<span style={authStyles.requiredAsterisk}>*</span>
+            <div style={S.inputGroupStyle}>
+              <label style={S.labelStyle}>
+                Email<span style={S.requiredAsteriskStyle}>*</span>
               </label>
               <input
                 name="email"
@@ -171,25 +171,18 @@ export default function ResetPassword() {
                 placeholder=""
                 onChange={e => setEmail(e.target.value)}
                 value={email}
-                style={authStyles.input}
+                style={S.inputStyle}
               />
             </div>
 
-            <button
-              type="button"
-              onClick={handleResetPassword}
-              style={authStyles.primaryButton}
-            >
+            <S.PrimaryButton type="button" onClick={handleResetPassword}>
               Send Reset Link
-            </button>
+            </S.PrimaryButton>
 
             <Link href="/auth/login">
-              <button
-                type="button"
-                style={authStyles.secondaryButtonWithMargin}
-              >
+              <S.SecondaryButton type="button" style={{ marginTop: "0.75rem" }}>
                 Back to Login
-              </button>
+              </S.SecondaryButton>
             </Link>
           </>
         )}
@@ -197,9 +190,9 @@ export default function ResetPassword() {
 
       {/* Login link */}
       {!isResettingPassword && (
-        <div style={authStyles.linkContainer}>
+        <div style={S.linkContainerStyle}>
           Remember your password?{" "}
-          <Link href="/auth/login" style={authStyles.linkButton}>
+          <Link href="/auth/login" style={S.linkButtonStyle}>
             Login
           </Link>
         </div>
@@ -207,4 +200,3 @@ export default function ResetPassword() {
     </div>
   );
 }
-
