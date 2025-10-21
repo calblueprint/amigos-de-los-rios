@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import supabase from "@/api/supabase/client";
 import { Property } from "@/types/schema";
-import supabase from "../../../../actions/supabase/client";
 
 export default function RoutePage() {
   const [properties, setProperties] = useState<Property[]>([]);
