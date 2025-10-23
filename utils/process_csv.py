@@ -16,15 +16,19 @@ def process_planitgeo_csv(csv_path: str):
     if not path.exists():
         raise FileNotFoundError(f"CSV not found at {csv_path}")
 
-    trees_df = pd.read_csv(csv_path)
+    properties_df = pd.read_csv(csv_path)
     address_col = "Address"
-    addresses = trees_df[address_col].tolist()
-    
-    for i, addr in enumerate(addresses[:5], start=1):
-        print(f"{i}. {addr}")
+    id_col = "Primary ID"
+    addresses = properties_df[address_col].tolist()
+    ids = properties_df[id_col].tolist()
+
+    property_info = properties_df[['Address', 'Primary ID', 'Tree Number', 'Latitude', 'Longitude', 'Last Watered']]
+
+    for i, row in enumerate(property_info.head(5).itertuples(index=False), start=1):
+        print(f"{i}. Address: {row[0]}, ID: {row[1]}, Tree Number: {row[2]}, Latitude: {row[3]}, Longitude: {row[4]}, Last Watered: {row[5]}")
 
     # Print preview
-    print(f"{len(trees_df)} tree records.")
+    print(f"{len(properties_df)} property records.")
 
     return addresses
 
