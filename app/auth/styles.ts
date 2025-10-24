@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import { DM_Sans } from "next/font/google";
 import styled from "styled-components";
-import COLORS from "../../styles/colors";
+import COLORS from "@/styles/colors";
 
 const Sans = DM_Sans({
   subsets: ["latin"],

@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import supabase from "../../../actions/supabase/client";
-import whiteLogo from "../../../assets/images/white_logo.svg";
+import supabase from "@/actions/supabase/client";
+import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
 export default function Login() {
