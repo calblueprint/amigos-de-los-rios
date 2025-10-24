@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import supabase from "@/actions/supabase/client";
+import { signUp } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -29,12 +29,27 @@ export default function SignUp() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    try {
+      const data = await signUp(email, password);
 
-    if (error) {
+      // Check if user already exists - Supabase may not throw an error but returns specific data
+      if (data?.user) {
+        // If user exists and email is already confirmed, they're trying to sign up again
+        if (data.user.identities && data.user.identities.length === 0) {
+          setMessage(
+            "An account with this email already exists. Please use the sign in button instead.",
+          );
+          return;
+        }
+
+        // New user successfully created
+        setMessage(
+          "Sign up successful! Please check your email for confirmation link.",
+        );
+      }
+
+      return data;
+    } catch (error: any) {
       // Handle specific Supabase error messages
       if (error.message.includes("User already registered")) {
         setMessage(
@@ -60,24 +75,6 @@ export default function SignUp() {
       }
       return;
     }
-
-    // Check if user already exists - Supabase may not throw an error but returns specific data
-    if (data?.user) {
-      // If user exists and email is already confirmed, they're trying to sign up again
-      if (data.user.identities && data.user.identities.length === 0) {
-        setMessage(
-          "An account with this email already exists. Please use the sign in button instead.",
-        );
-        return;
-      }
-
-      // New user successfully created
-      setMessage(
-        "Sign up successful! Please check your email for confirmation link.",
-      );
-    }
-
-    return data;
   };
 
   return (

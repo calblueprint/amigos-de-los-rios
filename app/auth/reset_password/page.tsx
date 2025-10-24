@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import supabase from "@/actions/supabase/client";
+import {
+  resetPasswordForEmail,
+  updateUserPassword,
+} from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -34,18 +37,19 @@ export default function ResetPassword() {
       return;
     }
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset_password?reset=true`,
-    });
+    try {
+      await resetPasswordForEmail(
+        email,
+        `${window.location.origin}/auth/reset_password?reset=true`,
+      );
 
-    if (error) {
+      setMessage(
+        "Password reset email sent! Check your inbox and click the link.",
+      );
+    } catch (error: any) {
       setMessage(`Error: ${error.message}`);
       return;
     }
-
-    setMessage(
-      "Password reset email sent! Check your inbox and click the link.",
-    );
   };
 
   const handleUpdatePassword = async () => {
@@ -64,25 +68,23 @@ export default function ResetPassword() {
       return;
     }
 
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+    try {
+      await updateUserPassword(newPassword);
 
-    if (error) {
+      setMessage(
+        "Password updated successfully! You can now log in with your new password.",
+      );
+      setNewPassword("");
+      setConfirmPassword("");
+
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        window.location.href = "/auth/login";
+      }, 2000);
+    } catch (error: any) {
       setMessage(`Error: ${error.message}`);
       return;
     }
-
-    setMessage(
-      "Password updated successfully! You can now log in with your new password.",
-    );
-    setNewPassword("");
-    setConfirmPassword("");
-
-    // Redirect to login after 2 seconds
-    setTimeout(() => {
-      window.location.href = "/auth/login";
-    }, 2000);
   };
 
   return (

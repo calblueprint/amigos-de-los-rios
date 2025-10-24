@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import supabase from "@/actions/supabase/client";
+import { signIn } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -26,12 +26,17 @@ export default function Login() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const data = await signIn(email, password);
 
-    if (error) {
+      if (data?.user) {
+        setMessage("Sign in successful! Welcome back.");
+        // Redirect to home page or dashboard
+        router.push("/");
+      }
+
+      return data;
+    } catch (error: any) {
       // Handle specific Supabase error messages
       if (
         error.message.includes("Invalid login credentials") ||
@@ -58,14 +63,6 @@ export default function Login() {
       }
       return;
     }
-
-    if (data?.user) {
-      setMessage("Sign in successful! Welcome back.");
-      // Redirect to home page or dashboard
-      router.push("/");
-    }
-
-    return data;
   };
 
   return (
