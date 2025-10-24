@@ -26,10 +26,7 @@ export async function signUp(email: string, password: string) {
   return data;
 }
 
-export async function resetPasswordForEmail(
-  email: string,
-  redirectTo: string,
-) {
+export async function resetPasswordForEmail(email: string, redirectTo: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo,
   });
@@ -48,4 +45,3 @@ export async function updateUserPassword(newPassword: string) {
     throw error;
   }
 }
-

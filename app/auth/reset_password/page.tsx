@@ -46,8 +46,10 @@ export default function ResetPassword() {
       setMessage(
         "Password reset email sent! Check your inbox and click the link.",
       );
-    } catch (error: any) {
-      setMessage(`Error: ${error.message}`);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+      setMessage(`Error: ${errorMessage}`);
       return;
     }
   };
@@ -81,8 +83,10 @@ export default function ResetPassword() {
       setTimeout(() => {
         window.location.href = "/auth/login";
       }, 2000);
-    } catch (error: any) {
-      setMessage(`Error: ${error.message}`);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+      setMessage(`Error: ${errorMessage}`);
       return;
     }
   };

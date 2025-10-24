@@ -36,30 +36,33 @@ export default function Login() {
       }
 
       return data;
-    } catch (error: any) {
+    } catch (error) {
       // Handle specific Supabase error messages
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+
       if (
-        error.message.includes("Invalid login credentials") ||
-        error.message.includes("wrong password") ||
-        error.message.includes("invalid password")
+        errorMessage.includes("Invalid login credentials") ||
+        errorMessage.includes("wrong password") ||
+        errorMessage.includes("invalid password")
       ) {
         setMessage(
           "Invalid email or password. Please check your credentials and try again.",
         );
-      } else if (error.message.includes("Email not confirmed")) {
+      } else if (errorMessage.includes("Email not confirmed")) {
         setMessage(
           "Please check your email and click the confirmation link before signing in.",
         );
-      } else if (error.message.includes("User not found")) {
+      } else if (errorMessage.includes("User not found")) {
         setMessage("No account found with this email. Please sign up first.");
-      } else if (error.message.includes("Too many requests")) {
+      } else if (errorMessage.includes("Too many requests")) {
         setMessage(
           "Too many failed attempts. Please wait a moment before trying again.",
         );
-      } else if (error.message.includes("Invalid email")) {
+      } else if (errorMessage.includes("Invalid email")) {
         setMessage("Please enter a valid email address");
       } else {
-        setMessage(`Sign in error: ${error.message}`);
+        setMessage(`Sign in error: ${errorMessage}`);
       }
       return;
     }

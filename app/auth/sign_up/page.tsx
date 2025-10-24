@@ -49,29 +49,32 @@ export default function SignUp() {
       }
 
       return data;
-    } catch (error: any) {
+    } catch (error) {
       // Handle specific Supabase error messages
-      if (error.message.includes("User already registered")) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+
+      if (errorMessage.includes("User already registered")) {
         setMessage(
           "An account with this email already exists. Please use the sign in button instead.",
         );
-      } else if (error.message.includes("Password should be at least")) {
+      } else if (errorMessage.includes("Password should be at least")) {
         setMessage("Password must be at least 8 characters long");
-      } else if (error.message.includes("Invalid email")) {
+      } else if (errorMessage.includes("Invalid email")) {
         setMessage("Please enter a valid email address");
       } else if (
-        error.message.includes("Password is too weak") ||
-        error.message.includes("weak password")
+        errorMessage.includes("Password is too weak") ||
+        errorMessage.includes("weak password")
       ) {
         setMessage(
           "Password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.",
         );
-      } else if (error.message.includes("password")) {
+      } else if (errorMessage.includes("password")) {
         setMessage(
           "Password doesn't meet security requirements. Please use at least 8 characters.",
         );
       } else {
-        setMessage(`Sign up error: ${error.message}`);
+        setMessage(`Sign up error: ${errorMessage}`);
       }
       return;
     }
