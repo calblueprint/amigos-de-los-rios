@@ -28,11 +28,12 @@ def process_planitgeo_csv(csv_path: str):
         print(f"{i}. Address: {row[0]}, ID: {row[1]}, Tree Number: {row[2]}, Latitude: {row[3]}, Longitude: {row[4]}, Last Watered: {row[5]}")
 
     # Print preview
-    print(f"{len(properties_df)} property records.")
+    print(f"{len(property_info)} property records.")
 
-    return addresses
+    return property_info
 
 
 if __name__ == "__main__":
     csv_path = "../public/trees_data/planitgeo_trees_10_9.csv"
     process_planitgeo_csv(csv_path)
+    
