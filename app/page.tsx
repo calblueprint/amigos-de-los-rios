@@ -3,7 +3,7 @@
 import { CSSProperties, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/auth/AuthContext";
+import { useAuth } from "@/app/(auth)/AuthContext";
 import BPLogo from "@/assets/images/bp-logo.png";
 
 export default function Home() {
