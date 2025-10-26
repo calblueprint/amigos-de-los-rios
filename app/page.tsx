@@ -3,7 +3,7 @@
 import { CSSProperties, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/(auth)/AuthContext";
+import { useAuth } from "@/app/utils/AuthContext";
 import BPLogo from "@/assets/images/bp-logo.png";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !userId) {
-      router.push("/auth/login");
+      router.push("/login");
     }
   }, [userId, loading, router]);
 
@@ -45,7 +45,7 @@ export default function Home() {
       <button
         onClick={async () => {
           await signOut();
-          router.push("/auth/login");
+          router.push("/login");
         }}
         style={signOutButtonStyle}
       >

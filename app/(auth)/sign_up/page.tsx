@@ -4,27 +4,33 @@ import { useState } from "react";
 import Link from "next/link";
 import { signUp } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
+import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const handleSignUp = async () => {
     // Client-side validation
     if (!email || !password) {
       setMessage("Please fill in all fields");
+      setIsError(true);
       return;
     }
 
-    if (!email.includes("@") || !email.includes(".")) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
       setMessage("Please enter a valid email address");
+      setIsError(true);
       return;
     }
 
     if (password.length < 8) {
       setMessage("Password must be at least 8 characters long");
+      setIsError(true);
       return;
     }
 
@@ -38,6 +44,7 @@ export default function SignUp() {
           setMessage(
             "An account with this email already exists. Please use the sign in button instead.",
           );
+          setIsError(true);
           return;
         }
 
@@ -45,36 +52,13 @@ export default function SignUp() {
         setMessage(
           "Sign up successful! Please check your email for confirmation link.",
         );
+        setIsError(false);
       }
 
       return data;
     } catch (error) {
-      // Handle specific Supabase error messages
-      const errorMessage =
-        error instanceof Error ? error.message : "An error occurred";
-
-      if (errorMessage.includes("User already registered")) {
-        setMessage(
-          "An account with this email already exists. Please use the sign in button instead.",
-        );
-      } else if (errorMessage.includes("Password should be at least")) {
-        setMessage("Password must be at least 8 characters long");
-      } else if (errorMessage.includes("Invalid email")) {
-        setMessage("Please enter a valid email address");
-      } else if (
-        errorMessage.includes("Password is too weak") ||
-        errorMessage.includes("weak password")
-      ) {
-        setMessage(
-          "Password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.",
-        );
-      } else if (errorMessage.includes("password")) {
-        setMessage(
-          "Password doesn't meet security requirements. Please use at least 8 characters.",
-        );
-      } else {
-        setMessage(`Sign up error: ${errorMessage}`);
-      }
+      setMessage(handleAuthError(error, "signUp"));
+      setIsError(true);
       return;
     }
   };
@@ -91,13 +75,7 @@ export default function SignUp() {
 
       {/* Sign Up Card */}
       <S.Card>
-        {message && (
-          <S.Message
-            $isError={message.includes("Error") || message.includes("error")}
-          >
-            {message}
-          </S.Message>
-        )}
+        {message && <S.Message $isError={isError}>{message}</S.Message>}
 
         <S.Heading>Sign Up</S.Heading>
         <S.Underline />
@@ -136,7 +114,7 @@ export default function SignUp() {
       {/* Login link */}
       <S.LinkContainer>
         Already have an account?{" "}
-        <Link href="/auth/login" passHref legacyBehavior>
+        <Link href="/login" passHref legacyBehavior>
           <S.StyledLink>Login</S.StyledLink>
         </Link>
       </S.LinkContainer>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import { AuthProvider } from "@/app/(auth)/AuthContext";
+import { AuthProvider } from "@/app/utils/AuthContext";
 import StyledComponentsRegistry from "@/lib/registry";
 import "@/styles/global.css";
 

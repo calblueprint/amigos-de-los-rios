@@ -155,14 +155,14 @@ export const LinkButton = styled.button`
   font-weight: 400;
   cursor: pointer;
   padding: 0;
-  text-decoration: none;
+  text-decoration: none !important;
   margin-bottom: 1.5rem;
   display: block;
   transition: color 0.3s ease;
 
   &:hover {
     color: ${COLORS.adlr_forest_green};
-    text-decoration: underline;
+    text-decoration: underline !important;
   }
 `;
 
@@ -181,12 +181,19 @@ export const StyledLink = styled.a`
   font-size: 1rem;
   cursor: pointer;
   padding: 0;
-  text-decoration: none;
+  text-decoration: none !important;
   font-weight: 500;
   transition: color 0.3s ease;
 
   &:hover {
     color: ${COLORS.adlr_forest_green};
-    text-decoration: underline;
+    text-decoration: underline !important;
+  }
+`;
+
+// Wrapper for Link components to remove default styling
+export const LinkWrapper = styled.div`
+  a {
+    text-decoration: none !important;
   }
 `;
