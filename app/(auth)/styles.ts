@@ -1,5 +1,6 @@
 import { DM_Sans } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
 
@@ -173,7 +174,7 @@ export const LinkContainer = styled.div`
   font-size: 1rem;
 `;
 
-export const StyledLink = styled.a`
+export const StyledLink = styled(Link)`
   font-family: ${Sans.style.fontFamily};
   background: none;
   border: none;

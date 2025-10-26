@@ -105,9 +105,7 @@ export default function Login() {
       {/* Sign up link */}
       <S.LinkContainer>
         No account?{" "}
-        <Link href="/sign_up" passHref legacyBehavior>
-          <S.StyledLink>Sign up</S.StyledLink>
-        </Link>
+        <S.StyledLink href="/sign_up">Sign up</S.StyledLink>
       </S.LinkContainer>
     </S.Container>
   );
