@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/registry";
 import "@/styles/global.css";
 
 // font definitions
-const sans = Inter({
+const sans = DM_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 // site metadata - what shows up on embeds
