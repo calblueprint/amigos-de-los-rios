@@ -3,10 +3,10 @@ from pathlib import Path
 
 def process_planitgeo_csv(csv_path: str):
     """
-    Reads a PlanIt Geo CSV export and extracts tree IDs and addresses.
+    Reads a PlanIt Geo CSV export and extracts property IDs and addresses.
 
     Args:
-        csv_path (str): Path to the CSV file (e.g. "data/planitgeo_trees.csv")
+        csv_path (str): Path to the CSV file (e.g. "data/planitgeo_properties.csv")
 
     Returns:
         list[dict]: List of addresses
@@ -34,6 +34,6 @@ def process_planitgeo_csv(csv_path: str):
 
 
 if __name__ == "__main__":
-    csv_path = "../public/trees_data/planitgeo_trees_10_9.csv"
+    csv_path = "../public/properties_data/planitgeo_properties_10_9.csv"
     process_planitgeo_csv(csv_path)
     

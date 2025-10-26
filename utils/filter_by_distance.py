@@ -18,7 +18,7 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * c
 
 
-def trees_within_radius(df, center_lat, center_lon, radius_miles):
+def properties_within_radius(df, center_lat, center_lon, radius_miles):
     if not {"Latitude", "Longitude"}.issubset(df.columns):
         raise ValueError("DataFrame must have 'Latitude' and 'Longitude' columns")
 
@@ -27,18 +27,18 @@ def trees_within_radius(df, center_lat, center_lon, radius_miles):
 
     # Compute distances and filter
     df["distance_miles"] = df.apply(calc_distance, axis=1)
-    nearby_trees = df[df["distance_miles"] <= radius_miles]
+    nearby_properties = df[df["distance_miles"] <= radius_miles]
 
-    print(f"🌳 Found {len(nearby_trees)} trees within {radius_miles} miles.")
-    return nearby_trees[["Primary ID", "Address", "Latitude", "Longitude", "distance_miles"]]
+    print(f"Found {len(nearby_properties)} properties within {radius_miles} miles.")
+    return nearby_properties[["Primary ID", "Address", "Latitude", "Longitude", "distance_miles"]]
 
 
 if __name__ == "__main__":
-    csv_path = "../public/trees_data/planitgeo_trees_10_9.csv"
+    csv_path = "../public/properties_data/planitgeo_properties_10_26.csv"
     csv_df = process_planitgeo_csv(csv_path)
-    center_lat = 34.1485
-    center_lon = -118.1320
-    radius = 10  # miles
+    center_lat = 34.204689
+    center_lon = -118.132674
+    radius = 0.1  # miles
 
-    nearby = trees_within_radius(csv_df, center_lat, center_lon, radius)
-    print(nearby.head())
+    nearby = properties_within_radius(csv_df, center_lat, center_lon, radius)
+    print(nearby.head(34))
