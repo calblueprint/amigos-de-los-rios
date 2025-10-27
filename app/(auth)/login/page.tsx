@@ -104,8 +104,7 @@ export default function Login() {
 
       {/* Sign up link */}
       <S.LinkContainer>
-        No account?{" "}
-        <S.StyledLink href="/sign_up">Sign up</S.StyledLink>
+        No account? <S.StyledLink href="/sign_up">Sign up</S.StyledLink>
       </S.LinkContainer>
     </S.Container>
   );

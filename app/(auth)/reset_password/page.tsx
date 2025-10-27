@@ -87,8 +87,7 @@ export default function ResetPassword() {
 
       {/* Login link */}
       <S.LinkContainer>
-        Remember your password?{" "}
-        <S.StyledLink href="/login">Login</S.StyledLink>
+        Remember your password? <S.StyledLink href="/login">Login</S.StyledLink>
       </S.LinkContainer>
     </S.Container>
   );
