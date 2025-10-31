@@ -1,0 +1,10 @@
+{
+  "name": "@amigos/route-generation-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/handler.js",
+  "scripts": {
+    "zip": "cd src && zip -r ../function.zip handler.js",
+    "deploy": "npm run zip && ./deploy.sh"
+  }
+}
