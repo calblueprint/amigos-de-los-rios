@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import supabase from "@/actions/supabase/client";
+import { fetchSessions } from "@/actions/supabase/queries/routes";
+import SessionCard from "@/components/SessionCard/SessionCard";
 import {
   AddButton,
   Banner,
@@ -10,13 +11,7 @@ import {
   HeaderSection,
   Logo,
   PageContainer,
-  SessionCard,
-  SessionDate,
-  SessionHub,
-  SessionImage,
-  SessionInfo,
   SessionsList,
-  SessionTitle,
   Title,
 } from "./styles";
 
@@ -33,24 +28,21 @@ export default function SessionsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchSessions() {
+    async function loadSessions() {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("Watering Sessions")
-          .select("*")
-          .order("date", { ascending: false });
-
-        if (error) throw error;
-        setSessions(data || []);
+        const data = await fetchSessions();
+        setSessions(data);
       } catch (err) {
-        setError((err as Error).message);
+        setError(
+          err instanceof Error ? err.message : "Failed to load sessions",
+        );
       } finally {
         setLoading(false);
       }
     }
 
-    fetchSessions();
+    loadSessions();
   }, []);
 
   if (loading) return <p>Loading sessions...</p>;
@@ -72,20 +64,7 @@ export default function SessionsPage() {
 
       <SessionsList>
         {sessions.map(session => (
-          <SessionCard key={session.id}>
-            <SessionImage src="campanile.svg" alt="Session" />
-            <SessionInfo>
-              <SessionDate>
-                {new Date(session.date).toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </SessionDate>
-              <SessionHub>{session.central_hub}</SessionHub>
-              <SessionTitle>{session.watering_event_name}</SessionTitle>
-            </SessionInfo>
-          </SessionCard>
+          <SessionCard key={session.id} session={session} />
         ))}
       </SessionsList>
     </PageContainer>

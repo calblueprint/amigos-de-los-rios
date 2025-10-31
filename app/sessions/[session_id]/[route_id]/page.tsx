@@ -1,50 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchUserRouteProperties } from "@/actions/supabase/queries/routes";
 import { Property } from "@/types/schema";
-import supabase from "../../../../actions/supabase/client";
 
 export default function RoutePage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const HARDCODED_USER_ID = "e0f4594c-5081-4858-8a20-5dcecb3e3683";
 
   useEffect(() => {
-    async function fetchUserRouteProperties() {
+    async function loadProperties() {
       try {
         setLoading(true);
-        const userId = HARDCODED_USER_ID;
-
-        const { data: assignments, error: assignmentError } = await supabase
-          .from("Route User Assignments")
-          .select("route_id")
-          .eq("user_id", userId)
-          .eq("published", true)
-          .limit(1)
-          .single();
-
-        if (assignmentError || !assignments) {
-          throw new Error("No route assignment found for this user.");
-        }
-
-        const routeId = assignments.route_id;
-
-        const { data: props, error: propError } = await supabase
-          .from("Property")
-          .select("*")
-          .eq("route_id", routeId)
-          .order("order_to_visit", { ascending: true });
-
-        if (propError) throw propError;
-
-        setProperties(props || []);
+        const props = await fetchUserRouteProperties(HARDCODED_USER_ID);
+        setProperties(props);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load properties",
+        );
       } finally {
         setLoading(false);
       }
     }
 
-    fetchUserRouteProperties();
+    loadProperties();
   }, []);
 
   if (loading) return <p>Loading route...</p>;
