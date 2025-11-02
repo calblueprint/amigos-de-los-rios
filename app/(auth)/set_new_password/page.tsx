@@ -11,26 +11,32 @@ export default function SetNewPassword() {
   const router = useRouter();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
 
   const handleUpdatePassword = async () => {
-    if (!newPassword || !confirmPassword) {
-      setMessage("Please fill in all password fields");
-      setIsError(true);
-      return;
-    }
+    // Clear previous errors
+    setNewPasswordError("");
+    setConfirmPasswordError("");
 
-    if (newPassword !== confirmPassword) {
-      setMessage("Passwords do not match");
-      setIsError(true);
+    if (!newPassword) {
+      setNewPasswordError("Please enter a new password");
       return;
     }
 
     if (newPassword.length < 8) {
-      setMessage("Password must be at least 8 characters long");
-      setIsError(true);
+      setNewPasswordError("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError("Please confirm your password");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
       return;
     }
 
@@ -38,14 +44,12 @@ export default function SetNewPassword() {
       await updateUserPassword(newPassword);
 
       setPasswordReset(true);
-      setIsError(false);
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An error occurred";
-      setMessage(`Error: ${errorMessage}`);
-      setIsError(true);
+      setNewPasswordError(errorMessage);
       return;
     }
   };
@@ -84,8 +88,6 @@ export default function SetNewPassword() {
         ) : (
           // Password Input View
           <>
-            {message && <S.Message $isError={isError}>{message}</S.Message>}
-
             <S.Heading>Set New Password</S.Heading>
             <S.Underline />
 
@@ -96,9 +98,16 @@ export default function SetNewPassword() {
               <S.Input
                 type="password"
                 placeholder=""
-                onChange={e => setNewPassword(e.target.value)}
+                onChange={e => {
+                  setNewPassword(e.target.value);
+                  if (newPasswordError) setNewPasswordError("");
+                }}
                 value={newPassword}
+                $hasError={!!newPasswordError}
               />
+              {newPasswordError && (
+                <S.ErrorText>{newPasswordError}</S.ErrorText>
+              )}
             </S.InputGroup>
 
             <S.InputGroup>
@@ -109,9 +118,16 @@ export default function SetNewPassword() {
               <S.Input
                 type="password"
                 placeholder=""
-                onChange={e => setConfirmPassword(e.target.value)}
+                onChange={e => {
+                  setConfirmPassword(e.target.value);
+                  if (confirmPasswordError) setConfirmPasswordError("");
+                }}
                 value={confirmPassword}
+                $hasError={!!confirmPasswordError}
               />
+              {confirmPasswordError && (
+                <S.ErrorText>{confirmPasswordError}</S.ErrorText>
+              )}
             </S.InputGroup>
 
             <S.PrimaryButton

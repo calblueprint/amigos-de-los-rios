@@ -80,20 +80,28 @@ export const RequiredAsterisk = styled.span`
   color: ${COLORS.red};
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ $hasError?: boolean }>`
   font-family: ${Sans.style.fontFamily};
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ $hasError }) => ($hasError ? COLORS.red : "#ccc")};
   border-radius: 0.5rem;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: ${COLORS.adlr_green};
+    border-color: ${({ $hasError }) =>
+      $hasError ? COLORS.red : COLORS.adlr_green};
   }
+`;
+
+export const ErrorText = styled.div`
+  font-family: ${Sans.style.fontFamily};
+  color: ${COLORS.red};
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 `;
 
 // Button Components

@@ -9,27 +9,35 @@ import * as S from "../styles";
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSignUp = async () => {
+    // Clear previous errors
+    setEmailError("");
+    setPasswordError("");
+    setSuccessMessage("");
+
     // Client-side validation
-    if (!email || !password) {
-      setMessage("Please fill in all fields");
-      setIsError(true);
+    if (!email) {
+      setEmailError("Please enter your email address");
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
-      setMessage("Please enter a valid email address");
-      setIsError(true);
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Please enter a password");
       return;
     }
 
     if (password.length < 8) {
-      setMessage("Password must be at least 8 characters long");
-      setIsError(true);
+      setPasswordError("Password must be at least 8 characters long");
       return;
     }
 
@@ -40,24 +48,33 @@ export default function SignUp() {
       if (data?.user) {
         // If user exists and email is already confirmed, they're trying to sign up again
         if (data.user.identities && data.user.identities.length === 0) {
-          setMessage(
+          setEmailError(
             "An account with this email already exists. Please use the sign in button instead.",
           );
-          setIsError(true);
           return;
         }
 
         // New user successfully created
-        setMessage(
+        setSuccessMessage(
           "Sign up successful! Please check your email for confirmation link.",
         );
-        setIsError(false);
       }
 
       return data;
     } catch (error) {
-      setMessage(handleAuthError(error, "signUp"));
-      setIsError(true);
+      const errorMsg = handleAuthError(error, "signUp");
+      // Try to determine which field the error relates to
+      if (errorMsg.includes("email") || errorMsg.includes("Email")) {
+        setEmailError(errorMsg);
+      } else if (
+        errorMsg.includes("password") ||
+        errorMsg.includes("Password")
+      ) {
+        setPasswordError(errorMsg);
+      } else {
+        // Generic error - show on email field
+        setEmailError(errorMsg);
+      }
       return;
     }
   };
@@ -74,7 +91,9 @@ export default function SignUp() {
 
       {/* Sign Up Card */}
       <S.Card>
-        {message && <S.Message $isError={isError}>{message}</S.Message>}
+        {successMessage && (
+          <S.Message $isError={false}>{successMessage}</S.Message>
+        )}
 
         <S.Heading>Sign Up</S.Heading>
         <S.Underline />
@@ -87,9 +106,14 @@ export default function SignUp() {
             name="email"
             type="email"
             placeholder=""
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => {
+              setEmail(e.target.value);
+              if (emailError) setEmailError("");
+            }}
             value={email}
+            $hasError={!!emailError}
           />
+          {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
         </S.InputGroup>
 
         <S.InputGroup>
@@ -100,9 +124,14 @@ export default function SignUp() {
             type="password"
             name="password"
             placeholder=""
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => {
+              setPassword(e.target.value);
+              if (passwordError) setPasswordError("");
+            }}
             value={password}
+            $hasError={!!passwordError}
           />
+          {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
         </S.InputGroup>
 
         <S.PrimaryButton type="button" onClick={handleSignUp}>

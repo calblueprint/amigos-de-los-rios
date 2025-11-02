@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { resetPasswordForEmail } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
@@ -34,10 +33,16 @@ export default function ResetPassword() {
 
       setEmailSent(true);
       setIsError(false);
+      setMessage("");
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An error occurred";
-      setMessage(`Error: ${errorMessage}`);
+      // Show user-friendly error message
+      if (errorMessage.includes("not found") || errorMessage.includes("User")) {
+        setMessage("Email not found");
+      } else {
+        setMessage(errorMessage);
+      }
       setIsError(true);
       return;
     }
@@ -92,33 +97,33 @@ export default function ResetPassword() {
         ) : (
           // Email Input View
           <>
-            {message && <S.Message $isError={isError}>{message}</S.Message>}
-
             <S.Heading>Reset Password</S.Heading>
             <S.Underline />
 
             <S.InputGroup>
               <S.Label>
-                Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+                Account Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
               </S.Label>
               <S.Input
                 name="email"
                 type="email"
                 placeholder=""
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => {
+                  setEmail(e.target.value);
+                  if (message) {
+                    setMessage("");
+                    setIsError(false);
+                  }
+                }}
                 value={email}
+                $hasError={isError}
               />
+              {isError && message && <S.ErrorText>{message}</S.ErrorText>}
             </S.InputGroup>
 
             <S.PrimaryButton type="button" onClick={handleResetPassword}>
-              Send Reset Link
+              Confirm
             </S.PrimaryButton>
-
-            <Link href="/login">
-              <S.SecondaryButton type="button" $marginTop>
-                Back to Login
-              </S.SecondaryButton>
-            </Link>
           </>
         )}
       </S.Card>
