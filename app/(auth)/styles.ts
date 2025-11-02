@@ -209,44 +209,46 @@ export const LinkWrapper = styled.div`
   }
 `;
 
-// Success State Components
-export const SuccessIconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0 1.5rem 0;
-`;
-
-export const CheckCircle = styled.div`
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  background-color: ${COLORS.adlr_green};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const Checkmark = styled.span`
-  color: ${COLORS.white};
-  font-size: 3rem;
-  font-weight: bold;
-  line-height: 1;
-`;
-
-export const SuccessHeading = styled.h3`
+// Verification Page Components
+export const VerificationText = styled.p`
   font-family: ${Sans.style.fontFamily};
-  font-size: 1.875rem;
-  font-weight: 500;
-  color: ${COLORS.adlr_green};
-  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+`;
+
+export const EmailDisplay = styled.div`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1rem;
+  color: #666;
   margin-bottom: 1.5rem;
 `;
 
-export const SuccessMessage = styled.p`
+export const ResendContainer = styled.div`
   font-family: ${Sans.style.fontFamily};
-  font-size: 1.125rem;
-  color: #333;
   text-align: center;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1rem;
+`;
+
+export const ResendLink = styled.button<{ disabled?: boolean }>`
+  font-family: ${Sans.style.fontFamily};
+  background: none;
+  border: none;
+  color: ${({ disabled }) => (disabled ? "#999" : COLORS.adlr_green)};
+  font-size: 1rem;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  padding: 0;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+
+  &:hover {
+    color: ${({ disabled }) => (disabled ? "#999" : COLORS.adlr_forest_green)};
+    text-decoration: ${({ disabled }) =>
+      disabled ? "none" : "underline"} !important;
+  }
 `;
