@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { updateUserPassword } from "@/actions/supabase/queries/auth";
+import greenCheck from "@/assets/images/green-check.svg";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -74,9 +76,7 @@ export default function SetNewPassword() {
           // Success View
           <>
             <S.SuccessIconContainer>
-              <S.CheckCircle>
-                <S.Checkmark>✓</S.Checkmark>
-              </S.CheckCircle>
+              <Image src={greenCheck} alt="Success" width={80} height={80} />
             </S.SuccessIconContainer>
 
             <S.SuccessHeading>Password reset!</S.SuccessHeading>

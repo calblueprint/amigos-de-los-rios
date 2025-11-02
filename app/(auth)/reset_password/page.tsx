@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { resetPasswordForEmail } from "@/actions/supabase/queries/auth";
+import greenCheck from "@/assets/images/green-check.svg";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -77,9 +79,7 @@ export default function ResetPassword() {
             <S.Underline />
 
             <S.SuccessIconContainer>
-              <S.CheckCircle>
-                <S.Checkmark>✓</S.Checkmark>
-              </S.CheckCircle>
+              <Image src={greenCheck} alt="Success" width={80} height={80} />
             </S.SuccessIconContainer>
 
             <S.SuccessHeading>Email Sent!</S.SuccessHeading>
