@@ -45,3 +45,23 @@ export async function updateUserPassword(newPassword: string) {
     throw error;
   }
 }
+
+export async function updateUserProfile(profileData: {
+  name: string;
+  affiliation: string;
+  phone_number: string;
+}) {
+  const { data, error } = await supabase.auth.updateUser({
+    data: {
+      name: profileData.name,
+      affiliation: profileData.affiliation,
+      phone_number: profileData.phone_number,
+    },
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}

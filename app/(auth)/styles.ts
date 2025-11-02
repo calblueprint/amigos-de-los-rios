@@ -198,3 +198,47 @@ export const LinkWrapper = styled.div`
     text-decoration: none !important;
   }
 `;
+
+// Verification Page Components
+export const VerificationText = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+`;
+
+export const EmailDisplay = styled.div`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+`;
+
+export const ResendContainer = styled.div`
+  font-family: ${Sans.style.fontFamily};
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1rem;
+`;
+
+export const ResendLink = styled.button<{ disabled?: boolean }>`
+  font-family: ${Sans.style.fontFamily};
+  background: none;
+  border: none;
+  color: ${({ disabled }) => (disabled ? "#999" : COLORS.adlr_green)};
+  font-size: 1rem;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  padding: 0;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+
+  &:hover {
+    color: ${({ disabled }) => (disabled ? "#999" : COLORS.adlr_forest_green)};
+    text-decoration: ${({ disabled }) =>
+      disabled ? "none" : "underline"} !important;
+  }
+`;
