@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { updateUserPassword } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
 export default function SetNewPassword() {
+  const router = useRouter();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [passwordReset, setPasswordReset] = useState(false);
 
   const handleUpdatePassword = async () => {
     if (!newPassword || !confirmPassword) {
@@ -34,17 +37,10 @@ export default function SetNewPassword() {
     try {
       await updateUserPassword(newPassword);
 
-      setMessage(
-        "Password updated successfully! You can now log in with your new password.",
-      );
+      setPasswordReset(true);
       setIsError(false);
       setNewPassword("");
       setConfirmPassword("");
-
-      // Redirect to login after 2 seconds
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An error occurred";
@@ -52,6 +48,10 @@ export default function SetNewPassword() {
       setIsError(true);
       return;
     }
+  };
+
+  const handleGoToLogin = () => {
+    router.push("/login");
   };
 
   return (
@@ -66,46 +66,66 @@ export default function SetNewPassword() {
 
       {/* Set New Password Card */}
       <S.Card>
-        {message && <S.Message $isError={isError}>{message}</S.Message>}
+        {passwordReset ? (
+          // Success View
+          <>
+            <S.SuccessIconContainer>
+              <S.CheckCircle>
+                <S.Checkmark>✓</S.Checkmark>
+              </S.CheckCircle>
+            </S.SuccessIconContainer>
 
-        <S.Heading>Set New Password</S.Heading>
-        <S.Underline />
+            <S.SuccessHeading>Password reset!</S.SuccessHeading>
 
-        <S.InputGroup>
-          <S.Label>
-            New Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            placeholder=""
-            onChange={e => setNewPassword(e.target.value)}
-            value={newPassword}
-          />
-        </S.InputGroup>
+            <S.PrimaryButton type="button" onClick={handleGoToLogin}>
+              Login
+            </S.PrimaryButton>
+          </>
+        ) : (
+          // Password Input View
+          <>
+            {message && <S.Message $isError={isError}>{message}</S.Message>}
 
-        <S.InputGroup>
-          <S.Label>
-            Confirm New Password
-            <S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            placeholder=""
-            onChange={e => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-          />
-        </S.InputGroup>
+            <S.Heading>Set New Password</S.Heading>
+            <S.Underline />
 
-        <S.PrimaryButton
-          type="button"
-          onClick={handleUpdatePassword}
-          $marginBottom
-        >
-          Update Password
-        </S.PrimaryButton>
-        <Link href="/login">
-          <S.SecondaryButton type="button">Cancel</S.SecondaryButton>
-        </Link>
+            <S.InputGroup>
+              <S.Label>
+                New Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+              </S.Label>
+              <S.Input
+                type="password"
+                placeholder=""
+                onChange={e => setNewPassword(e.target.value)}
+                value={newPassword}
+              />
+            </S.InputGroup>
+
+            <S.InputGroup>
+              <S.Label>
+                Confirm New Password
+                <S.RequiredAsterisk>*</S.RequiredAsterisk>
+              </S.Label>
+              <S.Input
+                type="password"
+                placeholder=""
+                onChange={e => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+              />
+            </S.InputGroup>
+
+            <S.PrimaryButton
+              type="button"
+              onClick={handleUpdatePassword}
+              $marginBottom
+            >
+              Update Password
+            </S.PrimaryButton>
+            <Link href="/login">
+              <S.SecondaryButton type="button">Cancel</S.SecondaryButton>
+            </Link>
+          </>
+        )}
       </S.Card>
     </S.Container>
   );

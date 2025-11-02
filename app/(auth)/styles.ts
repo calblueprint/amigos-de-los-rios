@@ -198,3 +198,45 @@ export const LinkWrapper = styled.div`
     text-decoration: none !important;
   }
 `;
+
+// Success State Components
+export const SuccessIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1.5rem 0;
+`;
+
+export const CheckCircle = styled.div`
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: ${COLORS.adlr_green};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Checkmark = styled.span`
+  color: ${COLORS.white};
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+`;
+
+export const SuccessHeading = styled.h3`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.875rem;
+  font-weight: 500;
+  color: ${COLORS.adlr_green};
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
+export const SuccessMessage = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.125rem;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+`;
