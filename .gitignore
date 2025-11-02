@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# lambda deployment artifacts
+backend/route-generation-lambda/function.zip
