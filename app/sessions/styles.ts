@@ -1,7 +1,13 @@
 "use client";
 
+import { DM_Sans } from "next/font/google";
 import styled from "styled-components";
 import COLORS from "../../styles/colors";
+
+const Sans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 export const PageContainer = styled.main`
   margin: 0 auto;
@@ -43,9 +49,9 @@ export const AddButton = styled.button`
   background: ${COLORS.adlr_green};
   color: white;
   padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
+  font-family: ${Sans.style.fontFamily};
   border: none;
   border-radius: 0.375rem;
-  fontfamily: "DM Sans";
   font-weight: 400;
   font-size: 1.25rem;
   cursor: pointer;
@@ -60,7 +66,7 @@ export const EditButton = styled.button`
   padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
   border: 1px solid ${COLORS.adlr_light_gray};
   border-radius: 0.375rem;
-  fontfamily: "DM Sans";
+  font-family: ${Sans.style.fontFamily};
   font-weight: 400;
   font-size: 1.25rem;
   cursor: pointer;

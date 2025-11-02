@@ -1,3 +1,4 @@
+import { DM_Sans } from "next/font/google";
 import styled, { css } from "styled-components";
 
 interface TextProps {
@@ -6,9 +7,15 @@ interface TextProps {
   $align?: "left" | "right" | "center" | "end" | "justify" | "start";
 }
 
+const Sans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
 const TextStyles = css<TextProps>`
   color: ${({ $color }) => $color || "black"};
   text-align: ${({ $align }) => $align};
+  font-family: ${Sans.style.fontFamily};
   margin: 0;
 `;
 
