@@ -40,9 +40,9 @@ export default function AccountDetails() {
       setMessage("Profile updated successfully!");
       setIsError(false);
 
-      // Redirect to main page after a short delay
+      // Redirect to success page after a short delay
       setTimeout(() => {
-        router.push("/");
+        router.push("/account_success");
       }, 1500);
     } catch (error) {
       console.error("Profile update error:", error);
