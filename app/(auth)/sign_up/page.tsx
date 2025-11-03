@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { signUp } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
 
 export default function SignUp() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -48,11 +49,18 @@ export default function SignUp() {
           return;
         }
 
-        // New user successfully created
-        setMessage(
-          "Sign up successful! Please check your email for confirmation link.",
-        );
-        setIsError(false);
+        // Check if email confirmation is required
+        if (data.session) {
+          // Email confirmation is disabled - user is logged in immediately
+          // Redirect directly to account details page
+          router.push("/account_details");
+        } else {
+          // Email confirmation is enabled - user needs to verify email
+          // Redirect to verification page
+          router.push(
+            `/verification_needed?email=${encodeURIComponent(email)}`,
+          );
+        }
       }
 
       return data;
