@@ -11,22 +11,29 @@ import * as S from "../styles";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
 
   const handleSignIn = async () => {
+    // Clear previous errors
+    setEmailError("");
+    setPasswordError("");
+
     // Client-side validation
-    if (!email || !password) {
-      setMessage("Please fill in all fields");
-      setIsError(true);
+    if (!email) {
+      setEmailError("Please enter your email address");
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
-      setMessage("Please enter a valid email address");
-      setIsError(true);
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Please enter your password");
       return;
     }
 
@@ -34,16 +41,25 @@ export default function Login() {
       const data = await signIn(email, password);
 
       if (data?.user) {
-        setMessage("Sign in successful! Welcome back.");
-        setIsError(false);
         // Redirect to home page or dashboard
         router.push("/");
       }
 
       return data;
     } catch (error) {
-      setMessage(handleAuthError(error, "signIn"));
-      setIsError(true);
+      const errorMsg = handleAuthError(error, "signIn");
+      // Try to determine which field the error relates to
+      if (errorMsg.includes("email") || errorMsg.includes("Email")) {
+        setEmailError(errorMsg);
+      } else if (
+        errorMsg.includes("password") ||
+        errorMsg.includes("Password")
+      ) {
+        setPasswordError(errorMsg);
+      } else {
+        // Generic error - show on password field
+        setPasswordError(errorMsg);
+      }
       return;
     }
   };
@@ -60,8 +76,6 @@ export default function Login() {
 
       {/* Login Card */}
       <S.Card>
-        {message && <S.Message $isError={isError}>{message}</S.Message>}
-
         <S.Heading>Login</S.Heading>
         <S.Underline />
 
@@ -73,9 +87,14 @@ export default function Login() {
             name="email"
             type="email"
             placeholder=""
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => {
+              setEmail(e.target.value);
+              if (emailError) setEmailError("");
+            }}
             value={email}
+            $hasError={!!emailError}
           />
+          {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
         </S.InputGroup>
 
         <S.InputGroup $marginSmall>
@@ -86,9 +105,14 @@ export default function Login() {
             type="password"
             name="password"
             placeholder=""
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => {
+              setPassword(e.target.value);
+              if (passwordError) setPasswordError("");
+            }}
             value={password}
+            $hasError={!!passwordError}
           />
+          {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
         </S.InputGroup>
 
         <S.LinkWrapper>
