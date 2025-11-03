@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import whiteLogo from "@/assets/images/white_logo.svg";
-import * as S from "../styles";
 import styled from "styled-components";
+import whiteLogo from "@/assets/images/white_logo.svg";
 import COLORS from "@/styles/colors";
+import * as S from "../styles";
 
 export default function AccountSuccess() {
   const router = useRouter();
@@ -74,4 +74,3 @@ const SuccessIcon = styled.div`
   align-items: center;
   justify-content: center;
 `;
-

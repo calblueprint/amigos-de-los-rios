@@ -85,7 +85,7 @@ export async function updateUserProfile(profileData: {
     name: profileData.name,
     affiliation: profileData.affiliation,
     phone_number: profileData.phone_number,
-    onboarded: true
+    onboarded: true,
   });
 
   return data;
