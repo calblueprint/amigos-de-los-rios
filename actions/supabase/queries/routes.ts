@@ -43,3 +43,15 @@ export async function fetchUserRouteProperties(userId: string) {
 
   return props || [];
 }
+
+export async function fetchPropertiesByRouteId(routeId: string) {
+  const { data: props, error: propError } = await supabase
+    .from("Property")
+    .select("*")
+    .eq("route_id", routeId)
+    .order("order_to_visit", { ascending: true });
+
+  if (propError) throw propError;
+
+  return props || [];
+}

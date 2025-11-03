@@ -8,8 +8,10 @@ const COLORS = {
   adlr_hover_green: "#3b8c3f",
   adlr_navy: "#22354D",
   adlr_gray: "#CFCFCF",
+  adlr_property_gray: "#707070",
   adlr_light_gray: "#D9D9D9",
   adlr_lighter_gray: "#EFEFEF",
+  adlr_black: "#2B2C2C",
   red: "#D31919",
 };
 

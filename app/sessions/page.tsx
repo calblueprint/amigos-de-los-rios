@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { fetchSessions } from "@/actions/supabase/queries/routes";
+import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
 import {
   AddButton,
-  Banner,
   ButtonGroup,
   EditButton,
+  Header,
   HeaderSection,
-  Logo,
   PageContainer,
   SessionsList,
-  Title,
 } from "./styles";
 
 type WateringSession = {
@@ -50,12 +49,10 @@ export default function SessionsPage() {
 
   return (
     <PageContainer>
-      <Banner>
-        <Logo src="/amigos-logo.png" alt="Amigos de los Rios logo" />
-      </Banner>
+      <Banner />
 
       <HeaderSection>
-        <Title>Sessions</Title>
+        <Header>Sessions</Header>
         <ButtonGroup>
           <AddButton>+ Add</AddButton>
           <EditButton>Edit</EditButton>
