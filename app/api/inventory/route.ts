@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-
-export async function GET() {
+/*export async function GET() {
   // 🔹 This should be your Postman mock URL:
   const mockUrl =
     "https://427414de-ffb2-41cf-94ec-94ddd9db79e2.mock.pstmn.io/api/tpdemo/inventories";
@@ -16,5 +15,19 @@ export async function GET() {
       { error: "Failed to fetch mock data" },
       { status: 500 },
     );
+  }
+} */
+
+import { fetchTrees } from "@/actions/planitgeo/queries/query";
+
+export async function GET() {
+  console.log("GET /api/inventory called");
+  try {
+    const trees = await fetchTrees();
+    console.log("Fetched trees:", trees);
+    return NextResponse.json(trees);
+  } catch (error) {
+    console.error("Error in GET /api/inventory:", error);
+    return new Response("Failed to fetch trees", { status: 500 });
   }
 }
