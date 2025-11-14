@@ -50,7 +50,7 @@ export default function RoutePage({
     <PageContainer>
       <Banner />
 
-      <BackLink>← Back to Sessions</BackLink>
+      <BackLink href="/sessions">← Back to Sessions</BackLink>
 
       <ContentContainer>
         <Header>Central Hub Name</Header>

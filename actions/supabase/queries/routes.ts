@@ -55,3 +55,50 @@ export async function fetchPropertiesByRouteId(routeId: string) {
 
   return props || [];
 }
+
+export async function fetchRoutesBySessionId(sessionId: string) {
+  const { data, error } = await supabase
+    .from("Routes")
+    .select("*")
+    .eq("watering_event_id", sessionId);
+
+  if (error) throw error;
+
+  return data;
+}
+
+export async function fetchUserRouteForSession(
+  userId: string,
+  sessionId: string,
+) {
+  // Find all routes assigned to this user
+  const { data: assignments, error: assignmentError } = await supabase
+    .from("Route User Assignments")
+    .select("route_id")
+    .eq("user_id", userId);
+
+  if (assignmentError || !assignments || assignments.length === 0) {
+    throw new Error("User has no assigned routes.");
+  }
+
+  const routeIds = assignments.map(a => a.route_id);
+
+  // Find which of those routes belong to this watering session
+  const { data: routes, error: routeError } = await supabase
+    .from("Routes")
+    .select("id")
+    .in("id", routeIds)
+    .eq("watering_event_id", sessionId)
+    .limit(1);
+
+  // if (routeError || !routes || routes.length === 0) {
+  //   throw new Error("No matching route found for this session and/or user.");
+  // }
+
+  // ask about this its like error thrown versus null returned
+  if (!routes || routes.length === 0) {
+    return null;
+  }
+
+  return routes[0].id as string;
+}
