@@ -64,8 +64,7 @@ export const Underline = styled.div`
 
 // Input Components
 export const InputGroup = styled.div<{ $marginSmall?: boolean }>`
-  margin-bottom: ${({ $marginSmall }) =>
-    $marginSmall ? "0.75rem" : "1.25rem"};
+  margin-bottom: ${({ $marginSmall }) => ($marginSmall ? "0.5rem" : "1.25rem")};
 `;
 
 export const Label = styled.label`
@@ -80,20 +79,28 @@ export const RequiredAsterisk = styled.span`
   color: ${COLORS.red};
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ $hasError?: boolean }>`
   font-family: ${Sans.style.fontFamily};
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ $hasError }) => ($hasError ? COLORS.red : "#ccc")};
   border-radius: 0.5rem;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: ${COLORS.adlr_green};
+    border-color: ${({ $hasError }) =>
+      $hasError ? COLORS.red : COLORS.adlr_green};
   }
+`;
+
+export const ErrorText = styled.div`
+  font-family: ${Sans.style.fontFamily};
+  color: ${COLORS.red};
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 `;
 
 // Button Components
@@ -170,8 +177,11 @@ export const LinkButton = styled.button`
 // Link Components
 export const LinkContainer = styled.div`
   font-family: ${Sans.style.fontFamily};
-  color: ${COLORS.white};
+  color: ${COLORS.adlr_blue};
+  display: flex;
+  justify-content: center;
   font-size: 1rem;
+  margin-top: 2rem;
 `;
 
 export const StyledLink = styled(Link)`
@@ -197,4 +207,46 @@ export const LinkWrapper = styled.div`
   a {
     text-decoration: none !important;
   }
+`;
+
+// Success State Components
+export const SuccessIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1.5rem 0;
+`;
+
+export const CheckCircle = styled.div`
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: ${COLORS.adlr_green};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Checkmark = styled.span`
+  color: ${COLORS.white};
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+`;
+
+export const SuccessHeading = styled.h3`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.875rem;
+  font-weight: 500;
+  color: ${COLORS.adlr_green};
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
+export const SuccessMessage = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.125rem;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2rem;
 `;
