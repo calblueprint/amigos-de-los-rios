@@ -1,46 +1,56 @@
 "use client";
 
 import styled from "styled-components";
+import COLORS from "@/styles/colors";
 
 export const RouteCardContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  flex-direction: row;
+  width: 100%;
+  border-radius: 0.75rem;
+  background: white;
+  overflow: hidden;
   cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  min-height: 10rem;
 
   &:hover {
-    transform: translateY(-4px); /* Slight lift on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
   }
 `;
 
 export const RouteInfo = styled.div`
-  text-align: center;
+  width: 65%;
+  padding: 1.5rem 1.75rem;
+  gap: 1.49rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+export const RouteIconBox = styled.div`
+  width: 35%;
+  background: #e0e0e0; // placeholder gray
 `;
 
 export const RouteTitle = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0.5rem 0;
-  color: #333;
+  color: ${COLORS.adlr_black};
+  font-size: 1.41669rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5rem;
+  letter-spacing: -0.02125rem;
 `;
 
-export const RouteLabel = styled.p`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 0.5rem;
-`;
-
-export const RouteDate = styled.p`
-  font-size: 12px;
-  color: #999;
-  margin: 0;
+export const RouteGroup = styled.p`
+  color: ${COLORS.black};
+  font-size: 1.26488rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.91069rem;
+  letter-spacing: -0.019rem;
 `;

@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import { Route } from "@/types/schema"; // your branded UUID schema
 import {
   RouteCardContainer,
-  RouteDate,
+  RouteGroup,
+  RouteIconBox,
   RouteInfo,
-  RouteLabel,
   RouteTitle,
 } from "./styles";
 
 interface RouteCardProps {
   route: Route;
-  sessionId: string; // needed for dynamic routing
+  sessionId: string;
 }
 
 export default function RouteCard({ route, sessionId }: RouteCardProps) {
@@ -26,15 +26,10 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     <RouteCardContainer onClick={handleClick}>
       <RouteInfo>
         <RouteTitle>{route.watering_event_name}</RouteTitle>
-        <RouteLabel>{route.route_label}</RouteLabel>
-        <RouteDate>
-          {new Date(route.date).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </RouteDate>
+        <RouteGroup>Group Size: {route.route_label}</RouteGroup>
       </RouteInfo>
+
+      <RouteIconBox />
     </RouteCardContainer>
   );
 }

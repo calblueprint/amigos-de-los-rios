@@ -61,7 +61,8 @@ export const RoutesHeader = styled.h1`
 `;
 
 export const RoutesList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
 `;
