@@ -12,6 +12,8 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSignUp = async () => {
     // Clear previous errors
@@ -38,6 +40,11 @@ export default function SignUp() {
 
     if (password.length < 8) {
       setPasswordError("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
       return;
     }
 
@@ -127,6 +134,7 @@ export default function SignUp() {
             onChange={e => {
               setPassword(e.target.value);
               if (passwordError) setPasswordError("");
+              if (confirmPasswordError) setConfirmPasswordError(""); // Clear confirm password error on password change
             }}
             value={password}
             $hasError={!!passwordError}
@@ -134,16 +142,34 @@ export default function SignUp() {
           {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
         </S.InputGroup>
 
+        <S.InputGroup>
+          <S.Label>
+            Confirm Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+          </S.Label>
+          <S.Input
+            type="password"
+            name="confirmPassword"
+            placeholder=""
+            onChange={e => {
+              setConfirmPassword(e.target.value);
+              if (confirmPasswordError) setConfirmPasswordError(""); // Clear error on input change
+            }}
+            value={confirmPassword}
+            $hasError={!!confirmPasswordError}
+          />
+          {confirmPasswordError && (
+            <S.ErrorText>{confirmPasswordError}</S.ErrorText>
+          )}
+        </S.InputGroup>
+
         <S.PrimaryButton type="button" onClick={handleSignUp}>
           Sign Up
         </S.PrimaryButton>
+        {/* Login link */}
+        <S.LinkContainer>
+          <S.StyledLink href="/login">Go Back to Login</S.StyledLink>
+        </S.LinkContainer>
       </S.Card>
-
-      {/* Login link */}
-      <S.LinkContainer>
-        Already have an account?{" "}
-        <S.StyledLink href="/login">Login</S.StyledLink>
-      </S.LinkContainer>
     </S.Container>
   );
 }

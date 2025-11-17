@@ -126,19 +126,20 @@ export default function ResetPassword() {
             </S.PrimaryButton>
           </>
         )}
+        {/* Bottom link */}
+        {emailSent ? (
+          <S.LinkContainer>
+            <S.StyledLink href="/reset_password" onClick={handleGoBack}>
+              Go Back
+            </S.StyledLink>
+          </S.LinkContainer>
+        ) : (
+          <S.LinkContainer>
+            Remember your password?&nbsp;
+            <S.StyledLink href="/login">Login</S.StyledLink>
+          </S.LinkContainer>
+        )}
       </S.Card>
-
-      {/* Bottom link */}
-      {emailSent ? (
-        <S.StyledLink href="#" onClick={handleGoBack}>
-          Go Back
-        </S.StyledLink>
-      ) : (
-        <S.LinkContainer>
-          Remember your password?{" "}
-          <S.StyledLink href="/login">Login</S.StyledLink>
-        </S.LinkContainer>
-      )}
     </S.Container>
   );
 }

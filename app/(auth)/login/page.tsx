@@ -76,8 +76,10 @@ export default function Login() {
 
       {/* Login Card */}
       <S.Card>
-        <S.Heading>Login</S.Heading>
-        <S.Underline />
+        <div>
+          <S.Heading>Login</S.Heading>
+          <S.Underline />
+        </div>
 
         <S.InputGroup>
           <S.Label>
@@ -124,12 +126,12 @@ export default function Login() {
         <S.PrimaryButton type="button" onClick={handleSignIn}>
           Login
         </S.PrimaryButton>
-      </S.Card>
 
-      {/* Sign up link */}
-      <S.LinkContainer>
-        No account? <S.StyledLink href="/sign_up">Sign up</S.StyledLink>
-      </S.LinkContainer>
+        {/* Sign up link */}
+        <S.LinkContainer>
+          No account?&nbsp;<S.StyledLink href="/sign_up">Sign up</S.StyledLink>
+        </S.LinkContainer>
+      </S.Card>
     </S.Container>
   );
 }

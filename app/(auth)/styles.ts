@@ -64,8 +64,7 @@ export const Underline = styled.div`
 
 // Input Components
 export const InputGroup = styled.div<{ $marginSmall?: boolean }>`
-  margin-bottom: ${({ $marginSmall }) =>
-    $marginSmall ? "0.75rem" : "1.25rem"};
+  margin-bottom: ${({ $marginSmall }) => ($marginSmall ? "0.5rem" : "1.25rem")};
 `;
 
 export const Label = styled.label`
@@ -178,8 +177,11 @@ export const LinkButton = styled.button`
 // Link Components
 export const LinkContainer = styled.div`
   font-family: ${Sans.style.fontFamily};
-  color: ${COLORS.white};
+  color: ${COLORS.adlr_blue};
+  display: flex;
+  justify-content: center;
   font-size: 1rem;
+  margin-top: 2rem;
 `;
 
 export const StyledLink = styled(Link)`
