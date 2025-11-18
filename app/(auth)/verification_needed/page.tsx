@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/actions/supabase/client";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
-export default function VerificationNeeded() {
+function VerificationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -92,5 +92,13 @@ export default function VerificationNeeded() {
         </S.ResendContainer>
       </S.Card>
     </S.Container>
+  );
+}
+
+export default function VerificationNeeded() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerificationContent />
+    </Suspense>
   );
 }
