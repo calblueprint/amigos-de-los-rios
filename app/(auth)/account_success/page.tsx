@@ -10,7 +10,7 @@ export default function AccountSuccess() {
   const router = useRouter();
 
   const handleViewSessions = () => {
-    router.push("/");
+    router.push("/sessions");
   };
 
   return (
