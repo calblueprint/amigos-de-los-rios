@@ -75,8 +75,10 @@ export default function ResetPassword() {
         {emailSent ? (
           // Success View
           <>
-            <S.Heading>Reset Password</S.Heading>
-            <S.Underline />
+            <S.Heading>
+              Reset Password
+              <S.Underline />
+            </S.Heading>
 
             <S.SuccessIconContainer>
               <Image src={greenCheck} alt="Success" width={80} height={80} />
@@ -97,8 +99,10 @@ export default function ResetPassword() {
         ) : (
           // Email Input View
           <>
-            <S.Heading>Reset Password</S.Heading>
-            <S.Underline />
+            <S.Heading>
+              Reset Password
+              <S.Underline />
+            </S.Heading>
 
             <S.InputGroup>
               <S.Label>

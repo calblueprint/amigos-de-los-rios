@@ -112,8 +112,10 @@ export default function SignUp() {
           <S.Message $isError={false}>{successMessage}</S.Message>
         )}
 
-        <S.Heading>Sign Up</S.Heading>
-        <S.Underline />
+        <S.Heading>
+          Sign Up
+          <S.Underline />
+        </S.Heading>
 
         <S.InputGroup>
           <S.Label>

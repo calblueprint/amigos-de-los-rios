@@ -52,10 +52,6 @@ export default function VerificationNeeded() {
     }
   };
 
-  const handleGoBack = () => {
-    router.push("/sign_up");
-  };
-
   return (
     <S.Container>
       {/* Logo */}
@@ -95,11 +91,6 @@ export default function VerificationNeeded() {
           </S.ResendLink>
         </S.ResendContainer>
       </S.Card>
-
-      {/* Go Back link */}
-      <S.LinkContainer>
-        <S.LinkButton onClick={handleGoBack}>Go Back</S.LinkButton>
-      </S.LinkContainer>
     </S.Container>
   );
 }

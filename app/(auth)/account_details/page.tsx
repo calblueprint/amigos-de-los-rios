@@ -55,10 +55,6 @@ export default function AccountDetails() {
     }
   };
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
   return (
     <S.Container>
       {/* Logo */}
@@ -73,8 +69,10 @@ export default function AccountDetails() {
       <S.Card>
         {message && <S.Message $isError={isError}>{message}</S.Message>}
 
-        <S.Heading>Account Details</S.Heading>
-        <S.Underline />
+        <S.Heading>
+          Account Details
+          <S.Underline />
+        </S.Heading>
 
         <S.InputGroup>
           <S.Label>
@@ -119,11 +117,6 @@ export default function AccountDetails() {
           Continue
         </S.PrimaryButton>
       </S.Card>
-
-      {/* Go Back link */}
-      <S.LinkContainer>
-        <S.LinkButton onClick={handleGoBack}>Go Back</S.LinkButton>
-      </S.LinkContainer>
     </S.Container>
   );
 }

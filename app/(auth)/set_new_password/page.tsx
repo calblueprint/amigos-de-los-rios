@@ -88,8 +88,10 @@ export default function SetNewPassword() {
         ) : (
           // Password Input View
           <>
-            <S.Heading>Set New Password</S.Heading>
-            <S.Underline />
+            <S.Heading>
+              Set New Password
+              <S.Underline />
+            </S.Heading>
 
             <S.InputGroup>
               <S.Label>

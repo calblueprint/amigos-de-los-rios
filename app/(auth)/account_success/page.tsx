@@ -25,36 +25,39 @@ export default function AccountSuccess() {
 
       {/* Success Card */}
       <S.Card>
-        {/* Success Icon */}
-        <SuccessIconContainer>
-          <SuccessIcon>
-            <svg
-              width="60"
-              height="60"
-              viewBox="0 0 60 60"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="30" cy="30" r="30" fill={COLORS.adlr_green} />
-              <path
-                d="M17 30L26 39L43 22"
-                stroke="white"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </SuccessIcon>
-        </SuccessIconContainer>
+        <div>
+          {/* Success Icon */}
+          <SuccessIconContainer>
+            <SuccessIcon>
+              <svg
+                width="161"
+                height="161"
+                viewBox="0 0 60 60"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="30" cy="30" r="30" fill={COLORS.adlr_green} />
+                <path
+                  d="M17 30L26 39L43 22"
+                  stroke="white"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </SuccessIcon>
+          </SuccessIconContainer>
 
-        <S.Heading style={{ textAlign: "center" }}>Account created!</S.Heading>
-        <S.Underline style={{ margin: "0.5rem auto 1.875rem auto" }} />
+          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+            <S.Heading>Account created!</S.Heading>
+          </div>
+        </div>
 
-        <S.VerificationText style={{ textAlign: "center" }}>
-          Check your inbox for confirmation.
-        </S.VerificationText>
-
-        <S.PrimaryButton type="button" onClick={handleViewSessions}>
+        <S.PrimaryButton
+          type="button"
+          onClick={handleViewSessions}
+          $marginBottom={3}
+        >
           View Sessions
         </S.PrimaryButton>
       </S.Card>

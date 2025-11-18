@@ -28,7 +28,7 @@ export const Logo = styled(Image)`
 export const Card = styled.div`
   background-color: ${COLORS.white};
   border-radius: 1rem;
-  padding: 2.5rem;
+  padding: 2.5rem 3.3125rem;
   max-width: 27.5rem;
   width: 100%;
   box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
@@ -53,13 +53,15 @@ export const Heading = styled.h2`
   font-weight: 500;
   margin-bottom: 0.5rem;
   color: #333;
+  display: inline-block;
 `;
 
 export const Underline = styled.div`
-  width: 8rem;
+  width: calc(100% + 1rem);
   height: 0.1875rem;
   background-color: ${COLORS.adlr_green};
-  margin-bottom: 1.875rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0.25rem;
 `;
 
 // Input Components
@@ -70,8 +72,7 @@ export const InputGroup = styled.div<{ $marginSmall?: boolean }>`
 export const Label = styled.label`
   font-family: ${Sans.style.fontFamily};
   display: block;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
   color: #333;
 `;
 
@@ -106,7 +107,7 @@ export const ErrorText = styled.div`
 // Button Components
 export const PrimaryButton = styled.button<{
   disabled?: boolean;
-  $marginBottom?: boolean;
+  $marginBottom?: boolean | number;
 }>`
   font-family: ${Sans.style.fontFamily};
   background-color: ${({ disabled }) =>
@@ -121,7 +122,11 @@ export const PrimaryButton = styled.button<{
   width: 100%;
   transition: background-color 0.3s ease;
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
-  margin-bottom: ${({ $marginBottom }) => ($marginBottom ? "0.75rem" : "0")};
+  margin-bottom: ${({ $marginBottom }) => {
+    if (typeof $marginBottom === "number") return `${$marginBottom}rem`;
+    if ($marginBottom === true) return "0.75rem";
+    return "0";
+  }};
 
   &:hover {
     background-color: ${({ disabled }) =>
@@ -251,4 +256,27 @@ export const ResendLink = styled.button<{ disabled?: boolean }>`
     text-decoration: ${({ disabled }) =>
       disabled ? "none" : "underline"} !important;
   }
+`;
+export const SuccessHeading = styled.h3`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.875rem;
+  font-weight: 500;
+  color: ${COLORS.adlr_green};
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
+export const SuccessMessage = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.125rem;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+`;
+
+export const SuccessIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1.5rem 0;
 `;
