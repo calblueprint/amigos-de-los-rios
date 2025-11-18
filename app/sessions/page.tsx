@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchSessions } from "@/actions/supabase/queries/routes";
+import {
+  fetchAllSessionsForUser,
+  fetchSessions,
+} from "@/actions/supabase/queries/routes";
+import { getUserById } from "@/actions/supabase/queries/users";
+import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
 import {
@@ -25,13 +30,30 @@ export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { userId }: { userId?: string | null } = useAuth();
+
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
-    async function loadSessions() {
+    async function init() {
       try {
         setLoading(true);
-        const data = await fetchSessions();
-        setSessions(data);
+
+        if (!userId) return; // Guard against no userId
+
+        // First, load the user role
+        const userRow = await getUserById(userId);
+        const adminStatus = userRow?.is_admin ?? false;
+        setIsAdmin(adminStatus);
+
+        // Then, load sessions based on role
+        if (isAdmin) {
+          const data = await fetchSessions();
+          setSessions(data);
+        } else {
+          const data = await fetchAllSessionsForUser(userId);
+          setSessions(data);
+        }
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load sessions",
@@ -41,8 +63,8 @@ export default function SessionsPage() {
       }
     }
 
-    loadSessions();
-  }, []);
+    init();
+  }, [userId, isAdmin]); // Add userId as dependency
 
   if (loading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -53,10 +75,12 @@ export default function SessionsPage() {
 
       <HeaderSection>
         <Header>Sessions</Header>
-        <ButtonGroup>
-          <AddButton>+ Add</AddButton>
-          <EditButton>Edit</EditButton>
-        </ButtonGroup>
+        {isAdmin && (
+          <ButtonGroup>
+            <AddButton>+ Add</AddButton>
+            <EditButton>Edit</EditButton>
+          </ButtonGroup>
+        )}
       </HeaderSection>
 
       <SessionsList>

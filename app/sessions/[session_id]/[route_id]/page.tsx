@@ -2,6 +2,8 @@
 
 import { use, useEffect, useState } from "react";
 import { fetchPropertiesByRouteId } from "@/actions/supabase/queries/routes";
+import { getUserById } from "@/actions/supabase/queries/users";
+import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import { Property } from "@/types/schema";
@@ -21,14 +23,24 @@ export default function RoutePage({
   params: Promise<{ session_id: string; route_id: string }>;
 }) {
   const { session_id, route_id } = use(params);
+  const { userId } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
-    async function loadProperties() {
+    async function init() {
       try {
         setLoading(true);
+
+        // Load user role
+        if (userId) {
+          const userRow = await getUserById(userId);
+          setIsAdmin(userRow?.is_admin ?? false);
+        }
+
+        // Load properties
         const props = await fetchPropertiesByRouteId(route_id);
         setProperties(props);
       } catch (err) {
@@ -40,17 +52,19 @@ export default function RoutePage({
       }
     }
 
-    loadProperties();
-  }, [session_id, route_id]);
+    init();
+  }, [session_id, route_id, userId]);
 
   if (loading) return <p>Loading route...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";
 
   return (
     <PageContainer>
       <Banner />
 
-      <BackLink>← Back to Sessions</BackLink>
+      <BackLink href={backLink}>← Back to Sessions</BackLink>
 
       <ContentContainer>
         <Header>Central Hub Name</Header>

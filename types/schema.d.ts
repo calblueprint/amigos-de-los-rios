@@ -8,3 +8,20 @@ export interface Property {
   street_address: string;
   property_name: string;
 }
+
+export type Route = {
+  id: UUID;
+  watering_event_id: UUID;
+  date: string;
+  watering_event_name: string;
+  route_label: string;
+  volunteer_type: number;
+  maps_link: string;
+};
+
+export type WateringSession = {
+  id: string;
+  date: string;
+  watering_event_name: string;
+  central_hub: string;
+};

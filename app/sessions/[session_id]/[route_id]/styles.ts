@@ -1,6 +1,7 @@
 "use client";
 
 import { DM_Sans } from "next/font/google";
+import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
 
@@ -13,15 +14,20 @@ export const PageContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const BackLink = styled.div`
+export const BackLink = styled(Link)`
   color: ${COLORS.adlr_blue};
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 400;
+  display: block;
   margin: 2.63rem 17.19rem 1.25rem 17.19rem;
   line-height: 0.72625rem;
   letter-spacing: -0.01875rem;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const ContentContainer = styled.div`
