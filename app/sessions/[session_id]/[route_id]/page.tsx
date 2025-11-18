@@ -1,20 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchUserRouteProperties } from "@/actions/supabase/queries/routes";
+import { use, useEffect, useState } from "react";
+import { fetchPropertiesByRouteId } from "@/actions/supabase/queries/routes";
+import Banner from "@/components/Banner/Banner";
+import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import { Property } from "@/types/schema";
+import {
+  BackLink,
+  ContentContainer,
+  Header,
+  PageContainer,
+  PropertiesList,
+  Tab,
+  TabContainer,
+} from "./styles";
 
-export default function RoutePage() {
+export default function RoutePage({
+  params,
+}: {
+  params: Promise<{ session_id: string; route_id: string }>;
+}) {
+  const { session_id, route_id } = use(params);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const HARDCODED_USER_ID = "e0f4594c-5081-4858-8a20-5dcecb3e3683";
 
   useEffect(() => {
     async function loadProperties() {
       try {
         setLoading(true);
-        const props = await fetchUserRouteProperties(HARDCODED_USER_ID);
+        const props = await fetchPropertiesByRouteId(route_id);
         setProperties(props);
       } catch (err) {
         setError(
@@ -26,29 +41,36 @@ export default function RoutePage() {
     }
 
     loadProperties();
-  }, []);
+  }, [session_id, route_id]);
 
   if (loading) return <p>Loading route...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h1>User Route Properties</h1>
-      {properties.length === 0 ? (
-        <p>No properties found for your route.</p>
-      ) : (
-        <ol>
-          {properties.map(p => (
-            <li key={p.id}>
-              <strong>Street Address:</strong> {p.street_address || "Unknown"}{" "}
-              <br />
-              <strong>Planit Geo Ref:</strong> {p.planit_geo_reference || "N/A"}{" "}
-              <br />
-              <strong>Order To Visit:</strong> {p.order_to_visit}
-            </li>
-          ))}
-        </ol>
-      )}
-    </div>
+    <PageContainer>
+      <Banner />
+
+      <BackLink>← Back to Sessions</BackLink>
+
+      <ContentContainer>
+        <Header>Central Hub Name</Header>
+
+        <TabContainer>
+          <Tab $active>Properties</Tab>
+          <Tab>Route</Tab>
+          <Tab>Group</Tab>
+        </TabContainer>
+
+        <PropertiesList>
+          {properties.length === 0 ? (
+            <p>No properties found for your route.</p>
+          ) : (
+            properties.map(property => (
+              <PropertyCard key={property.id} property={property} />
+            ))
+          )}
+        </PropertiesList>
+      </ContentContainer>
+    </PageContainer>
   );
 }

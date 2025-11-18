@@ -13,19 +13,6 @@ export const PageContainer = styled.main`
   margin: 0 auto;
 `;
 
-export const Banner = styled.div`
-  background: ${COLORS.adlr_blue};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-export const Logo = styled.img`
-  height: auto;
-  width: 14.375rem;
-`;
-
 export const HeaderSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,9 +21,11 @@ export const HeaderSection = styled.div`
   margin: 2.62rem 17.19rem 1.25rem 17.19rem;
 `;
 
-export const Title = styled.h1`
+export const Header = styled.h1`
   font-size: 2.5rem;
+  font-style: normal;
   font-weight: 700;
+  letter-spacing: -0.0375rem;
   margin-bottom: 0.5rem;
 `;
 
