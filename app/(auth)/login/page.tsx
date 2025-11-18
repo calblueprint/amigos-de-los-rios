@@ -76,10 +76,10 @@ export default function Login() {
 
       {/* Login Card */}
       <S.Card>
-        <div>
-          <S.Heading>Login</S.Heading>
+        <S.Heading>
+          Login
           <S.Underline />
-        </div>
+        </S.Heading>
 
         <S.InputGroup>
           <S.Label>
