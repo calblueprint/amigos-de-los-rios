@@ -42,7 +42,7 @@ export default function Login() {
 
       if (data?.user) {
         // Redirect to home page or dashboard
-        router.push("/");
+        router.push("/sessions");
       }
 
       return data;
