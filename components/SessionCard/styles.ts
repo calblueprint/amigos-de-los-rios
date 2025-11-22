@@ -45,7 +45,7 @@ export const SessionHub = styled.p`
   font-weight: 400;
   line-height: 1.125rem; /* 72% */
   letter-spacing: -0.02344rem;
-  margin-bottom: 0.725rem;
+  margin-bottom: 0.45rem;
 `;
 
 export const SessionTitle = styled.h2`
