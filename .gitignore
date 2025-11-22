@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -34,3 +35,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lambda
+backend/route-generation-lambda/node_modules/
+backend/route-generation-lambda/package-lock.json
+backend/route-generation-lambda/function.zip
