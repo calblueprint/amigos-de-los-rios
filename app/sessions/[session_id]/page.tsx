@@ -70,10 +70,11 @@ export default function SessionRoutesPage({
         </CentralHubName>
         <DateHeader>
           {sessionInfo?.date
-            ? new Date(sessionInfo.date).toLocaleDateString("en-GB", {
-                day: "2-digit", // Thursday
-                month: "long", // November
-              }) + `, ${new Date(sessionInfo.date).toLocaleDateString("en-GB")}`
+            ? new Date(sessionInfo.date).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })
             : "Date"}
         </DateHeader>
         <RoutesHeader>Routes</RoutesHeader>
