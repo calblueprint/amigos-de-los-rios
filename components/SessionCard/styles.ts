@@ -60,7 +60,7 @@ export const SessionHub = styled.p`
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.02344rem;
-  margin-bottom: 0.725rem;
+  margin-bottom: 0.45rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.875rem, 4vw, 1.17rem);
