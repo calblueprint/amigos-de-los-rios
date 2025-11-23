@@ -10,6 +10,12 @@ export const SessionCard = styled.div`
   border-radius: 0.625rem;
   border: 1px solid ${COLORS.adlr_light_gray};
   padding: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const SessionImage = styled.img`
