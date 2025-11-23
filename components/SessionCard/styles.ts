@@ -32,7 +32,7 @@ export const SessionDate = styled.p`
   font-size: 1.3125rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.125rem; /* 64.286% */
+  line-height: 1.2;
   letter-spacing: -0.02625rem;
   margin-bottom: 1.375rem;
 `;
@@ -43,7 +43,7 @@ export const SessionHub = styled.p`
   font-size: 1.17rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.125rem; /* 72% */
+  line-height: 1.2;
   letter-spacing: -0.02344rem;
   margin-bottom: 0.725rem;
 `;
@@ -54,7 +54,7 @@ export const SessionTitle = styled.h2`
   font-size: 1.03rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.125rem; /* 81.818% */
+  line-height: 1.2;
   letter-spacing: -0.02063rem;
   margin-bottom: 0.5rem;
 `;

@@ -5,6 +5,8 @@ import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
 
+const MOBILE_BREAKPOINT = "800px";
+
 const Sans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -20,10 +22,18 @@ export const BackLink = styled(Link)`
   font-style: normal;
   font-weight: 400;
   display: block;
-  margin: 2.63rem 17.19rem 1.25rem 17.19rem;
+  margin: 2.63rem 15% 1.25rem 15%;
+  // margin: 2.63rem 17.19rem 1.25rem 17.19rem;
   line-height: 0.72625rem;
   letter-spacing: -0.01875rem;
   cursor: pointer;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.4rem;
+  }
 
   &:hover {
     text-decoration: underline;
@@ -31,7 +41,7 @@ export const BackLink = styled(Link)`
 `;
 
 export const ContentContainer = styled.div`
-  margin: 0 17.19rem;
+  margin: 0 15%;
 `;
 
 export const Header = styled.h1`
@@ -41,6 +51,11 @@ export const Header = styled.h1`
   font-weight: 700;
   letter-spacing: -0.0375rem;
   margin-bottom: 0.25rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.8rem;
+    line-height: 2rem;
+  }
 `;
 
 export const TabContainer = styled.div`
@@ -66,6 +81,12 @@ export const Tab = styled.div<{ $active?: boolean }>`
   border-radius: 0.3125rem;
   border: 1px solid ${COLORS.adlr_light_gray};
   margin-bottom: 1.25rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    line-height: 1.2;
+  }
 
   &:hover {
     background: ${props =>
