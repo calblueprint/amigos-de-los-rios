@@ -10,6 +10,12 @@ export const SessionCard = styled.div`
   border-radius: 0.625rem;
   border: 1px solid ${COLORS.adlr_light_gray};
   padding: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const SessionImage = styled.img`
@@ -45,7 +51,7 @@ export const SessionHub = styled.p`
   font-weight: 400;
   line-height: 1.125rem; /* 72% */
   letter-spacing: -0.02344rem;
-  margin-bottom: 0.725rem;
+  margin-bottom: 0.45rem;
 `;
 
 export const SessionTitle = styled.h2`

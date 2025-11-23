@@ -66,7 +66,7 @@ export default function SessionCard({ session }: SessionCardProps) {
           })}
         </SessionDate>
         <SessionHub>{session.central_hub}</SessionHub>
-        <SessionTitle>{session.watering_event_name}</SessionTitle>
+        <SessionTitle>Property Address</SessionTitle>
       </SessionInfo>
     </StyledSessionCard>
   );

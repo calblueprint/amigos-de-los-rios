@@ -103,33 +103,40 @@ export default function ResetPassword() {
               Reset Password
               <S.Underline />
             </S.Heading>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                handleResetPassword();
+              }}
+            >
+              <S.InputGroup>
+                <S.Label>
+                  Account Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+                </S.Label>
+                <S.Input
+                  name="email"
+                  type="email"
+                  placeholder=""
+                  onChange={e => {
+                    setEmail(e.target.value);
+                    if (message) {
+                      setMessage("");
+                      setIsError(false);
+                    }
+                  }}
+                  value={email}
+                  $hasError={isError}
+                />
+                {isError && message && <S.ErrorText>{message}</S.ErrorText>}
+              </S.InputGroup>
 
-            <S.InputGroup>
-              <S.Label>
-                Account Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
-              </S.Label>
-              <S.Input
-                name="email"
-                type="email"
-                placeholder=""
-                onChange={e => {
-                  setEmail(e.target.value);
-                  if (message) {
-                    setMessage("");
-                    setIsError(false);
-                  }
-                }}
-                value={email}
-                $hasError={isError}
-              />
-              {isError && message && <S.ErrorText>{message}</S.ErrorText>}
-            </S.InputGroup>
-
-            <S.PrimaryButton type="button" onClick={handleResetPassword}>
-              Confirm
-            </S.PrimaryButton>
+              <S.PrimaryButton type="submit" onClick={handleResetPassword}>
+                Confirm
+              </S.PrimaryButton>
+            </form>
           </>
         )}
+
         {/* Bottom link */}
         {emailSent ? (
           <S.LinkContainer>

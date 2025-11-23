@@ -13,6 +13,7 @@ export const CardContainer = styled.div`
   border: 1px solid ${COLORS.adlr_light_gray};
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
   transition: box-shadow 0.2s;
 
   &:hover {
