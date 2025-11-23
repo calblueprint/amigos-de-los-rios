@@ -3,10 +3,13 @@
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
 
+const MOBILE_BREAKPOINT = "800px";
+
 export const CardContainer = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 5.06rem;
+  // padding-left: 5.06rem;
+  padding-left: 15%;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
   background: ${COLORS.adlr_lighter_gray};
@@ -33,6 +36,12 @@ export const OrderCircle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 1.82688rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.4rem;
+  }
 `;
 
 export const PropertyInfo = styled.div`
@@ -40,23 +49,33 @@ export const PropertyInfo = styled.div`
   flex-direction: column;
   gap: 1.43rem;
   flex: 1;
-  margin-left: 5.06rem;
+  margin-left: 15%;
+  margin-right: 5%;
+  // margin-left: 5.06rem;
 `;
 
 export const PropertyName = styled.h3`
   font-size: 1.75rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.125rem;
+  line-height: 1;
   letter-spacing: -0.02625rem;
   color: ${COLORS.adlr_black};
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.3rem;
+  }
 `;
 
 export const PropertyAddress = styled.p`
   font-size: 1.375rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.125rem;
+  line-height: 1;
   letter-spacing: -0.02063rem;
   color: ${COLORS.adlr_property_gray};
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+  }
 `;

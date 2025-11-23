@@ -4,6 +4,8 @@ import { DM_Sans } from "next/font/google";
 import styled from "styled-components";
 import COLORS from "../../styles/colors";
 
+const MOBILE_BREAKPOINT = "800px";
+
 const Sans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -18,7 +20,12 @@ export const HeaderSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
-  margin: 2.62rem 17.19rem 1.25rem 17.19rem;
+  margin: 2.62rem 15% 1.25rem 15%;
+  // margin: 2.62rem 17.19rem 1.25rem 17.19rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 2rem 15% 1rem 15%;
+  }
 `;
 
 export const Header = styled.h1`
@@ -27,6 +34,10 @@ export const Header = styled.h1`
   font-weight: 700;
   letter-spacing: -0.0375rem;
   margin-bottom: 0.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 2rem;
+  }
 `;
 
 export const ButtonGroup = styled.div`
@@ -69,5 +80,6 @@ export const SessionsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  margin: 0 17.19rem 2rem 17.19rem;
+  margin: 0 15% 2rem 15%;
+  // margin: 0 17.19rem 2rem 17.19rem;
 `;
