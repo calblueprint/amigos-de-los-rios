@@ -117,66 +117,74 @@ export default function SignUp() {
           <S.Underline />
         </S.Heading>
 
-        <S.InputGroup>
-          <S.Label>
-            Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            name="email"
-            type="email"
-            placeholder=""
-            onChange={e => {
-              setEmail(e.target.value);
-              if (emailError) setEmailError("");
-            }}
-            value={email}
-            $hasError={!!emailError}
-          />
-          {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
-        </S.InputGroup>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSignUp();
+          }}
+        >
+          <S.InputGroup>
+            <S.Label>
+              Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              name="email"
+              type="email"
+              placeholder=""
+              onChange={e => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError("");
+              }}
+              value={email}
+              $hasError={!!emailError}
+            />
+            {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.InputGroup>
-          <S.Label>
-            Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            name="password"
-            placeholder=""
-            onChange={e => {
-              setPassword(e.target.value);
-              if (passwordError) setPasswordError("");
-              if (confirmPasswordError) setConfirmPasswordError(""); // Clear confirm password error on password change
-            }}
-            value={password}
-            $hasError={!!passwordError}
-          />
-          {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
-        </S.InputGroup>
+          <S.InputGroup>
+            <S.Label>
+              Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              type="password"
+              name="password"
+              placeholder=""
+              onChange={e => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError("");
+                if (confirmPasswordError) setConfirmPasswordError(""); // Clear confirm password error on password change
+              }}
+              value={password}
+              $hasError={!!passwordError}
+            />
+            {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.InputGroup>
-          <S.Label>
-            Confirm Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            name="confirmPassword"
-            placeholder=""
-            onChange={e => {
-              setConfirmPassword(e.target.value);
-              if (confirmPasswordError) setConfirmPasswordError(""); // Clear error on input change
-            }}
-            value={confirmPassword}
-            $hasError={!!confirmPasswordError}
-          />
-          {confirmPasswordError && (
-            <S.ErrorText>{confirmPasswordError}</S.ErrorText>
-          )}
-        </S.InputGroup>
+          <S.InputGroup>
+            <S.Label>
+              Confirm Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              type="password"
+              name="confirmPassword"
+              placeholder=""
+              onChange={e => {
+                setConfirmPassword(e.target.value);
+                if (confirmPasswordError) setConfirmPasswordError(""); // Clear error on input change
+              }}
+              value={confirmPassword}
+              $hasError={!!confirmPasswordError}
+            />
+            {confirmPasswordError && (
+              <S.ErrorText>{confirmPasswordError}</S.ErrorText>
+            )}
+          </S.InputGroup>
 
-        <S.PrimaryButton type="button" onClick={handleSignUp}>
-          Sign Up
-        </S.PrimaryButton>
+          <S.PrimaryButton type="submit" onClick={handleSignUp}>
+            Sign Up
+          </S.PrimaryButton>
+        </form>
+
         {/* Login link */}
         <S.LinkContainer>
           <S.StyledLink href="/login">Go Back to Login</S.StyledLink>
