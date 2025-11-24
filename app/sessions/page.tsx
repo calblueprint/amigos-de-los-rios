@@ -77,7 +77,7 @@ export default function SessionsPage() {
         <Header>Sessions</Header>
         {isAdmin && (
           <ButtonGroup>
-            <AddButton>+ Add</AddButton>
+            <AddButton href="/sessions/new_session">+ Add</AddButton>
             <EditButton>Edit</EditButton>
           </ButtonGroup>
         )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { DM_Sans } from "next/font/google";
+import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "../../styles/colors";
 
@@ -34,7 +35,7 @@ export const ButtonGroup = styled.div`
   gap: 0.75rem;
 `;
 
-export const AddButton = styled.button`
+export const AddButton = styled(Link)`
   background: ${COLORS.adlr_green};
   color: white;
   padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
@@ -44,6 +45,7 @@ export const AddButton = styled.button`
   font-weight: 400;
   font-size: 1.25rem;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};
