@@ -29,7 +29,7 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
         <RouteGroup>Group Size: {route.route_label}</RouteGroup>
       </RouteInfo>
 
-      <RouteIconBox />
+      <RouteIconBox src="/orange.jpg" alt="Route" />
     </RouteCardContainer>
   );
 }

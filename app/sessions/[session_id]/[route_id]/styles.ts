@@ -4,8 +4,7 @@ import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
-
-const MOBILE_BREAKPOINT = "800px";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 const Sans = DM_Sans({
   subsets: ["latin"],
@@ -23,16 +22,15 @@ export const BackLink = styled(Link)`
   font-weight: 400;
   display: block;
   margin: 2.63rem 15% 1.25rem 15%;
-  // margin: 2.63rem 17.19rem 1.25rem 17.19rem;
   line-height: 0.72625rem;
   letter-spacing: -0.01875rem;
   cursor: pointer;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1rem;
+    font-size: clamp(0.625rem, 4vw, 1rem);
     margin-top: 1.5rem;
     margin-bottom: 1rem;
-    line-height: 1.4rem;
+    line-height: 1rem;
   }
 
   &:hover {
@@ -53,7 +51,7 @@ export const Header = styled.h1`
   margin-bottom: 0.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1.8rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     line-height: 2rem;
   }
 `;
@@ -83,7 +81,7 @@ export const Tab = styled.div<{ $active?: boolean }>`
   margin-bottom: 1.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1rem;
+    font-size: clamp(0.75rem, 4vw, 1rem);
     padding: 0.5rem 0.75rem;
     line-height: 1.2;
   }

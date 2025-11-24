@@ -3,8 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
-
-const MOBILE_BREAKPOINT = "800px";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const PageContainer = styled.div`
   display: flex;
@@ -24,13 +23,15 @@ export const BackLink = styled(Link)`
   letter-spacing: -0.01875rem;
   cursor: pointer;
 
-  &:hover {
-    text-decoration: underline;
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.625rem, 4vw, 1rem);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1rem;
   }
 
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1rem;
-    margin: 1.25rem 15% 1.5rem 15%;
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -43,12 +44,12 @@ export const CentralHubName = styled.h1`
   font-size: 2.5rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.125rem; /* 45% */
+  line-height: 1.125rem;
   letter-spacing: -0.0375rem;
   margin-bottom: 1.5rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     margin-bottom: 1rem;
   }
 `;
@@ -58,13 +59,13 @@ export const DateHeader = styled.h1`
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.125rem; /* 90% */
+  line-height: 1.125rem;
   letter-spacing: -0.01875rem;
   margin-bottom: 2.63rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1rem;
-    margin-bottom: 1.75rem;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    margin-bottom: clamp(1rem, 4vw, 2.63rem);
   }
 `;
 
@@ -73,13 +74,13 @@ export const RoutesHeader = styled.h1`
   font-size: 1.75rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.125rem; /* 64.286% */
+  line-height: 1.125rem;
   letter-spacing: -0.02625rem;
   margin-bottom: 1.435rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: clamp(1.1rem, 4vw, 1.75rem);
+    margin-bottom: 0rem;
   }
 `;
 
