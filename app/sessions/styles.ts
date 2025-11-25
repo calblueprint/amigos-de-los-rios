@@ -39,9 +39,9 @@ export const AddButton = styled(Link)`
   background: ${COLORS.adlr_green};
   color: white;
   padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  font-family: ${Sans.style.fontFamily};
   border: none;
   border-radius: 0.375rem;
+  font-family: ${Sans.style.fontFamily};
   font-weight: 400;
   font-size: 1.25rem;
   cursor: pointer;
