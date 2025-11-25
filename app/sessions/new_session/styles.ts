@@ -86,10 +86,9 @@ export const EditTeamsHeader = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const IconGroup = styled.div`
+export const AddButton = styled.div`
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  margin-right: 1rem;
 `;
 
 export const TeamsContainer = styled.div`
@@ -97,6 +96,16 @@ export const TeamsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+export const NoTeams = styled.div`
+  color: ${COLORS.adlr_property_gray};
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.125rem;
+  letter-spacing: -0.01875rem;
 `;
 
 export const Divider = styled.div`

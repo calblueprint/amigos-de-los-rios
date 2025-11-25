@@ -6,22 +6,24 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import TeamCard from "@/components/TeamCard/TeamCard";
 import { IconSvgs } from "@/lib/icons";
+import { Team } from "@/types/schema";
 import {
+  AddButton,
   BackLink,
   ContentContainer,
   Divider,
   EditTeamsHeader,
   GenerateButton,
-  IconGroup,
   Input,
   Label,
+  NoTeams,
   PageContainer,
   TeamsContainer,
   Title,
 } from "./styles";
 
 export default function NewSession() {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { userId }: { userId?: string | null } = useAuth();
@@ -48,12 +50,15 @@ export default function NewSession() {
   }, [userId, isAdmin]);
 
   const addTeam = () => {
-    console.log("add");
-    // setTeams([...teams, { type: "Type A", size: 5, time: "1 hour" }]);
+    setTeams([...teams, { type: "Type A", size: 5, time: "1 hour" }]);
   };
 
   const onEdit = () => {
     console.log("edit");
+  };
+
+  const deleteTeam = (removedIndex: number) => {
+    setTeams(teams.filter((_, index) => index !== removedIndex));
   };
 
   if (loading) return <p>Loading page...</p>;
@@ -93,27 +98,34 @@ export default function NewSession() {
         <EditTeamsHeader>
           <Label>Edit Teams</Label>
 
-          <IconGroup>
-            {React.cloneElement(IconSvgs.edit, {
-              onClick: onEdit,
-              style: { cursor: "pointer" },
-            })}
+          <AddButton>
             {React.cloneElement(IconSvgs.add, {
               onClick: addTeam,
               style: { cursor: "pointer" },
             })}
-          </IconGroup>
+          </AddButton>
         </EditTeamsHeader>
 
         <TeamsContainer>
-          {teams.map((team, index) => (
-            <TeamCard key={index} team={team} />
-          ))}
+          {teams.length === 0 ? (
+            <NoTeams>No teams made.</NoTeams>
+          ) : (
+            teams.map((team, index) => (
+              <TeamCard
+                key={index}
+                team={team}
+                onDelete={() => deleteTeam(index)}
+              />
+            ))
+          )}
         </TeamsContainer>
 
-        <Divider />
-
-        <GenerateButton>Generate Routes</GenerateButton>
+        {teams.length > 0 && (
+          <>
+            <Divider />
+            <GenerateButton>Generate Routes</GenerateButton>
+          </>
+        )}
       </ContentContainer>
     </PageContainer>
   );

@@ -14,6 +14,40 @@ export const TeamCard = styled.div`
   border: 1px solid ${COLORS.adlr_light_gray};
   border-radius: 0.625rem;
   padding: 1.19rem 34.44rem 1rem 0.88rem;
+  position: relative;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffebeb;
+  color: #d60000;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    background: #ffcccc;
+    color: #b00000;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 export const TeamHeader = styled.div`
@@ -49,9 +83,18 @@ export const TeamLabel = styled.span`
   margin: 1.25rem 0;
 `;
 
+export const InputWrapper = styled.div`
+  position: relative;
+`;
+
+interface DropdownIconProps {
+  $isOpen?: boolean;
+}
+
 export const TeamInput = styled.input`
-  padding: 0.87rem 3.83rem 0.81rem 0.96rem;
+  padding: 0.87rem 3rem 0.81rem 0.96rem;
   background: ${COLORS.adlr_white};
+  appearance: none;
   border: 1px solid ${COLORS.adlr_dark_gray};
   border-radius: 0.3125rem;
   width: 100%;
@@ -64,4 +107,26 @@ export const TeamInput = styled.input`
   font-weight: 400;
   line-height: 1.125rem;
   letter-spacing: -0.01875rem;
+
+  &::placeholder {
+    color: ${COLORS.adlr_light_gray};
+  }
+`;
+
+export const DropdownIcon = styled.div<DropdownIconProps>`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%)
+    rotate(${props => (props.$isOpen ? "180deg" : "0deg")});
+  transition: transform 0.2s ease-in-out;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
