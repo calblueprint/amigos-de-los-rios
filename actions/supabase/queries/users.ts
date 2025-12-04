@@ -1,5 +1,3 @@
-"use server";
-
 import supabase from "@/actions/supabase/client";
 
 export async function getUserById(userId: string) {
