@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const RouteCardContainer = styled.div`
   display: flex;
@@ -30,11 +31,18 @@ export const RouteInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    padding: 1.25rem 1.25rem;
+    gap: 0.75rem;
+  }
 `;
 
-export const RouteIconBox = styled.div`
-  width: 35%;
-  background: #e0e0e0; // placeholder gray
+export const RouteIconBox = styled.img`
+  width: 30%;
+  object-fit: contain;
+  border-radius: 0.75rem;
 `;
 
 export const RouteTitle = styled.h3`
@@ -42,8 +50,12 @@ export const RouteTitle = styled.h3`
   font-size: 1.41669rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.5rem;
+  line-height: 1.3;
   letter-spacing: -0.02125rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1rem, 4vw, 1.41669rem);
+  }
 `;
 
 export const RouteGroup = styled.p`
@@ -51,6 +63,10 @@ export const RouteGroup = styled.p`
   font-size: 1.26488rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 0.91069rem;
+  line-height: 1;
   letter-spacing: -0.019rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.875rem, 4vw, 1.26488rem);
+  }
 `;

@@ -31,7 +31,7 @@ export default function SessionCard({ session }: SessionCardProps) {
     async function loadUserRole() {
       if (!userId) return; // not logged in yet
 
-      const userRow = await getUserById(userId); // fetch from Users table
+      const userRow = await getUserById(userId);
       setIsAdmin(userRow?.is_admin ?? false);
     }
 

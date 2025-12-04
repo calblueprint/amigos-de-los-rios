@@ -31,6 +31,7 @@ interface BoxProps {
 }
 
 const HEADER_HEIGHT = "60px"; // Adjust or delete as needed
+export const MOBILE_BREAKPOINT = "800px"; // Adjust as needed
 
 // Remove this function and replace heights with fixed values if there is no header
 const processHeight = (value: string | undefined) =>
