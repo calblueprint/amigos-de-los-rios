@@ -84,7 +84,7 @@ export async function fetchUserRouteForSession(
   const routeIds = assignments.map(a => a.route_id);
 
   // Find which of those routes belong to this watering session
-  const { data: routes, error: routeError } = await supabase
+  const { data: routes } = await supabase
     .from("Routes")
     .select("id")
     .in("id", routeIds)
