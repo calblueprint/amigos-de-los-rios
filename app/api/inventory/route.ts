@@ -18,12 +18,12 @@ import { NextResponse } from "next/server";
   }
 } */
 
-import { fetchTrees } from "@/actions/planitgeo/queries/query";
+import { fetchTrees, fetchTreesBatch } from "@/actions/planitgeo/queries/query";
 
 export async function GET() {
   console.log("GET /api/inventory called");
   try {
-    const trees = await fetchTrees();
+    const trees = await fetchTreesBatch();
     console.log("Fetched trees:", trees);
     return NextResponse.json(trees);
   } catch (error) {

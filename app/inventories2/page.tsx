@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-// Define the type for the extracted tree info
 type TreeInfo = {
   pid: number;
-  coordinates: [number, number]; // [lng, lat]
+  coordinates: [number, number];
   address: string;
   species_common: string | null;
-  organization: number;
+  organization?: number;
 };
 
 type ApiFeature = {
@@ -20,7 +19,7 @@ type ApiFeature = {
     species_common?: string;
     organization?: number;
   };
-  geometry: {
+  geometry?: {
     coordinates: [number, number];
   };
 };
@@ -33,26 +32,20 @@ export default function TreesPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/inventory"); // your API endpoint
+        const res = await fetch("/api/inventory");
         if (!res.ok) throw new Error(`API returned status ${res.status}`);
 
         const json = await res.json();
-        console.log("result", json);
-        /*const treesArrray: [] = json.data.features;
-        console.log("data: ", treesArrray);*/
-        const treesArray: ApiFeature[] = json;
+        console.log("Raw API result:", json);
 
-        console.log("Flattened trees array:", treesArray);
-        const filteredTreesArray = treesArray.filter(
-          tree => tree.properties.organization == 146,
-        );
-        console.log("filtered: ", filteredTreesArray);
+        // If API returns { features: [...] } instead of raw array
+        const features: ApiFeature[] = json.features ?? json;
 
-        // Extract pid, coordinates, and address
-        const extracted: TreeInfo[] =
-          json?.features?.data?.features?.map((f: ApiFeature) => {
+        const extracted: TreeInfo[] = features
+          .filter(f => f.geometry?.coordinates) // only keep items with coordinates
+          .map(f => {
             const p = f.properties;
-            const coords: [number, number] = f.geometry.coordinates;
+            const coords: [number, number] = f.geometry!.coordinates;
 
             const address =
               p.address_number && p.address_street
@@ -66,7 +59,7 @@ export default function TreesPage() {
               species_common: p.species_common ?? "Unknown",
               organization: p.organization,
             };
-          }) ?? [];
+          });
 
         setTrees(extracted);
       } catch (err) {
@@ -80,7 +73,8 @@ export default function TreesPage() {
     fetchData();
   }, []);
 
-  const filteredTrees = trees.filter(t => t.organization === 146);
+  const filteredTrees = trees.filter(t => t.organization === 176);
+  console.log(filteredTrees.length);
 
   if (loading) return <p className="p-6">Loading trees...</p>;
   if (error) return <p className="p-6 text-red-600">Error: {error}</p>;
@@ -94,8 +88,8 @@ export default function TreesPage() {
           <li key={tree.pid}>
             <strong>PID:</strong> {tree.pid} — <strong>Coordinates:</strong> [
             {tree.coordinates[1].toFixed(5)}, {tree.coordinates[0].toFixed(5)}]
-            — <strong>Address:</strong> {tree.address}-{" "}
-            <strong>Species:</strong> {tree.species_common}-{" "}
+            — <strong>Address:</strong> {tree.address} —{" "}
+            <strong>Species:</strong> {tree.species_common} —{" "}
             <strong>Organization:</strong> {tree.organization}
           </li>
         ))}
