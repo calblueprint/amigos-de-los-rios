@@ -44,7 +44,7 @@ export default function Login() {
       if (data?.user) {
         // Check if user has completed onboarding
         const isOnboarded = await checkUserOnboarded(data.user.id);
-        
+
         if (isOnboarded) {
           // User is onboarded, redirect to sessions
           router.push("/sessions");

@@ -3,7 +3,10 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchPropertiesByRouteId } from "@/actions/supabase/queries/routes";
-import { getUserById, checkUserOnboarded } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";

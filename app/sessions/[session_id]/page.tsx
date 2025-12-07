@@ -58,7 +58,7 @@ export default function SessionRoutesPage({
           fetchRoutesBySessionId(session_id),
           fetchSessionById(session_id),
         ]);
-        
+
         setRoutes(routesData);
         setSessionInfo(sessionData);
       } catch (err) {

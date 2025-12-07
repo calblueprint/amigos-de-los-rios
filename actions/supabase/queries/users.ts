@@ -17,11 +17,11 @@ export async function getUserById(userId: string) {
 
 export async function checkUserOnboarded(userId: string): Promise<boolean> {
   const user = await getUserById(userId);
-  
+
   // If no user record exists or onboarded is false, return false
   if (!user || !user.onboarded) {
     return false;
   }
-  
+
   return true;
 }

@@ -6,7 +6,10 @@ import {
   fetchAllSessionsForUser,
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
-import { getUserById, checkUserOnboarded } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";

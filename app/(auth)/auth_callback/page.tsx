@@ -37,7 +37,7 @@ export default function AuthCallback() {
           if (data.session?.user) {
             // Check if user has completed onboarding
             const isOnboarded = await checkUserOnboarded(data.session.user.id);
-            
+
             if (type === "recovery") {
               // Password reset flow - redirect to set new password
               router.push("/set_new_password");
