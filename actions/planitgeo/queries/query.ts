@@ -60,7 +60,16 @@ export async function fetchTrees() {
   headers.append("Authorization", `Basic ${credentials}`);
   headers.append("Accept", "application/json");
 
-  const url = `https://pg-cloud.com/api/amigosdelosrios/inventories/trees?apiKey=${PLANITGEO_API_KEY}`;
+  const filtersObj = {
+    where: [{ field: "properties.organization", operator: "=", value: 999999 }],
+  };
+
+  const filters = encodeURIComponent(JSON.stringify(filtersObj));
+
+  //const url = `https://pg-cloud.com/api/amigosdelosrios/inventories/trees?apiKey=${PLANITGEO_API_KEY}&filter[organization]=176&offset=50000&limit=10000`;
+
+  const url = `https://pg-cloud.com/api/amigosdelosrios/inventories/trees?&apiKey=${PLANITGEO_API_KEY}&properties.organization=176`;
+  //const url = `https://pg-cloud.com/api/amigosdelosrios/inventories/organization?apiKey=${PLANITGEO_API_KEY}`;
 
   try {
     const response = await fetch(url, { headers });
@@ -73,6 +82,7 @@ export async function fetchTrees() {
     }
 
     const data = await response.json();
+    console.log(data);
 
     // Ensure the client always gets a `features` array
     return { features: data || [] };
