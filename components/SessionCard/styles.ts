@@ -21,6 +21,12 @@ export const SessionCard = styled.div`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     padding: 5%;
   }
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const SessionImage = styled.img`
