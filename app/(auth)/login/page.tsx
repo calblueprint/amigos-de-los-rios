@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/supabase/queries/auth";
+import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
@@ -41,8 +42,16 @@ export default function Login() {
       const data = await signIn(email, password);
 
       if (data?.user) {
-        // Redirect to home page or dashboard
-        router.push("/sessions");
+        // Check if user has completed onboarding
+        const isOnboarded = await checkUserOnboarded(data.user.id);
+        
+        if (isOnboarded) {
+          // User is onboarded, redirect to sessions
+          router.push("/sessions");
+        } else {
+          // User hasn't completed onboarding, redirect to account details
+          router.push("/account_details");
+        }
       }
 
       return data;

@@ -1,24 +1,40 @@
 "use client";
 
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/utils/AuthContext";
+import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import BPLogo from "@/assets/images/bp-logo.png";
 
 export default function Home() {
   const { userId, userEmail, loading, signOut } = useAuth();
   const router = useRouter();
+  const [checkingOnboarding, setCheckingOnboarding] = useState(true);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated, or to onboarding if not onboarded
   useEffect(() => {
-    if (!loading && !userId) {
-      router.push("/login");
-    }
+    const checkAuth = async () => {
+      if (!loading) {
+        if (!userId) {
+          router.push("/login");
+        } else {
+          // Check if user has completed onboarding
+          const isOnboarded = await checkUserOnboarded(userId);
+          if (!isOnboarded) {
+            router.push("/account_details");
+          } else {
+            setCheckingOnboarding(false);
+          }
+        }
+      }
+    };
+
+    checkAuth();
   }, [userId, loading, router]);
 
-  // Show loading state while checking authentication
-  if (loading) {
+  // Show loading state while checking authentication and onboarding
+  if (loading || checkingOnboarding) {
     return (
       <main style={mainStyles}>
         <p>Loading...</p>
