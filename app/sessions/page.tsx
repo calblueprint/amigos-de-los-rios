@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
+import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
@@ -23,18 +24,11 @@ import {
   SessionsList,
 } from "./styles";
 
-type WateringSession = {
-  id: string;
-  date: string;
-  watering_event_name: string;
-  central_hub: string;
-};
-
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId }: { userId?: string | null } = useAuth();
+  const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -43,6 +37,10 @@ export default function SessionsPage() {
     async function init() {
       try {
         setLoading(true);
+        setError(null);
+
+        // Wait for auth to finish loading
+        if (authLoading) return;
 
         if (!userId) {
           router.push("/login");
@@ -79,9 +77,9 @@ export default function SessionsPage() {
     }
 
     init();
-  }, [userId, router]); // Remove isAdmin from dependencies to prevent infinite loop
+  }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
-  if (loading) return <p>Loading sessions...</p>;
+  if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
