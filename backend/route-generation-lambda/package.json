@@ -8,6 +8,7 @@
     "test": "node test-routing.js"
   },
   "dependencies": {
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

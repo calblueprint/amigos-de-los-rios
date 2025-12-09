@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fetch = require("node-fetch");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 /**
  * Generates an OAuth2 access token for authenticating with Google Cloud APIs.
@@ -187,6 +188,37 @@ function generateMapsUrl(stops, hub) {
 }
 
 /**
+ * Verifies Supabase JWT token from Authorization header.
+ * Ensures only authenticated users from your frontend can call this lambda.
+ *
+ * @param {string} authHeader - The Authorization header value (e.g., "Bearer eyJhbGc...")
+ * @param {string} jwtSecret - Supabase JWT secret from environment variables
+ * @returns {Object} Decoded JWT payload with user info
+ * @throws {Error} If token is missing, invalid, or expired
+ */
+function verifySupabaseToken(authHeader, jwtSecret) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new Error("Missing or invalid Authorization header");
+  }
+
+  const token = authHeader.substring(7); // Remove "Bearer " prefix
+
+  try {
+    // Verify token signature and expiration
+    const decoded = jwt.verify(token, jwtSecret, {
+      algorithms: ["HS256"], // Supabase uses HMAC-SHA256
+    });
+
+    return decoded; // Contains user info (sub = user ID, email, etc.)
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      throw new Error("Token expired");
+    }
+    throw new Error("Invalid token");
+  }
+}
+
+/**
  * Transforms Google's API response into our frontend-friendly format.
  * Extracts the optimized route order, calculates timing breakdowns, and includes
  * properties that couldn't fit in the time budget.
@@ -251,7 +283,7 @@ exports.handler = async event => {
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
   };
 
@@ -261,6 +293,36 @@ exports.handler = async event => {
   }
 
   try {
+    // Verify JWT authentication
+    const jwtSecret = process.env.SUPABASE_JWT_SECRET;
+    if (!jwtSecret) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          error: "Authentication not configured",
+        }),
+      };
+    }
+
+    const authHeader =
+      event.headers?.authorization || event.headers?.Authorization;
+
+    try {
+      const decoded = verifySupabaseToken(authHeader, jwtSecret);
+      // Token is valid - decoded contains user info (decoded.sub = user ID)
+      console.log(`Authenticated request from user: ${decoded.sub}`);
+    } catch (authError) {
+      return {
+        statusCode: 401,
+        headers,
+        body: JSON.stringify({
+          error: "Unauthorized",
+          message: authError.message,
+        }),
+      };
+    }
+
     // Parse input
     const input = JSON.parse(event.body);
     const { hub, properties, team_time_budget_minutes } = input;

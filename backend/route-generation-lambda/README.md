@@ -1,10 +1,10 @@
 # Route Generation Lambda
 
-AWS Lambda function that generates optimized watering routes using Google's Route Optimization API.
+Generates optimized watering routes using Google's Route Optimization API.
 
 ## Features
 
-- OAuth2 authentication with Google Cloud service account
+- JWT authentication via Supabase
 - Single vehicle route optimization
 - Time budget constraints
 - Real-time travel time calculations
@@ -12,18 +12,13 @@ AWS Lambda function that generates optimized watering routes using Google's Rout
 
 ## Setup
 
-### Prerequisites
-
-1. AWS Lambda function deployed with Function URL
-2. Google Cloud Project with Route Optimization API enabled
-3. Google Cloud service account with Route Optimization Editor role
-
 ### Environment Variables
 
-These variables are configured in AWS Lambda:
+Configure in AWS Lambda:
 
-- `GOOGLE_CLOUD_PROJECT_ID`: Google Cloud project ID
-- `GOOGLE_SERVICE_ACCOUNT_KEY`: Base64-encoded service account JSON key
+- `GOOGLE_CLOUD_PROJECT_ID` - Google Cloud project ID
+- `GOOGLE_SERVICE_ACCOUNT_KEY` - Base64-encoded service account JSON key
+- `SUPABASE_JWT_SECRET` - JWT secret from Supabase dashboard (Settings → API → JWT Secret)
 
 ### Installation
 
@@ -31,19 +26,33 @@ These variables are configured in AWS Lambda:
 npm install
 ```
 
-## Deployment
+### Deployment
 
-1. Package the function:
 ```bash
 npm run zip
-```
-
-2. Deploy to AWS Lambda:
-```bash
 aws lambda update-function-code \
   --function-name route-generation \
   --zip-file fileb://function.zip \
   --region us-west-2
+```
+
+## Authentication
+
+All requests require a valid Supabase JWT token in the Authorization header. Unauthenticated requests return `401 Unauthorized`.
+
+Frontend should include the token when calling the lambda:
+
+```typescript
+const { data: { session } } = await supabase.auth.getSession();
+
+fetch(LAMBDA_URL, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${session.access_token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ hub, properties, team_time_budget_minutes })
+});
 ```
 
 ## API
