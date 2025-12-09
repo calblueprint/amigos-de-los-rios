@@ -81,51 +81,58 @@ export default function Login() {
           <S.Underline />
         </S.Heading>
 
-        <S.InputGroup>
-          <S.Label>
-            Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            name="email"
-            type="email"
-            placeholder=""
-            onChange={e => {
-              setEmail(e.target.value);
-              if (emailError) setEmailError("");
-            }}
-            value={email}
-            $hasError={!!emailError}
-          />
-          {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
-        </S.InputGroup>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSignIn();
+          }}
+        >
+          <S.InputGroup>
+            <S.Label>
+              Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              name="email"
+              type="email"
+              placeholder=""
+              onChange={e => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError("");
+              }}
+              value={email}
+              $hasError={!!emailError}
+            />
+            {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.InputGroup $marginSmall>
-          <S.Label>
-            Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            name="password"
-            placeholder=""
-            onChange={e => {
-              setPassword(e.target.value);
-              if (passwordError) setPasswordError("");
-            }}
-            value={password}
-            $hasError={!!passwordError}
-          />
-          {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
-        </S.InputGroup>
+          <S.InputGroup $marginSmall>
+            <S.Label>
+              Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              type="password"
+              name="password"
+              placeholder=""
+              onChange={e => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError("");
+              }}
+              value={password}
+              $hasError={!!passwordError}
+            />
+            {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.LinkWrapper>
-          <Link href="/reset_password">
-            <S.LinkButton type="button">Forgot password?</S.LinkButton>
-          </Link>
-        </S.LinkWrapper>
+          <S.LinkWrapper>
+            <Link href="/reset_password">
+              <S.LinkButton type="button">Forgot password?</S.LinkButton>
+            </Link>
+          </S.LinkWrapper>
 
-        <S.PrimaryButton type="button" onClick={handleSignIn}>
-          Login
-        </S.PrimaryButton>
+          <S.PrimaryButton type="submit" onClick={handleSignIn}>
+            Login
+          </S.PrimaryButton>
+        </form>
 
         {/* Sign up link */}
         <S.LinkContainer>
