@@ -139,3 +139,39 @@ export const GenerateButton = styled.button`
     background: ${COLORS.adlr_blue};
   }
 `;
+
+export const FixedBottomContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: ${COLORS.white};
+  padding: 1.5rem 0;
+  border-top: 1px solid ${COLORS.adlr_light_gray};
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+`;
+
+export const ContentContainerWithPadding = styled(ContentContainer)`
+  padding-bottom: 8rem;
+`;
+
+export const NextButton = styled.button`
+  padding: 1.19rem 11.44rem;
+  background: ${COLORS.adlr_navy};
+  color: ${COLORS.white};
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.125rem;
+  letter-spacing: -0.02625rem;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  margin: 2rem auto 0 auto;
+  display: block;
+
+  &:hover {
+    background: ${COLORS.adlr_blue};
+  }
+`;
