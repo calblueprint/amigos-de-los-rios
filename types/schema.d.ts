@@ -25,3 +25,13 @@ export type WateringSession = {
   watering_event_name: string;
   central_hub: string;
 };
+
+export type User = {
+  id: UUID;
+  email: string;
+  name: string;
+  affiliation: string;
+  phone_number: string;
+  onboarded: boolean;
+  is_admin: boolean;
+};
