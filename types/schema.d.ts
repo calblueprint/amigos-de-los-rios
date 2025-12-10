@@ -25,3 +25,9 @@ export type WateringSession = {
   watering_event_name: string;
   central_hub: string;
 };
+
+export type Team = {
+  type: string;
+  size: number;
+  time: string;
+};
