@@ -1,8 +1,12 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { fetchPropertiesByRouteId } from "@/actions/supabase/queries/routes";
-import { getUserById } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
@@ -24,6 +28,7 @@ export default function RoutePage({
 }) {
   const { session_id, route_id } = use(params);
   const { userId } = useAuth();
+  const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,11 +39,21 @@ export default function RoutePage({
       try {
         setLoading(true);
 
-        // Load user role
-        if (userId) {
-          const userRow = await getUserById(userId);
-          setIsAdmin(userRow?.is_admin ?? false);
+        // Check authentication and onboarding
+        if (!userId) {
+          router.push("/login");
+          return;
         }
+
+        const isOnboarded = await checkUserOnboarded(userId);
+        if (!isOnboarded) {
+          router.push("/account_details");
+          return;
+        }
+
+        // Load user role
+        const userRow = await getUserById(userId);
+        setIsAdmin(userRow?.is_admin ?? false);
 
         // Load properties
         const props = await fetchPropertiesByRouteId(route_id);
@@ -53,7 +68,7 @@ export default function RoutePage({
     }
 
     init();
-  }, [session_id, route_id, userId]);
+  }, [session_id, route_id, userId, router]);
 
   if (loading) return <p>Loading route...</p>;
   if (error) return <p>Error: {error}</p>;

@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   fetchAllSessionsForUser,
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
-import { getUserById } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
@@ -31,6 +35,7 @@ export default function SessionsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { userId }: { userId?: string | null } = useAuth();
+  const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
@@ -39,15 +44,25 @@ export default function SessionsPage() {
       try {
         setLoading(true);
 
-        if (!userId) return; // Guard against no userId
+        if (!userId) {
+          router.push("/login");
+          return;
+        }
 
-        // First, load the user role
+        // Check if user has completed onboarding
+        const isOnboarded = await checkUserOnboarded(userId);
+        if (!isOnboarded) {
+          router.push("/account_details");
+          return;
+        }
+
+        // Load the user role
         const userRow = await getUserById(userId);
         const adminStatus = userRow?.is_admin ?? false;
         setIsAdmin(adminStatus);
 
-        // Then, load sessions based on role
-        if (isAdmin) {
+        // Load sessions based on role
+        if (adminStatus) {
           const data = await fetchSessions();
           setSessions(data);
         } else {
@@ -64,7 +79,7 @@ export default function SessionsPage() {
     }
 
     init();
-  }, [userId, isAdmin]); // Add userId as dependency
+  }, [userId, router]); // Remove isAdmin from dependencies to prevent infinite loop
 
   if (loading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;

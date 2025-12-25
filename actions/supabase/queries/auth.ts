@@ -27,6 +27,24 @@ export async function signUp(email: string, password: string) {
     throw error;
   }
 
+  // Create initial user record with onboarded: false
+  // This ensures a row exists in Users table even if they don't complete onboarding
+  if (data.user) {
+    try {
+      await upsertUserProfile({
+        id: data.user.id,
+        email: data.user.email || "",
+        name: "",
+        affiliation: "",
+        phone_number: "",
+        onboarded: false,
+      });
+    } catch (profileError) {
+      console.error("Error creating initial user profile:", profileError);
+      // Don't throw - user account is created, they can complete profile later
+    }
+  }
+
   return data;
 }
 
