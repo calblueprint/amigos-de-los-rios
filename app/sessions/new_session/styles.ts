@@ -146,7 +146,7 @@ export const FixedBottomContainer = styled.div`
   left: 0;
   right: 0;
   background: ${COLORS.white};
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 0 0;
   border-top: 1px solid ${COLORS.adlr_light_gray};
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
