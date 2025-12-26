@@ -35,10 +35,3 @@ export type User = {
   onboarded: boolean;
   is_admin: boolean;
 };
-
-export type WateringSession = {
-  id: string;
-  date: string;
-  watering_event_name: string;
-  central_hub: string;
-};

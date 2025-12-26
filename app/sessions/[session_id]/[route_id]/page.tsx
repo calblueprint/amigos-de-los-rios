@@ -8,8 +8,9 @@ import {
   getAssignedUsersByRouteId,
   unassignUserFromRoute,
 } from "@/actions/supabase/queries/routeUserAssignments";
-import { getUserByEmail,
+import {
   checkUserOnboarded,
+  getUserByEmail,
   getUserById,
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
