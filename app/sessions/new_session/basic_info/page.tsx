@@ -30,6 +30,13 @@ export default function BasicInfoPage() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
 
+  //check if all fields are filled before allowing user to proceed
+  const isFormValid =
+    sessionName.trim() !== "" &&
+    centralHub.trim() !== "" &&
+    date !== "" &&
+    address.trim() !== "";
+
   // Sync local state with context when context changes (e.g., when navigating back)
   useEffect(() => {
     setSessionName(data.sessionName);
@@ -144,13 +151,14 @@ export default function BasicInfoPage() {
           onChange={e => setDescription(e.target.value)}
           style={{ resize: "vertical" }}
         />
-
-        <FixedBottomContainer>
-          <ContentContainer>
-            <GenerateButton onClick={handleNext}>Continue</GenerateButton>
-          </ContentContainer>
-        </FixedBottomContainer>
       </ContentContainer>
+      <FixedBottomContainer>
+        <ContentContainer>
+          <GenerateButton onClick={handleNext} disabled={!isFormValid}>
+            Continue
+          </GenerateButton>
+        </ContentContainer>
+      </FixedBottomContainer>
     </PageContainer>
   );
 }

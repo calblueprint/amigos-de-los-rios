@@ -85,6 +85,8 @@ export const TeamLabel = styled.span`
 
 export const InputWrapper = styled.div`
   position: relative;
+  width: 100%;
+  overflow: visible;
 `;
 
 interface DropdownIconProps {
