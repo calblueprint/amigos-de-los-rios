@@ -1,5 +1,6 @@
 "use client";
 
+import { ButtonHTMLAttributes } from "react";
 import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 import styled from "styled-components";
@@ -122,7 +123,10 @@ export const Divider = styled.div`
 
 export const GenerateButton = styled.button`
   padding: 1.19rem 11.44rem;
-  background: ${COLORS.adlr_navy};
+
+  background-color: ${(props: ButtonHTMLAttributes<HTMLButtonElement>) =>
+    props.disabled ? COLORS.adlr_light_gray : COLORS.adlr_navy};
+
   color: ${COLORS.white};
   font-family: ${Sans.style.fontFamily};
   font-size: 1.75rem;
@@ -131,17 +135,24 @@ export const GenerateButton = styled.button`
   line-height: 1.125rem;
   letter-spacing: -0.02625rem;
   border-radius: 0.3125rem;
-  cursor: pointer;
+
+  cursor: ${(props: ButtonHTMLAttributes<HTMLButtonElement>) =>
+    props.disabled ? "not-allowed" : "pointer"};
   margin: 0 auto;
   display: block;
-
+  border: none;
+  box-shadow: 0 0.125rem 0.188rem rgba(0, 0, 0, 0.1);
   &:hover {
-    background: ${COLORS.adlr_blue};
+    background-color: ${(props: ButtonHTMLAttributes<HTMLButtonElement>) =>
+      props.disabled ? COLORS.adlr_light_gray : COLORS.adlr_blue};
+  }
+  &:disabled {
+    pointer-events: none;
   }
 `;
 
 export const FixedBottomContainer = styled.div`
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
   right: 0;

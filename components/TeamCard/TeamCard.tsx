@@ -40,13 +40,11 @@ export default function TeamCard({ team, onDelete }: teamCardProps) {
               defaultValue={team.type}
               onClick={() => setTypeOpen(prev => !prev)}
             >
-              {["Type A", "Type B", "Type C", "Type D", "Type E", "Type F"].map(
-                type => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ),
-              )}
+              {["Type A", "Type B", "Type C", "Type D"].map(type => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
             </TeamInput>
 
             <DropdownIcon $isOpen={typeOpen}>{IconSvgs.dropdown}</DropdownIcon>
