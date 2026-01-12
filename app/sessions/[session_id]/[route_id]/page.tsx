@@ -128,12 +128,13 @@ export default function RoutePage({
   if (error) return <p>Error: {error}</p>;
 
   const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";
+  const backLinkText = isAdmin ? "← Back to Routes" : "← Back to Sessions";
 
   return (
     <PageContainer>
       <Banner />
 
-      <BackLink href={backLink}>← Back to Sessions</BackLink>
+      <BackLink href={backLink}>{backLinkText}</BackLink>
 
       <ContentContainer>
         <Header>Central Hub Name</Header>

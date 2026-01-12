@@ -1,6 +1,7 @@
 "use client";
 
 import { DM_Sans } from "next/font/google";
+import Link from "next/link";
 import styled from "styled-components";
 import { MOBILE_BREAKPOINT } from "@/styles/containers";
 import COLORS from "../../styles/colors";
@@ -45,16 +46,17 @@ export const ButtonGroup = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-export const AddButton = styled.button`
+export const AddButton = styled(Link)`
   background: ${COLORS.adlr_green};
   color: white;
   padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  font-family: ${Sans.style.fontFamily};
   border: none;
   border-radius: 0.375rem;
+  font-family: ${Sans.style.fontFamily};
   font-weight: 400;
   font-size: 1.25rem;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};

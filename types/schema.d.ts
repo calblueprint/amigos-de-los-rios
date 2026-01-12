@@ -35,3 +35,9 @@ export type User = {
   onboarded: boolean;
   is_admin: boolean;
 };
+
+export type Team = {
+  type: string;
+  size: number;
+  time: string;
+};
