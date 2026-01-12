@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { Team } from "@/types/schema";
 
 interface SessionCreationData {
@@ -42,26 +36,12 @@ const defaultData: SessionCreationData = {
   teams: [],
 };
 
-const STORAGE_KEY = "newSession";
-
 const SessionCreationContext = createContext<
   SessionCreationContextType | undefined
 >(undefined);
 
 export function SessionCreationProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<SessionCreationData>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : defaultData;
-    }
-    return defaultData;
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-  }, [data]);
+  const [data, setData] = useState<SessionCreationData>(defaultData);
 
   const updateBasicInfo = (
     sessionName: string,
@@ -103,9 +83,6 @@ export function SessionCreationProvider({ children }: { children: ReactNode }) {
 
   const reset = () => {
     setData(defaultData);
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY);
-    }
   };
 
   return (
