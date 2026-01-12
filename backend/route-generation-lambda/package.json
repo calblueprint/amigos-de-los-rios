@@ -1,0 +1,14 @@
+{
+  "name": "route-generation-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for route optimization using Google Route Optimization API",
+  "main": "src/handler.js",
+  "scripts": {
+    "zip": "zip -r function.zip src/ node_modules/ package.json",
+    "test": "node test-routing.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

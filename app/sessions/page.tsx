@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   fetchAllSessionsForUser,
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
-import { getUserById } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
+import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
@@ -19,18 +24,12 @@ import {
   SessionsList,
 } from "./styles";
 
-type WateringSession = {
-  id: string;
-  date: string;
-  watering_event_name: string;
-  central_hub: string;
-};
-
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId }: { userId?: string | null } = useAuth();
+  const { userId, loading: authLoading } = useAuth();
+  const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
@@ -38,16 +37,30 @@ export default function SessionsPage() {
     async function init() {
       try {
         setLoading(true);
+        setError(null);
 
-        if (!userId) return; // Guard against no userId
+        // Wait for auth to finish loading
+        if (authLoading) return;
 
-        // First, load the user role
+        if (!userId) {
+          router.push("/login");
+          return;
+        }
+
+        // Check if user has completed onboarding
+        const isOnboarded = await checkUserOnboarded(userId);
+        if (!isOnboarded) {
+          router.push("/account_details");
+          return;
+        }
+
+        // Load the user role
         const userRow = await getUserById(userId);
         const adminStatus = userRow?.is_admin ?? false;
         setIsAdmin(adminStatus);
 
-        // Then, load sessions based on role
-        if (isAdmin) {
+        // Load sessions based on role
+        if (adminStatus) {
           const data = await fetchSessions();
           setSessions(data);
         } else {
@@ -64,9 +77,9 @@ export default function SessionsPage() {
     }
 
     init();
-  }, [userId, isAdmin]); // Add userId as dependency
+  }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
-  if (loading) return <p>Loading sessions...</p>;
+  if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (

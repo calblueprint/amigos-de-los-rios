@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/supabase/queries/auth";
+import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
@@ -41,8 +42,16 @@ export default function Login() {
       const data = await signIn(email, password);
 
       if (data?.user) {
-        // Redirect to home page or dashboard
-        router.push("/sessions");
+        // Check if user has completed onboarding
+        const isOnboarded = await checkUserOnboarded(data.user.id);
+
+        if (isOnboarded) {
+          // User is onboarded, redirect to sessions
+          router.push("/sessions");
+        } else {
+          // User hasn't completed onboarding, redirect to account details
+          router.push("/account_details");
+        }
       }
 
       return data;
@@ -81,51 +90,58 @@ export default function Login() {
           <S.Underline />
         </S.Heading>
 
-        <S.InputGroup>
-          <S.Label>
-            Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            name="email"
-            type="email"
-            placeholder=""
-            onChange={e => {
-              setEmail(e.target.value);
-              if (emailError) setEmailError("");
-            }}
-            value={email}
-            $hasError={!!emailError}
-          />
-          {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
-        </S.InputGroup>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSignIn();
+          }}
+        >
+          <S.InputGroup>
+            <S.Label>
+              Email<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              name="email"
+              type="email"
+              placeholder=""
+              onChange={e => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError("");
+              }}
+              value={email}
+              $hasError={!!emailError}
+            />
+            {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.InputGroup $marginSmall>
-          <S.Label>
-            Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
-          </S.Label>
-          <S.Input
-            type="password"
-            name="password"
-            placeholder=""
-            onChange={e => {
-              setPassword(e.target.value);
-              if (passwordError) setPasswordError("");
-            }}
-            value={password}
-            $hasError={!!passwordError}
-          />
-          {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
-        </S.InputGroup>
+          <S.InputGroup $marginSmall>
+            <S.Label>
+              Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
+            </S.Label>
+            <S.Input
+              type="password"
+              name="password"
+              placeholder=""
+              onChange={e => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError("");
+              }}
+              value={password}
+              $hasError={!!passwordError}
+            />
+            {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
+          </S.InputGroup>
 
-        <S.LinkWrapper>
-          <Link href="/reset_password">
-            <S.LinkButton type="button">Forgot password?</S.LinkButton>
-          </Link>
-        </S.LinkWrapper>
+          <S.LinkWrapper>
+            <Link href="/reset_password">
+              <S.LinkButton type="button">Forgot password?</S.LinkButton>
+            </Link>
+          </S.LinkWrapper>
 
-        <S.PrimaryButton type="button" onClick={handleSignIn}>
-          Login
-        </S.PrimaryButton>
+          <S.PrimaryButton type="submit" onClick={handleSignIn}>
+            Login
+          </S.PrimaryButton>
+        </form>
 
         {/* Sign up link */}
         <S.LinkContainer>

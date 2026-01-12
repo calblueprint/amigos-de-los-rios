@@ -1,8 +1,11 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { fetchRoutesBySessionId } from "@/actions/supabase/queries/routes";
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
+import { checkUserOnboarded } from "@/actions/supabase/queries/users";
+import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import RouteCard from "@/components/RouteCard/RouteCard";
 import { Route } from "@/types/schema";
@@ -22,6 +25,8 @@ export default function SessionRoutesPage({
   params: Promise<{ session_id: string }>;
 }) {
   const { session_id } = use(params);
+  const { userId } = useAuth();
+  const router = useRouter();
 
   const [routes, setRoutes] = useState<Route[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,11 +37,30 @@ export default function SessionRoutesPage({
   } | null>(null);
 
   useEffect(() => {
-    async function loadRoutes() {
+    async function init() {
       try {
         setLoading(true);
-        const result = await fetchRoutesBySessionId(session_id);
-        setRoutes(result);
+
+        // Check authentication and onboarding
+        if (!userId) {
+          router.push("/login");
+          return;
+        }
+
+        const isOnboarded = await checkUserOnboarded(userId);
+        if (!isOnboarded) {
+          router.push("/account_details");
+          return;
+        }
+
+        // Load routes and session info
+        const [routesData, sessionData] = await Promise.all([
+          fetchRoutesBySessionId(session_id),
+          fetchSessionById(session_id),
+        ]);
+
+        setRoutes(routesData);
+        setSessionInfo(sessionData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load routes");
       } finally {
@@ -44,16 +68,8 @@ export default function SessionRoutesPage({
       }
     }
 
-    loadRoutes();
-  }, [session_id]);
-
-  useEffect(() => {
-    async function loadSession() {
-      const session = await fetchSessionById(session_id);
-      setSessionInfo(session);
-    }
-    loadSession();
-  }, [session_id]);
+    init();
+  }, [session_id, userId, router]);
 
   if (loading) return <p>Loading routes...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -70,10 +86,11 @@ export default function SessionRoutesPage({
         </CentralHubName>
         <DateHeader>
           {sessionInfo?.date
-            ? new Date(sessionInfo.date).toLocaleDateString("en-GB", {
-                day: "2-digit", // Thursday
-                month: "long", // November
-              }) + `, ${new Date(sessionInfo.date).toLocaleDateString("en-GB")}`
+            ? new Date(sessionInfo.date).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })
             : "Date"}
         </DateHeader>
         <RoutesHeader>Routes</RoutesHeader>

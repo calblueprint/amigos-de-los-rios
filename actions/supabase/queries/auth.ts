@@ -1,5 +1,4 @@
 import supabase from "../client";
-import { upsertUserProfile } from "./query";
 
 export async function signIn(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -25,6 +24,24 @@ export async function signUp(email: string, password: string) {
 
   if (error) {
     throw error;
+  }
+
+  // Create initial user record with onboarded: false
+  // This ensures a row exists in Users table even if they don't complete onboarding
+  if (data.user) {
+    try {
+      await upsertUserProfile({
+        id: data.user.id,
+        email: data.user.email || "",
+        name: "",
+        affiliation: "",
+        phone_number: "",
+        onboarded: false,
+      });
+    } catch (profileError) {
+      console.error("Error creating initial user profile:", profileError);
+      // Don't throw - user account is created, they can complete profile later
+    }
   }
 
   return data;
@@ -87,6 +104,40 @@ export async function updateUserProfile(profileData: {
     phone_number: profileData.phone_number,
     onboarded: true,
   });
+
+  return data;
+}
+
+// Insert or update user profile data in the Users table
+export async function upsertUserProfile(profileData: {
+  id: string; // Auth user ID
+  email: string;
+  name: string;
+  affiliation: string;
+  phone_number: string;
+  onboarded: boolean;
+}) {
+  const { data, error } = await supabase
+    .from("Users")
+    .upsert(
+      {
+        id: profileData.id,
+        email: profileData.email,
+        name: profileData.name,
+        affiliation: profileData.affiliation,
+        phone_number: profileData.phone_number,
+        onboarded: profileData.onboarded,
+      },
+      {
+        onConflict: "id", // Update if user already exists
+      },
+    )
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Error upserting user profile: ${error.message}`);
+  }
 
   return data;
 }
