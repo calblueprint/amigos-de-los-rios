@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { generateRoutes } from "@/actions/generateRoutes";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
@@ -24,9 +25,10 @@ import {
 } from "../styles";
 
 export default function TeamsPage() {
-  const { data, addTeam, deleteTeam } = useSessionCreation();
+  const { data, addTeam, deleteTeam, updateTeams } = useSessionCreation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
   const { userId }: { userId?: string | null } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
@@ -58,14 +60,29 @@ export default function TeamsPage() {
     }
   }, [loading, data.sessionName, data.centralHub, data.date, router]);
 
-  const handleGenerate = () => {
-    // TODO: Implement route generation with sessionName, centralHub, date, and teams
-    console.log("Generating routes with:", {
-      sessionName: data.sessionName,
-      centralHub: data.centralHub,
-      date: data.date,
-      teams: data.teams,
-    });
+  const handleGenerate = async () => {
+    try {
+      setGenerating(true);
+      setError(null);
+
+      // Call the route generation API (mimics AWS Lambda call)
+      const response = await generateRoutes({
+        sessionName: data.sessionName,
+        centralHub: data.centralHub,
+        date: data.date,
+        teams: data.teams,
+      });
+
+      // Navigate to the new session page
+      router.push(`/sessions/${response.session.id}`);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to generate routes",
+      );
+      console.error("Error generating routes:", err);
+    } finally {
+      setGenerating(false);
+    }
   };
 
   if (loading) return <p>Loading page...</p>;
@@ -87,10 +104,10 @@ export default function TeamsPage() {
       </BackLink>
 
       <ContentContainerWithPadding>
-        <Title>Route Assignment</Title>
+        <Title>Team Assignment</Title>
 
         <EditTeamsHeader>
-          <Label>Edit Route Assignments</Label>
+          <Label>Edit Team Assignments</Label>
 
           <AddButton>
             {React.cloneElement(IconSvgs.add, {
@@ -109,6 +126,11 @@ export default function TeamsPage() {
                 key={index}
                 team={team}
                 onDelete={() => deleteTeam(index)}
+                onUpdate={updatedTeam => {
+                  const updatedTeams = [...data.teams];
+                  updatedTeams[index] = updatedTeam;
+                  updateTeams(updatedTeams);
+                }}
               />
             ))
           )}
@@ -118,9 +140,12 @@ export default function TeamsPage() {
       {data.teams.length > 0 && (
         <FixedBottomContainer>
           <ContentContainer>
-            <GenerateButton onClick={handleGenerate}>
-              Generate Routes
+            <GenerateButton onClick={handleGenerate} disabled={generating}>
+              {generating ? "Generating..." : "Generate Routes"}
             </GenerateButton>
+            {error && (
+              <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+            )}
           </ContentContainer>
         </FixedBottomContainer>
       )}
