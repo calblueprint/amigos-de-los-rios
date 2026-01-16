@@ -16,7 +16,7 @@ export async function getUserById(userId: string) {
     .from("Users")
     .select("*")
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Error loading user:", error);

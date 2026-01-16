@@ -27,8 +27,10 @@ export async function signUp(email: string, password: string) {
   }
 
   // Create initial user record with onboarded: false
-  // This ensures a row exists in Users table even if they don't complete onboarding
-  if (data.user) {
+  // Only create if session exists (email confirmation disabled)
+  // If email confirmation is enabled, the user record will be created in auth_callback
+  // after the session is established (to satisfy RLS policies)
+  if (data.user && data.session) {
     try {
       await upsertUserProfile({
         id: data.user.id,

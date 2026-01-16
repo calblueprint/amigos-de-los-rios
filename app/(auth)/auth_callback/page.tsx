@@ -3,7 +3,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/actions/supabase/client";
-import { checkUserOnboarded } from "@/actions/supabase/queries/users";
+import { upsertUserProfile } from "@/actions/supabase/queries/auth";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import whiteLogo from "@/assets/images/white_logo.svg";
 import * as S from "../styles";
 
@@ -35,6 +39,28 @@ export default function AuthCallback() {
           }
 
           if (data.session?.user) {
+            // Ensure user record exists (create if missing)
+            // This handles cases where signUp failed to create the record due to RLS policies
+            const existingUser = await getUserById(data.session.user.id);
+            if (!existingUser) {
+              try {
+                await upsertUserProfile({
+                  id: data.session.user.id,
+                  email: data.session.user.email || "",
+                  name: "",
+                  affiliation: "",
+                  phone_number: "",
+                  onboarded: false,
+                });
+              } catch (profileError) {
+                console.error(
+                  "Error creating user profile in auth callback:",
+                  profileError,
+                );
+                // Continue anyway - user can complete profile later
+              }
+            }
+
             // Check if user has completed onboarding
             const isOnboarded = await checkUserOnboarded(data.session.user.id);
 

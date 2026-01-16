@@ -1,16 +1,15 @@
 "use client";
 
-import { CSSProperties, useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
-import BPLogo from "@/assets/images/bp-logo.png";
+
+// import BPLogo from "@/assets/images/bp-logo.png";
 
 export default function Home() {
-  const { userId, userEmail, loading, signOut } = useAuth();
+  const { userId, loading } = useAuth();
   const router = useRouter();
-  const [checkingOnboarding, setCheckingOnboarding] = useState(true);
 
   // Redirect to login if not authenticated, or to onboarding if not onboarded
   useEffect(() => {
@@ -20,11 +19,12 @@ export default function Home() {
           router.push("/login");
         } else {
           // Check if user has completed onboarding
+          console.log("Checking onboarding for user:", userId);
           const isOnboarded = await checkUserOnboarded(userId);
           if (!isOnboarded) {
             router.push("/account_details");
           } else {
-            setCheckingOnboarding(false);
+            router.push("/sessions");
           }
         }
       }
@@ -33,20 +33,22 @@ export default function Home() {
     checkAuth();
   }, [userId, loading, router]);
 
+  /*
   // Show loading state while checking authentication and onboarding
   if (loading || checkingOnboarding) {
     return (
       <main style={mainStyles}>
-        <p>Loading...</p>
       </main>
     );
   }
+    */
 
   // Don't render anything while redirecting
   if (!userId) {
     return null;
   }
 
+  /*
   // Show content only if authenticated
   return (
     <main style={mainStyles}>
@@ -72,7 +74,10 @@ export default function Home() {
       </p>
     </main>
   );
+  */
 }
+
+/*
 
 // CSS styles
 
@@ -102,3 +107,5 @@ const signOutButtonStyle: CSSProperties = {
   fontFamily: "DM Sans, sans-serif",
   transition: "background-color 0.3s ease",
 };
+
+*/
