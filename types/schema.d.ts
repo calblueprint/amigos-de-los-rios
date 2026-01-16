@@ -1,4 +1,5 @@
 import { UUID } from "crypto";
+import internal from "stream";
 
 export interface Property {
   id: UUID;
@@ -17,6 +18,7 @@ export type Route = {
   route_label: string;
   volunteer_type: number;
   maps_link: string;
+  num_volunteers: number;
 };
 
 export type WateringSession = {

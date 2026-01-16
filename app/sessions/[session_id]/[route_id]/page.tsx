@@ -139,12 +139,6 @@ export default function RoutePage({
       <ContentContainer>
         <Header>Central Hub Name</Header>
 
-        <TabContainer>
-          <Tab $active>Properties</Tab>
-          <Tab>Route</Tab>
-          <Tab>Group</Tab>
-        </TabContainer>
-
         {/* temporary input styling */}
         {isAdmin && (
           <div style={{ marginBottom: "2rem" }}>
@@ -194,6 +188,9 @@ export default function RoutePage({
           </div>
         )}
 
+        <TabContainer>
+          <Tab $active>Properties</Tab>
+        </TabContainer>
         <PropertiesList>
           {properties.length === 0 ? (
             <p>No properties found for your route.</p>
