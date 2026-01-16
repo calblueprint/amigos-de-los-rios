@@ -26,6 +26,7 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     <RouteCardContainer onClick={handleClick}>
       <RouteInfo>
         <RouteTitle>{route.watering_event_name}</RouteTitle>
+        <RouteGroup>Route Label: {route.route_label}</RouteGroup>
         <RouteGroup>Group Size: {route.num_volunteers}</RouteGroup>
       </RouteInfo>
 
