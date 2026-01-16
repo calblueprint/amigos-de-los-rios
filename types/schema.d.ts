@@ -1,13 +1,14 @@
 import { UUID } from "crypto";
+import { VolunteerType } from "./volunteerType";
 
-export interface Property {
+export type Property = {
   id: UUID;
   route_id: UUID;
-  planit_geo_reference: string;
+  planit_geo_reference: string | null;
   order_to_visit: number;
   street_address: string;
   property_name: string;
-}
+};
 
 export type Route = {
   id: UUID;
@@ -15,8 +16,9 @@ export type Route = {
   date: string;
   watering_event_name: string;
   route_label: string;
-  volunteer_type: number;
-  maps_link: string;
+  volunteer_type: VolunteerType;
+  maps_link: string | null;
+  num_volunteers: number;
 };
 
 export type WateringSession = {
@@ -40,4 +42,12 @@ export type Team = {
   type: string;
   size: number;
   time: string;
+};
+
+export type RouteUserAssignment = {
+  id: UUID;
+  user_id: UUID;
+  route_id: UUID;
+  published: boolean;
+  session_id: UUID;
 };

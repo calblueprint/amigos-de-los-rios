@@ -15,6 +15,7 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-bottom: 6rem;
 `;
 
 export const BackLink = styled(Link)`
@@ -152,7 +153,7 @@ export const GenerateButton = styled.button`
 `;
 
 export const FixedBottomContainer = styled.div`
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;

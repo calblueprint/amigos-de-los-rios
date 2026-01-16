@@ -18,9 +18,10 @@ import {
 interface teamCardProps {
   team: Team;
   onDelete: () => void;
+  onUpdate: (updatedTeam: Team) => void;
 }
 
-export default function TeamCard({ team, onDelete }: teamCardProps) {
+export default function TeamCard({ team, onDelete, onUpdate }: teamCardProps) {
   const [typeOpen, setTypeOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
@@ -37,10 +38,11 @@ export default function TeamCard({ team, onDelete }: teamCardProps) {
           <InputWrapper>
             <TeamInput
               as="select"
-              defaultValue={team.type}
+              value={team.type}
+              onChange={e => onUpdate({ ...team, type: e.target.value })}
               onClick={() => setTypeOpen(prev => !prev)}
             >
-              {["Type A", "Type B", "Type C", "Type D"].map(type => (
+              {["Type A", "Type B", "Type C", "Type D", "Type E"].map(type => (
                 <option key={type} value={type}>
                   {type}
                 </option>
@@ -56,7 +58,10 @@ export default function TeamCard({ team, onDelete }: teamCardProps) {
           <InputWrapper>
             <TeamInput
               as="select"
-              defaultValue={team.size}
+              value={team.size}
+              onChange={e =>
+                onUpdate({ ...team, size: parseInt(e.target.value, 10) })
+              }
               onClick={() => setSizeOpen(prev => !prev)}
             >
               {Array.from({ length: 11 }, (_, i) => i).map(size => (
@@ -75,7 +80,8 @@ export default function TeamCard({ team, onDelete }: teamCardProps) {
           <InputWrapper>
             <TeamInput
               as="select"
-              defaultValue={team.time}
+              value={team.time}
+              onChange={e => onUpdate({ ...team, time: e.target.value })}
               onClick={() => setTimeOpen(prev => !prev)}
             >
               {Array.from({ length: 6 }, (_, i) => i + 1).map(hour => (

@@ -1,3 +1,4 @@
+import { Property, Route } from "@/types/schema";
 import supabase from "../client";
 
 type WateringSession = {
@@ -126,4 +127,25 @@ export async function fetchAllSessionsForUser(userId: string) {
   if (sessionError) throw sessionError;
 
   return (sessions || []) as WateringSession[];
+}
+
+export async function createRoute(routeData: Omit<Route, "id">) {
+  const { data, error } = await supabase
+    .from("Routes")
+    .insert([routeData])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as Route;
+}
+
+export async function createProperties(propertiesData: Omit<Property, "id">[]) {
+  const { data, error } = await supabase
+    .from("Property")
+    .insert(propertiesData)
+    .select();
+
+  if (error) throw error;
+  return data as Property[];
 }

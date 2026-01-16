@@ -87,7 +87,13 @@ export default function SessionsPage() {
       <Banner />
 
       <HeaderSection>
-        <Header>Sessions</Header>
+        <Header>
+          {isAdmin === null
+            ? "Sessions"
+            : isAdmin
+              ? "Sessions [Admin View]"
+              : "Sessions [Volunteer View]"}
+        </Header>
         {isAdmin && (
           <ButtonGroup>
             <AddButton href="/sessions/new_session">+ Add</AddButton>
