@@ -86,11 +86,15 @@ export default function SessionRoutesPage({
         </CentralHubName>
         <DateHeader>
           {sessionInfo?.date
-            ? new Date(sessionInfo.date).toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })
+            ? new Date(sessionInfo.date + "T00:00:00").toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                  timeZone: "America/Los_Angeles",
+                },
+              )
             : "Date"}
         </DateHeader>
         <RoutesHeader>Routes</RoutesHeader>

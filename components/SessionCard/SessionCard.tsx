@@ -59,10 +59,11 @@ export default function SessionCard({ session }: SessionCardProps) {
       <SessionImage src="/campanile.svg" alt="Session" />
       <SessionInfo>
         <SessionDate>
-          {new Date(session.date).toLocaleDateString("en-GB", {
+          {new Date(session.date + "T00:00:00").toLocaleDateString("en-GB", {
             day: "numeric",
             month: "long",
             year: "numeric",
+            timeZone: "America/Los_Angeles",
           })}
         </SessionDate>
         <SessionHub>{session.central_hub}</SessionHub>
