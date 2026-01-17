@@ -8,7 +8,7 @@ import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import RouteCard from "@/components/RouteCard/RouteCard";
-import { Route } from "@/types/schema";
+import { Route, WateringSession } from "@/types/schema";
 import {
   BackLink,
   CentralHubName,
@@ -31,10 +31,7 @@ export default function SessionRoutesPage({
   const [routes, setRoutes] = useState<Route[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sessionInfo, setSessionInfo] = useState<{
-    central_hub: string;
-    date: string;
-  } | null>(null);
+  const [sessionInfo, setSessionInfo] = useState<WateringSession | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -82,7 +79,7 @@ export default function SessionRoutesPage({
 
       <ContentContainer>
         <CentralHubName>
-          {sessionInfo?.central_hub ?? "Central Hub"}
+          {sessionInfo?.watering_event_name ?? ""}
         </CentralHubName>
         <DateHeader>
           {sessionInfo?.date
