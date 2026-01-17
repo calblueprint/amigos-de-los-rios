@@ -92,7 +92,8 @@ export default function SessionRoutesPage({
                   timeZone: "America/Los_Angeles",
                 },
               )
-            : "Date"}
+            : "Date"}{" "}
+          at {sessionInfo?.central_hub}
         </DateHeader>
         <RoutesHeader>Routes</RoutesHeader>
 
