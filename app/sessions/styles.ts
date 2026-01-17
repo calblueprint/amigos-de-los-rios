@@ -92,3 +92,30 @@ export const SessionsList = styled.div`
   gap: 1.25rem;
   margin: 0 15% 2rem 15%;
 `;
+
+export const SignOutButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: ${COLORS.adlr_lighter_gray};
+  color: ${COLORS.adlr_black};
+  padding: 0.5rem 1rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.375rem;
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 400;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 10;
+  &:hover {
+    background: ${COLORS.adlr_gray};
+  }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+`;

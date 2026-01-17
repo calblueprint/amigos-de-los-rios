@@ -22,13 +22,14 @@ import {
   HeaderSection,
   PageContainer,
   SessionsList,
+  SignOutButton,
 } from "./styles";
 
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId, loading: authLoading } = useAuth();
+  const { userId, loading: authLoading, signOut } = useAuth();
   const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -79,11 +80,17 @@ export default function SessionsPage() {
     init();
   }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/login");
+  };
+
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <PageContainer>
+      <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
       <Banner />
 
       <HeaderSection>

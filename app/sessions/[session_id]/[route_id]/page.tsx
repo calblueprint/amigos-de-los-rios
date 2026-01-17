@@ -2,12 +2,16 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchPropertiesByRouteId } from "@/actions/supabase/queries/routes";
+import {
+  fetchPropertiesByRouteId,
+  fetchRouteById,
+} from "@/actions/supabase/queries/routes";
 import {
   assignUserToRoute,
   getAssignedUsersByRouteId,
   unassignUserFromRoute,
 } from "@/actions/supabase/queries/routeUserAssignments";
+import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
   getUserByEmail,
@@ -16,7 +20,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
-import { Property, User } from "@/types/schema";
+import { Property, Route, User, WateringSession } from "@/types/schema";
 import {
   BackLink,
   ContentContainer,
@@ -40,6 +44,8 @@ export default function RoutePage({
   const [loading, setLoading] = useState(true);
   const [assignLoading, setAssignLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [route, setRoute] = useState<Route | null>(null);
+  const [sessionInfo, setSessionInfo] = useState<WateringSession | null>(null);
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState("");
@@ -71,6 +77,12 @@ export default function RoutePage({
 
         const assigned = await getAssignedUsersByRouteId(route_id);
         setAssignedUsers(assigned);
+
+        const route = await fetchRouteById(route_id);
+        setRoute(route);
+
+        const sessionInfo = await fetchSessionById(session_id);
+        setSessionInfo(sessionInfo);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load route data",
@@ -137,7 +149,9 @@ export default function RoutePage({
       <BackLink href={backLink}>{backLinkText}</BackLink>
 
       <ContentContainer>
-        <Header>Central Hub Name</Header>
+        <Header>
+          {sessionInfo?.watering_event_name} — {route?.route_label}
+        </Header>
 
         {/* temporary input styling */}
         {isAdmin && (

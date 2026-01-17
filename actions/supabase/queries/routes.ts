@@ -129,6 +129,18 @@ export async function fetchAllSessionsForUser(userId: string) {
   return (sessions || []) as WateringSession[];
 }
 
+export async function fetchRouteById(routeId: string) {
+  const { data, error } = await supabase
+    .from("Routes")
+    .select("*")
+    .eq("id", routeId)
+    .single();
+
+  if (error) throw error;
+
+  return data as Route;
+}
+
 export async function createRoute(routeData: Omit<Route, "id">) {
   const { data, error } = await supabase
     .from("Routes")
