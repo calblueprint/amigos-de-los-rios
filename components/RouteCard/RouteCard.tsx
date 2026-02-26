@@ -22,6 +22,32 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     router.push(`/sessions/${sessionId}/${route.id}`);
   };
 
+  type VolunteerTypes = "Type A" | "Type B" | "Type C" | "Type D" | "Type E";
+
+  type VolunteerImageRecord = {
+    ImageURL: string;
+  };
+
+  const ImageRecord: Record<VolunteerTypes, VolunteerImageRecord> = {
+    "Type A": {
+      ImageURL: "/images/A_tree.png",
+    },
+    "Type B": {
+      ImageURL: "/images/B_water.png",
+    },
+    "Type C": {
+      ImageURL: "/images/C_truck.png",
+    },
+    "Type D": {
+      ImageURL: "/orange.jpg",
+    },
+    "Type E": {
+      ImageURL: "/orange.jpg",
+    },
+  };
+
+  const img_src = ImageRecord[route.volunteer_type].ImageURL ?? "/orange.jpg";
+
   return (
     <RouteCardContainer onClick={handleClick}>
       <RouteInfo>
@@ -30,7 +56,7 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
         <RouteGroup>Group Size: {route.num_volunteers}</RouteGroup>
       </RouteInfo>
 
-      <RouteIconBox src="/orange.jpg" alt="Route" />
+      <RouteIconBox src={img_src} alt="Route" />
     </RouteCardContainer>
   );
 }
