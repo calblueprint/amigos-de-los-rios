@@ -10,14 +10,14 @@ export const RouteCardContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   border-radius: 0.75rem;
-  background: white;
+  background: ${COLORS.adlr_lighter_gray};
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease;
-  min-height: 10rem;
+  min-height: 6rem;
 
   &:hover {
     transform: translateY(-2px);
@@ -27,11 +27,13 @@ export const RouteCardContainer = styled.div`
 
 export const RouteInfo = styled.div`
   width: 65%;
-  padding: 1.5rem 1.75rem;
-  gap: 1.49rem;
+  padding: 1.5rem 1.5rem;
+  flex: 1;
+  gap: 0.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  position: relative;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;
@@ -41,8 +43,8 @@ export const RouteInfo = styled.div`
 `;
 
 export const RouteIconBox = styled.img`
-  width: 30%;
-  object-fit: contain;
+  width: 25%;
+  object-fit: cover;
   border-radius: 0.75rem;
 `;
 
@@ -60,7 +62,7 @@ export const RouteTitle = styled.h3`
 `;
 
 export const RouteGroup = styled.p`
-  color: ${COLORS.black};
+  color: ${COLORS.adlr_property_gray};
   font-size: 1.26488rem;
   font-style: normal;
   font-weight: 400;
@@ -69,5 +71,28 @@ export const RouteGroup = styled.p`
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.875rem, 4vw, 1.26488rem);
+  }
+`;
+
+export const CloseIconButton = styled.button`
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem; 
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  color: #9CA3AF;
+  font-size: 1rem;
+
+  &:hover {
+    background: #F3F4F6;
   }
 `;

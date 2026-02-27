@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { Route } from "@/types/schema"; // your branded UUID schema
+import { IconSvgs } from "@/lib/icons";
 import {
   RouteCardContainer,
   RouteGroup,
   RouteIconBox,
   RouteInfo,
   RouteTitle,
+  CloseIconButton,
 } from "./styles";
 
 interface RouteCardProps {
@@ -51,8 +53,8 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
   return (
     <RouteCardContainer onClick={handleClick}>
       <RouteInfo>
-        <RouteTitle>{route.watering_event_name}</RouteTitle>
-        <RouteGroup>Route Label: {route.route_label}</RouteGroup>
+        <CloseIconButton>{IconSvgs.close}</CloseIconButton>
+        <RouteTitle>{route.route_label}</RouteTitle>
         <RouteGroup>Group Size: {route.num_volunteers}</RouteGroup>
       </RouteInfo>
 
