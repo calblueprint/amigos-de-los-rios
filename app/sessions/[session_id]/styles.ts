@@ -16,11 +16,15 @@ export const BackLink = styled(Link)`
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 400;
-  display: block;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 1.6875rem;
   margin: 2.63rem 15% 3rem 15%;
   // margin: 2.63rem 17.19rem 3rem 17.19rem;
   line-height: 0.72625rem;
-  letter-spacing: -0.01875rem;
+  text-decoration: none;
+  letter-spacing: -0.017rem;
   cursor: pointer;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {

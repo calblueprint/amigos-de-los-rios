@@ -1,15 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Route } from "@/types/schema"; // your branded UUID schema
 import { IconSvgs } from "@/lib/icons";
+import { Route } from "@/types/schema"; // your branded UUID schema
+
 import {
+  CloseIconButton,
   RouteCardContainer,
   RouteGroup,
   RouteIconBox,
   RouteInfo,
   RouteTitle,
-  CloseIconButton,
 } from "./styles";
 
 interface RouteCardProps {

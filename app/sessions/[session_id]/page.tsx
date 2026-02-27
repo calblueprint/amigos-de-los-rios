@@ -8,6 +8,7 @@ import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import RouteCard from "@/components/RouteCard/RouteCard";
+import { IconSvgs } from "@/lib/icons";
 import { Route, WateringSession } from "@/types/schema";
 import {
   BackLink,
@@ -75,7 +76,10 @@ export default function SessionRoutesPage({
     <PageContainer>
       <Banner />
 
-      <BackLink href="/sessions">← Back to Sessions</BackLink>
+      <BackLink href="/sessions">
+        {IconSvgs.BackArrow}
+        Back to Sessions
+      </BackLink>
 
       <ContentContainer>
         <CentralHubName>
