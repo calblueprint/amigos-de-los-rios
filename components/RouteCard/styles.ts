@@ -43,7 +43,7 @@ export const RouteInfo = styled.div`
 `;
 
 export const RouteIconBox = styled.img`
-  width: 25%;
+  width: 22%;
   object-fit: cover;
   border-radius: 0.75rem;
 `;

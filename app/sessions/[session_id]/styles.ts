@@ -41,6 +41,9 @@ export const BackLink = styled(Link)`
 
 export const ContentContainer = styled.div`
   margin: 0 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 `;
 
 export const CentralHubName = styled.h1`
@@ -50,7 +53,7 @@ export const CentralHubName = styled.h1`
   font-weight: 700;
   line-height: 1.125rem;
   letter-spacing: -0.0375rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -59,13 +62,16 @@ export const CentralHubName = styled.h1`
 `;
 
 export const DateHeader = styled.h1`
-  color: ${COLORS.black};
+  color: ${COLORS.adlr_property_gray};
+  display: flex;
+  flex-direction: row;
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.125rem;
+  line-height: 1.875rem;
   letter-spacing: -0.01875rem;
   margin-bottom: 2.63rem;
+  gap: 2rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1rem, 4vw, 1.25rem);

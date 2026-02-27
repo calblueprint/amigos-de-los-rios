@@ -90,14 +90,14 @@ export default function SessionRoutesPage({
             ? new Date(sessionInfo.date + "T00:00:00").toLocaleDateString(
                 "en-US",
                 {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
                   timeZone: "America/Los_Angeles",
                 },
               )
             : "Date"}{" "}
-          at {sessionInfo?.central_hub}
+          <div>{sessionInfo?.central_hub}</div>
         </DateHeader>
         <RoutesHeader>Routes</RoutesHeader>
 
