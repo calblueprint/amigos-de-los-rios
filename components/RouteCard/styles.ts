@@ -7,6 +7,7 @@ import { MOBILE_BREAKPOINT } from "@/styles/containers";
 export const RouteCardContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   border-radius: 0.75rem;
   background: white;
