@@ -115,9 +115,10 @@ export const UpcomingButton = styled.button<{ active: boolean }>`
   border: none;
   border-radius: 0.3125rem 0 0 0.3125rem;
   background: ${props => (props.active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.active ? "#000000" : "#707070")};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
-  font-size: 1rem;
+  font-size: 1.25rem;
   cursor: pointer;
 `;
 
@@ -130,9 +131,10 @@ export const PastButton = styled.button<{ active: boolean }>`
   border: none;
   border-radius: 0 0.3125rem 0.3125rem 0;
   background: ${props => (props.active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.active ? "#000000" : "#707070")};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
-  font-size: 1rem;
+  font-size: 1.25rem;
   cursor: pointer;
 `;
 
