@@ -21,8 +21,11 @@ import {
   Header,
   HeaderSection,
   PageContainer,
+  PastButton,
   SessionsList,
   SignOutButton,
+  ToggleContainer,
+  UpcomingButton,
 } from "./styles";
 
 export default function SessionsPage() {
@@ -31,7 +34,9 @@ export default function SessionsPage() {
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading, signOut } = useAuth();
   const router = useRouter();
-
+  const [filterState, setFilterState] = useState<"Upcoming" | "Past">(
+    "Upcoming",
+  );
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -80,6 +85,13 @@ export default function SessionsPage() {
     init();
   }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
+  // Filter sessions based on selected date filter
+  const filteredSessions = sessions.filter(session => {
+    const sessionDate = session.date;
+    const now = new Date().toISOString().split("T")[0];
+    return filterState === "Upcoming" ? sessionDate >= now : sessionDate < now;
+  });
+
   const handleSignOut = async () => {
     await signOut();
     router.push("/login");
@@ -107,10 +119,25 @@ export default function SessionsPage() {
             <EditButton>Edit</EditButton>
           </ButtonGroup>
         )}
+
+        <ToggleContainer>
+          <UpcomingButton
+            active={filterState === "Upcoming"}
+            onClick={() => setFilterState("Upcoming")}
+          >
+            Upcoming
+          </UpcomingButton>
+          <PastButton
+            active={filterState === "Past"}
+            onClick={() => setFilterState("Past")}
+          >
+            Past
+          </PastButton>
+        </ToggleContainer>
       </HeaderSection>
 
       <SessionsList>
-        {sessions.map(session => (
+        {filteredSessions.map(session => (
           <SessionCard key={session.id} session={session} />
         ))}
       </SessionsList>

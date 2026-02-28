@@ -93,6 +93,46 @@ export const SessionsList = styled.div`
   margin: 0 15% 2rem 15%;
 `;
 
+export const ToggleContainer = styled.div`
+  display: flex;
+  display: flex;
+  width: 12.43406rem;
+  height: 3.0625rem;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 0.3125rem;
+  border: 1px solid #d9d9d9;
+  background: #efefef;
+`;
+
+export const UpcomingButton = styled.button<{ active: boolean }>`
+  display: flex;
+  padding: 0.59375rem 1.22313rem 0.65625rem 1.25rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 0.3125rem 0 0 0.3125rem;
+  border: none;
+  background: ${props => (props.active ? "#D9D9D9" : "transparent")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+export const PastButton = styled.button<{ active: boolean }>`
+  display: flex;
+  padding: 0.59375rem 1.21094rem 0.65625rem 1.25rem;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: ${props => (props.active ? "#EFEFEF" : "transparent")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
 export const SignOutButton = styled.button`
   position: absolute;
   top: 1rem;
