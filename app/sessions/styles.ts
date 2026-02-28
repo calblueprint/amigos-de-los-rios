@@ -103,16 +103,17 @@ export const ToggleContainer = styled.div`
   border-radius: 0.3125rem;
   border: 1px solid #d9d9d9;
   background: #efefef;
+  overflow: hidden;
 `;
 
 export const UpcomingButton = styled.button<{ active: boolean }>`
   display: flex;
-  padding: 0.59375rem 1.22313rem 0.65625rem 1.25rem;
+  height: 3.0625rem;
   justify-content: center;
   align-items: center;
   flex: 1 0 0;
-  border-radius: 0.3125rem 0 0 0.3125rem;
   border: none;
+  border-radius: 0.3125rem 0 0 0.3125rem;
   background: ${props => (props.active ? "#D9D9D9" : "transparent")};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
@@ -123,10 +124,12 @@ export const UpcomingButton = styled.button<{ active: boolean }>`
 export const PastButton = styled.button<{ active: boolean }>`
   display: flex;
   padding: 0.59375rem 1.21094rem 0.65625rem 1.25rem;
+  height: 3.0625rem;
   justify-content: center;
   align-items: center;
   border: none;
-  background: ${props => (props.active ? "#EFEFEF" : "transparent")};
+  border-radius: 0 0.3125rem 0.3125rem 0;
+  background: ${props => (props.active ? "#D9D9D9" : "transparent")};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
   font-size: 1rem;
