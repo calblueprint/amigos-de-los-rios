@@ -122,13 +122,13 @@ export default function SessionsPage() {
 
         <ToggleContainer>
           <UpcomingButton
-            active={filterState === "Upcoming"}
+            $active={filterState === "Upcoming"}
             onClick={() => setFilterState("Upcoming")}
           >
             Upcoming
           </UpcomingButton>
           <PastButton
-            active={filterState === "Past"}
+            $active={filterState === "Past"}
             onClick={() => setFilterState("Past")}
           >
             Past

@@ -46,6 +46,15 @@ export const SessionImage = styled.img`
 export const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1 0 0;
+`;
+
+export const SessionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 0.5rem;
 `;
 
 export const SessionDate = styled.p`
@@ -56,7 +65,7 @@ export const SessionDate = styled.p`
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02625rem;
-  margin-bottom: 1.375rem;
+  margin: 0;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1rem, 4vw, 1.3125rem);
@@ -93,5 +102,29 @@ export const SessionTitle = styled.h2`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.75rem, 4vw, 1.03rem);
     margin-bottom: 0.25rem;
+  }
+`;
+
+export const DeleteButton = styled.button`
+  top: 0.5rem;
+  right: 1.75rem;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background: #f5f5f5;
+    border-color: #707070;
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
   }
 `;

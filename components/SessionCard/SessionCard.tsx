@@ -7,7 +7,9 @@ import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { WateringSession } from "@/types/schema";
 import {
+  DeleteButton,
   SessionDate,
+  SessionHeader,
   SessionHub,
   SessionImage,
   SessionInfo,
@@ -53,19 +55,51 @@ export default function SessionCard({ session }: SessionCardProps) {
       console.error(err);
     }
   };
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent triggering handleClick
+    // TODO: Implement delete functionality
+    console.log("Delete session", session.id);
+  };
 
   return (
     <StyledSessionCard onClick={handleClick} style={{ cursor: "pointer" }}>
       <SessionImage src="/campanile.svg" alt="Session" />
+
       <SessionInfo>
-        <SessionDate>
-          {new Date(session.date + "T00:00:00").toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            timeZone: "America/Los_Angeles",
-          })}
-        </SessionDate>
+        <SessionHeader>
+          <SessionDate>
+            {new Date(session.date + "T00:00:00").toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "America/Los_Angeles",
+            })}
+          </SessionDate>
+          <DeleteButton onClick={handleDelete}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M12 4L4 12"
+                stroke="#707070"
+                stroke-width="1.33333"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M4 4L12 12"
+                stroke="#707070"
+                stroke-width="1.33333"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </DeleteButton>
+        </SessionHeader>
         <SessionHub>{session.central_hub}</SessionHub>
         <SessionTitle>Property Address</SessionTitle>
       </SessionInfo>
