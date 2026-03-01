@@ -47,17 +47,15 @@ export const ButtonGroup = styled.div`
 `;
 
 export const AddButton = styled(Link)`
-  background: ${COLORS.adlr_green};
-  color: white;
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: none;
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.2s;
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1540094.5rem;
+  border: 1.469px solid var(--ADLR-Green, #80bc51);
+  background: var(--ADLR-Green, #80bc51);
+
   &:hover {
     background: ${COLORS.adlr_hover_green};
   }
