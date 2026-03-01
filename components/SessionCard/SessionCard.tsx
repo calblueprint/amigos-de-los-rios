@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Session } from "inspector/promises";
 import { fetchUserRouteForSession } from "@/actions/supabase/queries/routes";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
@@ -68,9 +69,10 @@ export default function SessionCard({ session }: SessionCardProps) {
       <SessionInfo>
         <SessionHeader>
           <SessionDate>
-            {new Date(session.date + "T00:00:00").toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
+            {session.central_hub},{" "}
+            {new Date(session.date + "T00:00:00").toLocaleDateString("en-US", {
+              month: "2-digit",
+              day: "2-digit",
               year: "numeric",
               timeZone: "America/Los_Angeles",
             })}
@@ -100,7 +102,6 @@ export default function SessionCard({ session }: SessionCardProps) {
             </svg>
           </DeleteButton>
         </SessionHeader>
-        <SessionHub>{session.central_hub}</SessionHub>
         <SessionTitle>Property Address</SessionTitle>
       </SessionInfo>
     </StyledSessionCard>

@@ -47,7 +47,6 @@ export const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  
 `;
 
 export const SessionHeader = styled.div`
@@ -56,7 +55,7 @@ export const SessionHeader = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 0.5rem;
-`;  
+`;
 
 export const SessionDate = styled.p`
   color: ${COLORS.black};
@@ -106,7 +105,6 @@ export const SessionTitle = styled.h2`
   }
 `;
 
-
 export const DeleteButton = styled.button`
   top: 0.5rem;
   right: 1.75rem;
@@ -116,17 +114,17 @@ export const DeleteButton = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: 1px solid #D9D9D9;
-  background: #FFF;
+  border: 1px solid #d9d9d9;
+  background: #fff;
   cursor: pointer;
 
   &:hover {
-    background: #F5F5F5;
+    background: #f5f5f5;
     border-color: #707070;
   }
-  
+
   svg {
     width: 1rem;
     height: 1rem;
   }
-  `;
+`;
