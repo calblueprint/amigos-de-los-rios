@@ -27,6 +27,13 @@ export const HeaderSection = styled.div`
   }
 `;
 
+export const ControlsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
 export const Header = styled.h1`
   font-size: 2.5rem;
   font-style: normal;
@@ -55,7 +62,7 @@ export const AddButton = styled(Link)`
   border-radius: 1540094.5rem;
   border: 1.469px solid var(--ADLR-Green, #80bc51);
   background: var(--ADLR-Green, #80bc51);
-
+  transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};
   }
@@ -66,13 +73,14 @@ export const AddButton = styled(Link)`
 `;
 
 export const EditButton = styled.button`
-  background: ${COLORS.adlr_lighter_gray};
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  background: white;
+  padding: 0.73438rem;
+  align-items: center;
+  border: #707070 1px solid;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s;
   &:hover {

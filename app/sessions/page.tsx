@@ -17,6 +17,7 @@ import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
+  ControlsRow,
   EditButton,
   Header,
   HeaderSection,
@@ -113,27 +114,33 @@ export default function SessionsPage() {
               ? "Sessions [Admin View]"
               : "Sessions [Volunteer View]"}
         </Header>
-        {isAdmin && (
-          <ButtonGroup>
-            <AddButton href="/sessions/new_session">+ Add</AddButton>
-            <EditButton>Edit</EditButton>
-          </ButtonGroup>
-        )}
-
-        <ToggleContainer>
-          <UpcomingButton
-            $active={filterState === "Upcoming"}
-            onClick={() => setFilterState("Upcoming")}
-          >
-            Upcoming
-          </UpcomingButton>
-          <PastButton
-            $active={filterState === "Past"}
-            onClick={() => setFilterState("Past")}
-          >
-            Past
-          </PastButton>
-        </ToggleContainer>
+        <ControlsRow>
+          <ToggleContainer>
+            <UpcomingButton
+              $active={filterState === "Upcoming"}
+              onClick={() => setFilterState("Upcoming")}
+            >
+              Upcoming
+            </UpcomingButton>
+            <PastButton
+              $active={filterState === "Past"}
+              onClick={() => setFilterState("Past")}
+            >
+              Past
+            </PastButton>
+          </ToggleContainer>
+          {isAdmin && (
+            <ButtonGroup>
+              <AddButton href="/sessions/new_session">
+                <img src="/icons/addicon.svg" alt="Add" />
+              </AddButton>
+              <EditButton>
+                {" "}
+                <img src="/icons/editicon.svg" alt="Edit" />{" "}
+              </EditButton>
+            </ButtonGroup>
+          )}
+        </ControlsRow>
       </HeaderSection>
 
       <SessionsList>
