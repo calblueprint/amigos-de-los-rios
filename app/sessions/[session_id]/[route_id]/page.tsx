@@ -124,6 +124,10 @@ export default function RoutePage({
     }
   }
 
+  // TODO: handle group leader assigning and exclusivity stuff
+  // async function handleGroupLeader(userId: string) {
+
+  // }
   async function handleUnassign(userId: string) {
     try {
       await unassignUserFromRoute(route_id, userId);
@@ -191,6 +195,11 @@ export default function RoutePage({
                     <div>
                       <strong>{item.name}</strong> — {item.email}
                     </div>
+
+                    {/* TODO: group leader placeholder */}
+                    {/* <button onClick={() => handleGroupLeader(item.id)}>
+                      group leader placeholder
+                    </button> */}
 
                     <button onClick={() => handleUnassign(item.id)}>
                       Unassign
