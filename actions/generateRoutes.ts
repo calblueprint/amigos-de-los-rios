@@ -1,12 +1,20 @@
+"use server";
+
 import { UUID } from "crypto";
+import { fetchTreesBatch } from "@/actions/planitgeo/queries/query";
 import {
   createProperties,
   createRoute,
 } from "@/actions/supabase/queries/routes";
 import { createWateringSession } from "@/actions/supabase/queries/sessions";
-import { random } from "@/lib/utils";
-import { Property, Team, WateringSession } from "@/types/schema";
+import { Team, WateringSession } from "@/types/schema";
 import { VolunteerType } from "@/types/volunteerType";
+
+// TODO: Replace with actual hub coordinates when available
+const DEFAULT_HUB = { lat: 34.0522, lng: -118.2437 };
+
+const LAMBDA_URL = process.env.LAMBDA_ROUTE_URL;
+const SERVICE_TIME_MINUTES = 15;
 
 interface GenerateRoutesRequest {
   sessionName: string;
@@ -19,46 +27,48 @@ interface GenerateRoutesResponse {
   session: WateringSession;
 }
 
-/**
- * Generate mock properties for a route
- */
-function generateMockProperties(
-  routeId: UUID,
-  count: number,
-): Omit<Property, "id">[] {
-  const streetNames = [
-    "Oak Street",
-    "Elm Avenue",
-    "Maple Drive",
-    "Pine Road",
-    "Cedar Lane",
-    "Birch Way",
-    "Willow Court",
-    "Ash Boulevard",
-    "Spruce Street",
-    "Redwood Circle",
-  ];
-  const propertyTypes = [
-    "Residential",
-    "Park",
-    "Community Garden",
-    "School",
-    "Library",
-    "Community Center",
-  ];
-
-  return Array.from({ length: count }, (_, index) => ({
-    route_id: routeId,
-    planit_geo_reference: null,
-    order_to_visit: index + 1,
-    street_address: `${random(100, 9999)} ${streetNames[random(0, streetNames.length - 1)]}, Berkeley, CA`,
-    property_name: `${propertyTypes[random(0, propertyTypes.length - 1)]} - ${streetNames[random(0, streetNames.length - 1)]}`,
-  }));
+interface PlanItGeoFeature {
+  properties: {
+    pid: number;
+    address_number?: string;
+    address_street?: string;
+    address_num_street?: string;
+    species_common?: string;
+    organization?: number;
+  };
+  geometry?: {
+    coordinates: [number, number]; // [lng, lat]
+  };
 }
 
-/**
- * Map Team.type string to VolunteerType enum
- */
+interface LambdaStop {
+  property_id: string;
+  address: string;
+  lat: number;
+  lng: number;
+  service_time_min: number;
+  arrival_time: string;
+}
+
+interface LambdaRoute {
+  vehicle_id: string;
+  stops: LambdaStop[];
+  totals: {
+    travel_min: number;
+    service_min: number;
+    total_min: number;
+  };
+  maps_url: string | null;
+}
+
+interface LambdaResponse {
+  route: LambdaRoute[] | null;
+  dropped: Array<{
+    property_id: string;
+    reason: string;
+  }>;
+}
+
 function getVolunteerType(type: string): VolunteerType {
   switch (type) {
     case "Type A":
@@ -76,13 +86,44 @@ function getVolunteerType(type: string): VolunteerType {
   }
 }
 
+function parseTimeBudgetMinutes(time: string): number {
+  const match = time.match(/(\d+)/);
+  if (!match) return 60;
+  return parseInt(match[1], 10) * 60;
+}
+
 /**
- * Generate routes for a watering session.
- * This function mimics an AWS Lambda API call for route generation.
- *
- * @param request - The route generation request containing session details and teams
- * @returns The created watering session
- * @throws Error if route generation fails
+ * Parse PlanItGeo tree features into the format the Lambda expects.
+ * Reuses the same parsing pattern from the inventories2 page:
+ * filter for valid coordinates and organization 176, then extract
+ * pid, lat/lng (swapped from GeoJSON [lng,lat]), and address.
+ */
+function parseTreesToProperties(features: PlanItGeoFeature[]) {
+  return features
+    .filter(f => f.geometry?.coordinates && f.properties.organization === 176)
+    .map(f => {
+      const p = f.properties;
+      const coords = f.geometry!.coordinates;
+
+      const address =
+        p.address_number && p.address_street
+          ? `${p.address_number} ${p.address_street}`
+          : (p.address_num_street ?? "N/A");
+
+      return {
+        id: String(p.pid),
+        lat: coords[1],
+        lng: coords[0],
+        service_time_minutes: SERVICE_TIME_MINUTES,
+        address,
+      };
+    });
+}
+
+/**
+ * Fetches tree data from PlanItGeo, sends it to the route-optimization
+ * Lambda, then writes the resulting session, routes, and properties
+ * into Supabase.
  */
 export async function generateRoutes(
   request: GenerateRoutesRequest,
@@ -95,30 +136,96 @@ export async function generateRoutes(
     );
   }
 
-  // Create Watering Session
+  if (!LAMBDA_URL) {
+    throw new Error("LAMBDA_ROUTE_URL environment variable is not configured");
+  }
+
+  // Fetch and parse PlanItGeo trees
+  const rawTrees = await fetchTreesBatch();
+  const properties = parseTreesToProperties(rawTrees as PlanItGeoFeature[]);
+
+  if (properties.length === 0) {
+    throw new Error("No properties found from PlanItGeo inventory");
+  }
+
+  // Build Lambda request payload
+  const vehicles = teams.map((team, index) => ({
+    id: `team-${index}`,
+    team_time_budget_minutes: parseTimeBudgetMinutes(team.time),
+  }));
+
+  const lambdaPayload = {
+    hub: DEFAULT_HUB,
+    properties: properties.map(p => ({
+      id: p.id,
+      lat: p.lat,
+      lng: p.lng,
+      service_time_minutes: p.service_time_minutes,
+    })),
+    vehicles,
+  };
+
+  // Call the route-optimization Lambda
+  const lambdaResponse = await fetch(LAMBDA_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(lambdaPayload),
+  });
+
+  if (!lambdaResponse.ok) {
+    const errorText = await lambdaResponse.text();
+    throw new Error(`Route optimization failed: ${errorText}`);
+  }
+
+  const result: LambdaResponse = await lambdaResponse.json();
+
+  if (!result.route || result.route.length === 0) {
+    throw new Error(
+      "Route optimizer could not generate any routes. All properties may have been dropped.",
+    );
+  }
+
+  // Create watering session in Supabase
   const session = await createWateringSession({
     date,
     watering_event_name: sessionName,
     central_hub: centralHub,
   });
 
-  // Create routes for each team
-  for (let i = 0; i < teams.length; i++) {
-    const team = teams[i];
+  // Create routes and properties in Supabase
+  const vehicleToTeam = new Map(
+    teams.map((team, index) => [`team-${index}`, team]),
+  );
+
+  const addressLookup = new Map(properties.map(p => [p.id, p.address]));
+
+  for (let i = 0; i < result.route.length; i++) {
+    const lambdaRoute = result.route[i];
+    const team = vehicleToTeam.get(lambdaRoute.vehicle_id);
+
     const route = await createRoute({
       watering_event_id: session.id as UUID,
       date,
       watering_event_name: sessionName,
       route_label: `Route ${i + 1}`,
-      volunteer_type: getVolunteerType(team.type),
-      maps_link: null,
-      num_volunteers: team.size,
+      volunteer_type: getVolunteerType(team?.type ?? "Type A"),
+      maps_link: lambdaRoute.maps_url,
+      num_volunteers: team?.size ?? 0,
     });
 
-    // Generate 3-5 mock properties for this route
-    const propertyCount = random(3, 5);
-    const properties = generateMockProperties(route.id, propertyCount);
-    await createProperties(properties);
+    const propertiesToInsert = lambdaRoute.stops.map((stop, stopIndex) => ({
+      route_id: route.id,
+      planit_geo_reference: stop.property_id,
+      order_to_visit: stopIndex + 1,
+      street_address:
+        stop.address || addressLookup.get(stop.property_id) || "N/A",
+      property_name:
+        stop.address || addressLookup.get(stop.property_id) || "N/A",
+    }));
+
+    if (propertiesToInsert.length > 0) {
+      await createProperties(propertiesToInsert);
+    }
   }
 
   return { session };

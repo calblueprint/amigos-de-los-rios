@@ -65,7 +65,7 @@ export default function TeamsPage() {
       setGenerating(true);
       setError(null);
 
-      // Call the route generation API (mimics AWS Lambda call)
+      // Call the route-optimization Lambda via server action
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
