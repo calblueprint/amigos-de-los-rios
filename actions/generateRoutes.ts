@@ -172,7 +172,7 @@ export async function generateRoutes(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(lambdaPayload),
   });
@@ -198,11 +198,14 @@ export async function generateRoutes(
   );
 
   // Create watering session in Supabase
-  const session = await createWateringSession({
-    date,
-    watering_event_name: sessionName,
-    central_hub: centralHub,
-  }, authClient);
+  const session = await createWateringSession(
+    {
+      date,
+      watering_event_name: sessionName,
+      central_hub: centralHub,
+    },
+    authClient,
+  );
 
   // Create routes and properties in Supabase
   const vehicleToTeam = new Map(
@@ -215,15 +218,18 @@ export async function generateRoutes(
     const lambdaRoute = result.route[i];
     const team = vehicleToTeam.get(lambdaRoute.vehicle_id);
 
-    const route = await createRoute({
-      watering_event_id: session.id as UUID,
-      date,
-      watering_event_name: sessionName,
-      route_label: `Route ${i + 1}`,
-      volunteer_type: getVolunteerType(team?.type ?? "Type A"),
-      maps_link: lambdaRoute.maps_url,
-      num_volunteers: team?.size ?? 0,
-    }, authClient);
+    const route = await createRoute(
+      {
+        watering_event_id: session.id as UUID,
+        date,
+        watering_event_name: sessionName,
+        route_label: `Route ${i + 1}`,
+        volunteer_type: getVolunteerType(team?.type ?? "Type A"),
+        maps_link: lambdaRoute.maps_url,
+        num_volunteers: team?.size ?? 0,
+      },
+      authClient,
+    );
 
     const propertiesToInsert = lambdaRoute.stops.map((stop, stopIndex) => ({
       route_id: route.id,
