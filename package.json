@@ -15,29 +15,29 @@
     "pre-commit": "concurrently \"pnpm run tsc\" \"pnpm run lint\" \"pnpm run prettier\""
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.52.1",
+    "@supabase/supabase-js": "^2.98.0",
     "next": "15.5.7",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "server-only": "^0.0.1",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.3.11"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@typescript-eslint/eslint-plugin": "^8.41.0",
-    "@typescript-eslint/parser": "^8.41.0",
+    "@eslint/eslintrc": "^3.3.5",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@types/node": "^20.19.37",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "concurrently": "^9.2.1",
-    "eslint": "^9.32.0",
+    "eslint": "^9.39.4",
     "eslint-config-next": "15.5.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "husky": "^9.1.5",
-    "prettier": "^3.3.3",
-    "typescript": "^5"
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
   },
   "pnpm": {
     "overrides": {

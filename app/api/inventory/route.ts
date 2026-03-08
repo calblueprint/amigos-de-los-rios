@@ -18,7 +18,7 @@ import { NextResponse } from "next/server";
   }
 } */
 
-import { fetchTrees, fetchTreesBatch } from "@/actions/planitgeo/queries/query";
+import { fetchTreesBatch } from "@/actions/planitgeo/queries/query";
 
 export async function GET() {
   console.log("GET /api/inventory called");
