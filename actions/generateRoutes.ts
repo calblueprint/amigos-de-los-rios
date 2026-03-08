@@ -1,6 +1,7 @@
 "use server";
 
 import { UUID } from "crypto";
+import { createClient } from "@supabase/supabase-js";
 import { fetchTreesBatch } from "@/actions/planitgeo/queries/query";
 import {
   createProperties,
@@ -21,6 +22,7 @@ interface GenerateRoutesRequest {
   centralHub: string;
   date: string;
   teams: Team[];
+  accessToken: string;
 }
 
 interface GenerateRoutesResponse {
@@ -128,7 +130,7 @@ function parseTreesToProperties(features: PlanItGeoFeature[]) {
 export async function generateRoutes(
   request: GenerateRoutesRequest,
 ): Promise<GenerateRoutesResponse> {
-  const { sessionName, centralHub, date, teams } = request;
+  const { sessionName, centralHub, date, teams, accessToken } = request;
 
   if (!sessionName || !centralHub || !date || teams.length === 0) {
     throw new Error(
@@ -168,7 +170,10 @@ export async function generateRoutes(
   // Call the route-optimization Lambda
   const lambdaResponse = await fetch(LAMBDA_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(lambdaPayload),
   });
 
@@ -185,12 +190,19 @@ export async function generateRoutes(
     );
   }
 
+  // Create a Supabase client authenticated with the user's token
+  const authClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { global: { headers: { Authorization: `Bearer ${accessToken}` } } },
+  );
+
   // Create watering session in Supabase
   const session = await createWateringSession({
     date,
     watering_event_name: sessionName,
     central_hub: centralHub,
-  });
+  }, authClient);
 
   // Create routes and properties in Supabase
   const vehicleToTeam = new Map(
@@ -211,7 +223,7 @@ export async function generateRoutes(
       volunteer_type: getVolunteerType(team?.type ?? "Type A"),
       maps_link: lambdaRoute.maps_url,
       num_volunteers: team?.size ?? 0,
-    });
+    }, authClient);
 
     const propertiesToInsert = lambdaRoute.stops.map((stop, stopIndex) => ({
       route_id: route.id,
@@ -224,7 +236,7 @@ export async function generateRoutes(
     }));
 
     if (propertiesToInsert.length > 0) {
-      await createProperties(propertiesToInsert);
+      await createProperties(propertiesToInsert, authClient);
     }
   }
 

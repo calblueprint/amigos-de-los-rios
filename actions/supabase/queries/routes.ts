@@ -1,3 +1,4 @@
+import { SupabaseClient } from "@supabase/supabase-js";
 import { Property, Route } from "@/types/schema";
 import supabase from "../client";
 
@@ -141,8 +142,11 @@ export async function fetchRouteById(routeId: string) {
   return data as Route;
 }
 
-export async function createRoute(routeData: Omit<Route, "id">) {
-  const { data, error } = await supabase
+export async function createRoute(
+  routeData: Omit<Route, "id">,
+  client: SupabaseClient = supabase,
+) {
+  const { data, error } = await client
     .from("Routes")
     .insert([routeData])
     .select()
@@ -152,8 +156,11 @@ export async function createRoute(routeData: Omit<Route, "id">) {
   return data as Route;
 }
 
-export async function createProperties(propertiesData: Omit<Property, "id">[]) {
-  const { data, error } = await supabase
+export async function createProperties(
+  propertiesData: Omit<Property, "id">[],
+  client: SupabaseClient = supabase,
+) {
+  const { data, error } = await client
     .from("Property")
     .insert(propertiesData)
     .select();

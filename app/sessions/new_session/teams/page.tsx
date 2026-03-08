@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateRoutes } from "@/actions/generateRoutes";
 import { getUserById } from "@/actions/supabase/queries/users";
+import supabase from "@/actions/supabase/client";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
@@ -65,12 +66,17 @@ export default function TeamsPage() {
       setGenerating(true);
       setError(null);
 
+      // Get the current user's access token to pass to the server action
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("No active session. Please log in and try again.");
+
       // Call the route-optimization Lambda via server action
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
         date: data.date,
         teams: data.teams,
+        accessToken: session.access_token,
       });
 
       // Navigate to the new session page
