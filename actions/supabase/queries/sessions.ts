@@ -1,3 +1,4 @@
+import { SupabaseClient } from "@supabase/supabase-js";
 import { WateringSession } from "@/types/schema";
 import supabase from "../client";
 
@@ -14,8 +15,9 @@ export async function fetchSessionById(sessionId: string) {
 
 export async function createWateringSession(
   sessionData: Omit<WateringSession, "id">,
+  client: SupabaseClient = supabase,
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("Watering Sessions")
     .insert([sessionData])
     .select()
