@@ -1,8 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { IconSvgs } from "@/lib/icons";
 import { Route } from "@/types/schema"; // your branded UUID schema
+import { VolunteerType } from "@/types/volunteerType";
 import {
+  CloseIconButton,
   RouteCardContainer,
   RouteGroup,
   RouteIconBox,
@@ -22,15 +25,39 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     router.push(`/sessions/${sessionId}/${route.id}`);
   };
 
+  type VolunteerImageRecord = {
+    ImageURL: string;
+  };
+
+  const ImageRecord: Record<VolunteerType, VolunteerImageRecord> = {
+    "Type A": {
+      ImageURL: "/images/A_tree.svg",
+    },
+    "Type B": {
+      ImageURL: "/images/B_water.svg",
+    },
+    "Type C": {
+      ImageURL: "/images/C_truck.svg",
+    },
+    "Type D": {
+      ImageURL: "/images/D_truck.svg",
+    },
+    "Type E": {
+      ImageURL: "/orange.jpg",
+    },
+  };
+
+  const img_src = ImageRecord[route.volunteer_type].ImageURL ?? "/orange.jpg";
+
   return (
     <RouteCardContainer onClick={handleClick}>
       <RouteInfo>
-        <RouteTitle>{route.watering_event_name}</RouteTitle>
-        <RouteGroup>Route Label: {route.route_label}</RouteGroup>
+        <CloseIconButton>{IconSvgs.close}</CloseIconButton>
+        <RouteTitle>{route.route_label}</RouteTitle>
         <RouteGroup>Group Size: {route.num_volunteers}</RouteGroup>
       </RouteInfo>
 
-      <RouteIconBox src="/orange.jpg" alt="Route" />
+      <RouteIconBox src={img_src} alt="Route" />
     </RouteCardContainer>
   );
 }
