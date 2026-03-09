@@ -31,16 +31,16 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
 
   const ImageRecord: Record<VolunteerType, VolunteerImageRecord> = {
     "Type A": {
-      ImageURL: "/images/A_tree.png",
+      ImageURL: "/images/A_tree.svg",
     },
     "Type B": {
-      ImageURL: "/images/B_water.png",
+      ImageURL: "/images/B_water.svg",
     },
     "Type C": {
-      ImageURL: "/images/C_truck.png",
+      ImageURL: "/images/C_truck.svg",
     },
     "Type D": {
-      ImageURL: "/images/D_truck.png",
+      ImageURL: "/images/D_truck.svg",
     },
     "Type E": {
       ImageURL: "/orange.jpg",
