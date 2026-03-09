@@ -3,11 +3,20 @@ import { VolunteerType } from "./volunteerType";
 
 export type Property = {
   id: UUID;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  water_onsite: boolean;
+  num_trees: string | null;
+  nearest_hydrant: UUID;
+  prev_watered: boolean;
+};
+export type RouteStop = {
+  id: UUID;
   route_id: UUID;
-  planit_geo_reference: string | null;
+  property_id: UUID;
   order_to_visit: number;
-  street_address: string;
-  property_name: string;
+  property_address: string;
 };
 
 export type Route = {
