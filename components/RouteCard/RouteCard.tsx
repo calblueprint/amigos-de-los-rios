@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { IconSvgs } from "@/lib/icons";
 import { Route } from "@/types/schema"; // your branded UUID schema
-
+import { VolunteerType } from "@/types/volunteerType";
 import {
   CloseIconButton,
   RouteCardContainer,
@@ -25,13 +25,11 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     router.push(`/sessions/${sessionId}/${route.id}`);
   };
 
-  type VolunteerTypes = "Type A" | "Type B" | "Type C" | "Type D" | "Type E";
-
   type VolunteerImageRecord = {
     ImageURL: string;
   };
 
-  const ImageRecord: Record<VolunteerTypes, VolunteerImageRecord> = {
+  const ImageRecord: Record<VolunteerType, VolunteerImageRecord> = {
     "Type A": {
       ImageURL: "/images/A_tree.png",
     },
@@ -42,7 +40,7 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
       ImageURL: "/images/C_truck.png",
     },
     "Type D": {
-      ImageURL: "/orange.jpg",
+      ImageURL: "/images/D_truck.png",
     },
     "Type E": {
       ImageURL: "/orange.jpg",
