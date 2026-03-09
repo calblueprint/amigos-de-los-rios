@@ -76,10 +76,7 @@ export default function SessionRoutesPage({
     <PageContainer>
       <Banner />
 
-      <BackLink href="/sessions">
-        {IconSvgs.BackArrow}
-        Back to Sessions
-      </BackLink>
+      <BackLink href="/sessions">← Back to Sessions</BackLink>
 
       <ContentContainer>
         <CentralHubName>

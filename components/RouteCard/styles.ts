@@ -9,8 +9,9 @@ export const RouteCardContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  border-radius: 0.75rem;
-  background: ${COLORS.adlr_lighter_gray};
+  border-radius: 0.5rem;
+  border: 1px solid ${COLORS.adlr_lighter_gray};
+  background: ${COLORS.adlr_white};
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -27,9 +28,9 @@ export const RouteCardContainer = styled.div`
 
 export const RouteInfo = styled.div`
   width: 65%;
-  padding: 0.5rem 2rem;
+  padding: 1.5625rem 1.5625rem 2rem 1.5625rem;
   flex: 1;
-  gap: 0.5rem;
+  gap: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -45,12 +46,12 @@ export const RouteInfo = styled.div`
 export const RouteIconBox = styled.img`
   width: 22%;
   object-fit: cover;
-  border-radius: 0.75rem;
+  border-radius-left: 0.75rem;
 `;
 
 export const RouteTitle = styled.h3`
   color: ${COLORS.adlr_black};
-  font-size: 1.6rem;
+  font-size: 1.375rem;
   font-style: normal;
   font-weight: 700;
   line-height: 1.3;
@@ -63,7 +64,7 @@ export const RouteTitle = styled.h3`
 
 export const RouteGroup = styled.p`
   color: ${COLORS.adlr_property_gray};
-  font-size: 1.26488rem;
+  font-size: 1.125;
   font-style: normal;
   font-weight: 400;
   line-height: 1;
