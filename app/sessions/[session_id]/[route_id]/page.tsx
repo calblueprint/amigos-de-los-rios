@@ -20,7 +20,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
-import { Property, Route, User, WateringSession } from "@/types/schema";
+import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   BackLink,
   ContentContainer,
@@ -39,7 +39,7 @@ export default function RoutePage({
   const { session_id, route_id } = use(params);
   const { userId } = useAuth();
   const router = useRouter();
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [stops, setStops] = useState<RouteStop[]>([]);
   const [assignedUsers, setAssignedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [assignLoading, setAssignLoading] = useState(false);
@@ -73,7 +73,7 @@ export default function RoutePage({
 
         // Load properties
         const props = await fetchPropertiesByRouteId(route_id);
-        setProperties(props);
+        setStops(props);
 
         const assigned = await getAssignedUsersByRouteId(route_id);
         setAssignedUsers(assigned);
@@ -206,12 +206,10 @@ export default function RoutePage({
           <Tab $active>Properties</Tab>
         </TabContainer>
         <PropertiesList>
-          {properties.length === 0 ? (
+          {stops.length === 0 ? (
             <p>No properties found for your route.</p>
           ) : (
-            properties.map(property => (
-              <PropertyCard key={property.id} property={property} />
-            ))
+            stops.map(stop => <PropertyCard key={stop.id} property={stop} />)
           )}
         </PropertiesList>
       </ContentContainer>
