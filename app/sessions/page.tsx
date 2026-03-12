@@ -17,12 +17,16 @@ import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
+  ControlsRow,
   EditButton,
   Header,
   HeaderSection,
   PageContainer,
+  PastButton,
   SessionsList,
   SignOutButton,
+  ToggleContainer,
+  UpcomingButton,
 } from "./styles";
 
 export default function SessionsPage() {
@@ -31,7 +35,9 @@ export default function SessionsPage() {
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading, signOut } = useAuth();
   const router = useRouter();
-
+  const [filterState, setFilterState] = useState<"Upcoming" | "Past">(
+    "Upcoming",
+  );
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -80,6 +86,13 @@ export default function SessionsPage() {
     init();
   }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
+  // Filter sessions based on selected date filter
+  const filteredSessions = sessions.filter(session => {
+    const sessionDate = session.date;
+    const now = new Date().toISOString().split("T")[0];
+    return filterState === "Upcoming" ? sessionDate >= now : sessionDate < now;
+  });
+
   const handleSignOut = async () => {
     await signOut();
     router.push("/login");
@@ -101,16 +114,37 @@ export default function SessionsPage() {
               ? "Sessions [Admin View]"
               : "Sessions [Volunteer View]"}
         </Header>
-        {isAdmin && (
-          <ButtonGroup>
-            <AddButton href="/sessions/new_session">+ Add</AddButton>
-            <EditButton>Edit</EditButton>
-          </ButtonGroup>
-        )}
+        <ControlsRow>
+          <ToggleContainer>
+            <UpcomingButton
+              $active={filterState === "Upcoming"}
+              onClick={() => setFilterState("Upcoming")}
+            >
+              Upcoming
+            </UpcomingButton>
+            <PastButton
+              $active={filterState === "Past"}
+              onClick={() => setFilterState("Past")}
+            >
+              Past
+            </PastButton>
+          </ToggleContainer>
+          {isAdmin && (
+            <ButtonGroup>
+              <AddButton href="/sessions/new_session">
+                <img src="/icons/addicon.svg" alt="Add" />
+              </AddButton>
+              <EditButton>
+                {" "}
+                <img src="/icons/editicon.svg" alt="Edit" />{" "}
+              </EditButton>
+            </ButtonGroup>
+          )}
+        </ControlsRow>
       </HeaderSection>
 
       <SessionsList>
-        {sessions.map(session => (
+        {filteredSessions.map(session => (
           <SessionCard key={session.id} session={session} />
         ))}
       </SessionsList>

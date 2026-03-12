@@ -27,6 +27,13 @@ export const HeaderSection = styled.div`
   }
 `;
 
+export const ControlsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
 export const Header = styled.h1`
   font-size: 2.5rem;
   font-style: normal;
@@ -47,16 +54,14 @@ export const ButtonGroup = styled.div`
 `;
 
 export const AddButton = styled(Link)`
-  background: ${COLORS.adlr_green};
-  color: white;
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: none;
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
-  cursor: pointer;
-  text-decoration: none;
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1540094.5rem;
+  border: 1.469px solid var(--ADLR-Green, #80bc51);
+  background: var(--ADLR-Green, #80bc51);
   transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};
@@ -68,13 +73,14 @@ export const AddButton = styled(Link)`
 `;
 
 export const EditButton = styled.button`
-  background: ${COLORS.adlr_lighter_gray};
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  background: white;
+  padding: 0.73438rem;
+  align-items: center;
+  border: #707070 1px solid;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s;
   &:hover {
@@ -91,6 +97,51 @@ export const SessionsList = styled.div`
   flex-direction: column;
   gap: 1.25rem;
   margin: 0 15% 2rem 15%;
+`;
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  display: flex;
+  width: 12.43406rem;
+  height: 3.0625rem;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 0.3125rem;
+  border: 1px solid #d9d9d9;
+  background: #efefef;
+  overflow: hidden;
+`;
+
+export const UpcomingButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 0.3125rem 0 0 0.3125rem;
+  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.$active ? "#000000" : "#707070")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+export const PastButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  padding: 0.59375rem 1.21094rem 0.65625rem 1.25rem;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0 0.3125rem 0.3125rem 0;
+  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.$active ? "#000000" : "#707070")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
 `;
 
 export const SignOutButton = styled.button`
