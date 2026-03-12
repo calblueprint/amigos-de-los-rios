@@ -1,8 +1,17 @@
 import { UUID } from "crypto";
 import { VolunteerType } from "./volunteerType";
 
+export type Hydrant = {
+  id?: UUID; // optional id bc i dont want to generate an id in the code just in the db
+  hydrant_id: number;
+  hydrant_address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  hydrant_type: string | null;
+};
+
 export type Property = {
-  id: UUID;
+  id?: UUID;
   address: string | null;
   latitude: number | null;
   longitude: number | null;
