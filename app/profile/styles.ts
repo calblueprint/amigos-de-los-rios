@@ -5,7 +5,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import { MOBILE_BREAKPOINT } from "@/styles/containers";
 import COLORS from "../../styles/colors";
-import { Container } from "../(auth)/styles";
 
 const Sans = DM_Sans({
   subsets: ["latin"],
@@ -51,5 +50,41 @@ export const Title = styled.h1`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
     line-height: 1.3rem;
+  }
+`;
+
+export const PageTitle = styled.h1`
+  color: ${COLORS.black};
+  font-family: "DM Sans";
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+`;
+
+export const TitleUnderline = styled.div`
+  height: 4px;
+  width: 200px;
+  background: ${COLORS.adlr_green};
+  margin-bottom: 2rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 150px;
+    margin-bottom: 1.5rem;
+  }
+`;
+
+export const CardsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    gap: 1.25rem;
   }
 `;

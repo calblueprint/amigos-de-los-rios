@@ -5,9 +5,37 @@ import { useRouter } from "next/navigation";
 import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
-import { ContentContainer, PageContainer, Title, TitleSection } from "./styles";
+import ProfileCard from "@/components/ProfileCard/ProfileCard";
+import {
+  CardsContainer,
+  ContentContainer,
+  PageContainer,
+  Title,
+  TitleSection,
+} from "./styles";
 
 export default function ProfilePage() {
+  //Profile fields
+  const profileFields = [
+    { label: "Full Name", value: "Aiden M" },
+    { label: "Email Address", value: "aiden@amigosdelosrios.com" },
+    { label: "Affiliation", value: "Los Angeles Community Group" },
+    { label: "Phone Number", value: "(123) 456-7890" },
+  ];
+
+  //Password fields
+  const passwordFields = [{ label: "", value: "********" }];
+
+  const EditProfile = () => {
+    // Handle edit profile logic here (e.g., navigate to edit page or open modal)
+    console.log("Edit Profile button clicked");
+  };
+
+  const ChangePassword = () => {
+    // Handle change password logic here (e.g., navigate to change password page or open modal)
+    console.log("Change Password button clicked");
+  };
+
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
 
@@ -44,6 +72,22 @@ export default function ProfilePage() {
         <TitleSection>
           <Title>Personal Details</Title>
         </TitleSection>
+
+        <CardsContainer>
+          <ProfileCard
+            title="Profile Information"
+            fields={profileFields}
+            buttonText="Edit Profile"
+            onButtonClick={EditProfile}
+          />
+
+          <ProfileCard
+            title="Password"
+            fields={passwordFields}
+            buttonText="Change Password"
+            onButtonClick={ChangePassword}
+          />
+        </CardsContainer>
       </ContentContainer>
     </PageContainer>
   );
