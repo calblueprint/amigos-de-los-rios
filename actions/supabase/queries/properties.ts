@@ -8,7 +8,6 @@ export async function createProperties(
     .from("Property")
     .upsert(properties, {
       onConflict: "address",
-      ignoreDuplicates: true,
     })
     .select();
 

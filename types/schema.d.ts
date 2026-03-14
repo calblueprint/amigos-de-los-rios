@@ -7,7 +7,7 @@ export type Hydrant = {
   hydrant_address: string | null;
   latitude: number | null;
   longitude: number | null;
-  hydrant_type: string | null;
+  hydrant_type: number | null;
 };
 
 export type Property = {

@@ -14,6 +14,7 @@ type ApiFeatureHydrant = {
     address_number?: string;
     address_street?: string;
     address_num_street?: string;
+    species_common?: number;
     organization?: number;
   };
 };
@@ -32,7 +33,7 @@ function toHydrantDraft(f: ApiFeatureHydrant): HydrantDraft {
     hydrant_address: address,
     latitude: p.lat,
     longitude: p.lng,
-    hydrant_type: "FILL", // TODO replace with actual hydrant_type from API ask bhavita about this
+    hydrant_type: p.species_common ?? null, // TODO replace with actual hydrant_type from API ask bhavita about this
     organization: p.organization,
   };
 }
@@ -93,11 +94,12 @@ export default function HydrantsPage() {
 
       <ul className="space-y-2">
         {filteredHydrants.map(hydrant => (
-          <li key={crypto.randomUUID()}>
+          <li key={hydrant.hydrant_id}>
             <strong>Hydrant Address:</strong> {hydrant.hydrant_address} —{" "}
             <strong>Latitude:</strong> {hydrant.latitude} —{" "}
             <strong>Longitude:</strong> {hydrant.longitude} —{" "}
-            <strong>Hydrant ID:</strong> {hydrant.hydrant_id}
+            <strong>Hydrant ID:</strong> {hydrant.hydrant_id} —{" "}
+            <strong>Hydrant Type:</strong> {hydrant.hydrant_type}
           </li>
         ))}
       </ul>

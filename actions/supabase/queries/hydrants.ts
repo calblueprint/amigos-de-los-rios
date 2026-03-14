@@ -8,7 +8,6 @@ export async function createHydrants(
     .from("Hydrants")
     .upsert(hydrants, {
       onConflict: "hydrant_id",
-      ignoreDuplicates: true,
     })
     .select();
 

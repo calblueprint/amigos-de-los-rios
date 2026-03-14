@@ -19,27 +19,6 @@ function getAuthHeaders(): Headers {
   return headers;
 }
 
-// Fetches trees from only organization 176
-export async function fetchTrees() {
-  const url = `https://pg-cloud.com/api/amigosdelosrios/inventories/trees?&apiKey=${PLANITGEO_API_KEY}&properties.organization=176`;
-
-  try {
-    const res = await fetch(url, { headers: getAuthHeaders() });
-
-    if (!res.ok) {
-      const text = await res.text();
-      console.error(`PlanItGeo API error ${res.status}:`, text.slice(0, 500));
-      return { features: [] }; // Safe fallback
-    }
-
-    const data = await res.json();
-    return { features: data || [] };
-  } catch (err) {
-    console.error("Error fetching trees:", err);
-    return { features: [] };
-  }
-}
-
 // Fetches ALL trees in batches of 5000
 // Returns a flat array of all tree features across all pages
 export async function fetchTreesBatch(): Promise<unknown[]> {
