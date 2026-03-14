@@ -22,14 +22,43 @@ import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
+  AllContent,
   BackLink,
   ContentContainer,
+  DotBlue,
+  DotOrange,
+  DotPurple,
   Header,
+  HeaderContainer,
+  LargeDotBlue,
+  LargeDotOrange,
+  LargeDotPurple,
   PageContainer,
+  PropertiesCard,
+  PropertiesHolder,
   PropertiesList,
+  RouteContainer,
+  RouteHeader,
+  RouteHolder,
+  RouteMap,
+  RoutePoints,
+  RouteType,
+  RouteValue,
+  RouteValueCard,
+  RouteValueCardText,
+  RouteValueVar,
+  RouteValueVarNum,
   Tab,
   TabContainer,
+  TeamAssignment,
+  TeamAssignmentCard,
+  TeamAssignmentName,
+  TeamAssignmentRole,
+  TeamAssignmentText,
+  TeamContainer,
 } from "./styles";
+
+const API_KEY = process.env.NEXT_PUBLIC_MAPS_EMBED_API_KEY;
 
 export default function RoutePage({
   params,
@@ -142,77 +171,183 @@ export default function RoutePage({
   const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";
   const backLinkText = isAdmin ? "← Back to Routes" : "← Back to Sessions";
 
+  const embedUrl = (() => {
+    if (!route?.maps_link) return null;
+
+    const url_params = new URL(route.maps_link).searchParams;
+
+    const origin = url_params.get("origin");
+    const destination = url_params.get("destination");
+    const waypoints = url_params.get("waypoints");
+    const mode = url_params.get("travelmode") ?? "driving";
+
+    if (!origin || !destination) return null;
+
+    const url = new URL("https://www.google.com/maps/embed/v1/directions");
+    url.searchParams.set("key", API_KEY!);
+    url.searchParams.set("origin", origin);
+    url.searchParams.set("destination", destination);
+    url.searchParams.set("mode", mode);
+    if (waypoints) url.searchParams.set("waypoints", waypoints);
+
+    return url.toString();
+  })();
+
   return (
     <PageContainer>
       <Banner />
 
       <BackLink href={backLink}>{backLinkText}</BackLink>
 
-      <ContentContainer>
-        <Header>
-          {sessionInfo?.watering_event_name} — {route?.route_label}
-        </Header>
+      <AllContent>
+        <ContentContainer>
+          <HeaderContainer>
+            <Header>
+              {sessionInfo?.watering_event_name} — {route?.route_label}
+            </Header>
+            <RouteValue>
+              <RouteValueCard>
+                <img src="/images/distance_loc.svg" width="36" height="36" />
+                <RouteValueCardText>
+                  <RouteValueVar>Distance</RouteValueVar>
+                  <RouteValueVarNum>3.2 km</RouteValueVarNum>
+                </RouteValueCardText>
+              </RouteValueCard>
+              <RouteValueCard>
+                <img src="/images/time_loc.svg" width="36" height="36" />
+                <RouteValueCardText>
+                  <RouteValueVar>Est. Time</RouteValueVar>
+                  <RouteValueVarNum>2.5 hours</RouteValueVarNum>
+                </RouteValueCardText>
+              </RouteValueCard>
+              <RouteValueCard>
+                <img src="/images/tree_loc.svg" width="36" height="36" />
+                <RouteValueCardText>
+                  <RouteValueVar>Trees</RouteValueVar>
+                  <RouteValueVarNum>4 points</RouteValueVarNum>
+                </RouteValueCardText>
+              </RouteValueCard>
+              <RouteValueCard>
+                <img src="/images/checkpoint_loc.svg" width="36" height="36" />
+                <RouteValueCardText>
+                  <RouteValueVar>Checkpoints</RouteValueVar>
+                  <RouteValueVarNum>2 stops</RouteValueVarNum>
+                </RouteValueCardText>
+              </RouteValueCard>
+            </RouteValue>
+          </HeaderContainer>
 
-        {/* temporary input styling */}
-        {isAdmin && (
-          <div style={{ marginBottom: "2rem" }}>
-            <h3>Assign User to Route</h3>
+          <RouteContainer>
+            <RouteHeader>
+              <RouteMap>Route Map</RouteMap>
+              <RouteType>
+                <DotOrange></DotOrange>
+                Trees
+                <DotBlue></DotBlue>
+                Hydrants
+                <DotPurple></DotPurple>
+                Checkpoints
+              </RouteType>
+            </RouteHeader>
+            <iframe
+              width="800"
+              height="400"
+              loading="lazy"
+              src={
+                embedUrl ??
+                `https://www.google.com/maps/embed/v1/view?key=${API_KEY}&center=-34,151&zoom=8`
+              }
+            ></iframe>
+            <RouteHolder>
+              <RoutePoints>Route Points</RoutePoints>
+              <PropertiesHolder>
+                <PropertiesCard>
+                  <LargeDotPurple></LargeDotPurple>
+                </PropertiesCard>
+              </PropertiesHolder>
+              <PropertiesHolder>
+                <PropertiesCard>
+                  <LargeDotBlue></LargeDotBlue>
+                </PropertiesCard>
+              </PropertiesHolder>
+              <PropertiesHolder>
+                <PropertiesCard>
+                  <LargeDotOrange></LargeDotOrange>
+                </PropertiesCard>
+              </PropertiesHolder>
+            </RouteHolder>
+          </RouteContainer>
 
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input
-                type="email"
-                placeholder="Enter user email"
-                value={emailInput}
-                onChange={e => setEmailInput(e.target.value)}
-                style={{ padding: "0.5rem", width: "250px" }}
-              />
+          {/* temporary input styling */}
+          {isAdmin && (
+            <div style={{ marginBottom: "2rem" }}>
+              <h3>Assign User to Route</h3>
 
-              <button onClick={handleAssign} disabled={assignLoading}>
-                {assignLoading ? "Assigning..." : "Assign"}
-              </button>
-            </div>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <input
+                  type="email"
+                  placeholder="Enter user email"
+                  value={emailInput}
+                  onChange={e => setEmailInput(e.target.value)}
+                  style={{ padding: "0.5rem", width: "250px" }}
+                />
 
-            <div style={{ marginTop: "1.5rem" }}>
-              <h4>Assigned Users</h4>
+                <button onClick={handleAssign} disabled={assignLoading}>
+                  {assignLoading ? "Assigning..." : "Assign"}
+                </button>
+              </div>
 
-              {assignedUsers.length === 0 ? (
-                <p>No users assigned.</p>
-              ) : (
-                assignedUsers.map(item => (
-                  <div
-                    key={item.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "0.5rem 0",
-                    }}
-                  >
-                    <div>
-                      <strong>{item.name}</strong> — {item.email}
+              <div style={{ marginTop: "1.5rem" }}>
+                <h4>Assigned Users</h4>
+
+                {assignedUsers.length === 0 ? (
+                  <p>No users assigned.</p>
+                ) : (
+                  assignedUsers.map(item => (
+                    <div
+                      key={item.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "0.5rem 0",
+                      }}
+                    >
+                      <div>
+                        <strong>{item.name}</strong> — {item.email}
+                      </div>
+
+                      <button onClick={() => handleUnassign(item.id)}>
+                        Unassign
+                      </button>
                     </div>
-
-                    <button onClick={() => handleUnassign(item.id)}>
-                      Unassign
-                    </button>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        )}
-
-        <TabContainer>
-          <Tab $active>Properties</Tab>
-        </TabContainer>
-        <PropertiesList>
-          {stops.length === 0 ? (
-            <p>No properties found for your route.</p>
-          ) : (
-            stops.map(stop => <PropertyCard key={stop.id} property={stop} />)
           )}
-        </PropertiesList>
-      </ContentContainer>
+
+          <TabContainer>
+            <Tab $active>Properties</Tab>
+          </TabContainer>
+          <PropertiesList>
+            {stops.length === 0 ? (
+              <p>No properties found for your route.</p>
+            ) : (
+              stops.map(stop => <PropertyCard key={stop.id} property={stop} />)
+            )}
+          </PropertiesList>
+        </ContentContainer>
+        <TeamContainer>
+          <TeamAssignment>Team Assignment</TeamAssignment>
+          <TeamAssignmentCard>
+            <TeamAssignmentText>
+              <TeamAssignmentName>Placeholder</TeamAssignmentName>
+              <TeamAssignmentRole>Placeholder</TeamAssignmentRole>
+            </TeamAssignmentText>
+          </TeamAssignmentCard>
+        </TeamContainer>
+      </AllContent>
     </PageContainer>
   );
 }
