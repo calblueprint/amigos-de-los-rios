@@ -10,6 +10,7 @@ export type Property = {
   num_trees: string | null;
   nearest_hydrant: UUID;
   prev_watered: boolean;
+  property_type: "A" | "B" | "C" | null;
 };
 export type RouteStop = {
   id: UUID;
