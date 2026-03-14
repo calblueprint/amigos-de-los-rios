@@ -116,7 +116,7 @@ export default function ResetPassword() {
                 <S.Input
                   name="email"
                   type="email"
-                  placeholder=""
+                  placeholder="Enter your email"
                   onChange={e => {
                     setEmail(e.target.value);
                     if (message) {
