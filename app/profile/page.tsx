@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { checkUserOnboarded } from "@/actions/supabase/queries/users";
+import {
+  checkUserOnboarded,
+  getUserById,
+} from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
@@ -15,31 +18,27 @@ import {
 } from "./styles";
 
 export default function ProfilePage() {
-  //Profile fields
-  const profileFields = [
-    { label: "Full Name", value: "Aiden M" },
-    { label: "Email Address", value: "aiden@amigosdelosrios.com" },
-    { label: "Affiliation", value: "Los Angeles Community Group" },
-    { label: "Phone Number", value: "(123) 456-7890" },
-  ];
+  const { userId, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  const [userName, setUserName] = useState();
+  const [userEmail, setUserEmail] = useState();
+  const [userAffiliation, setUserAffiliation] = useState();
+  const [userPhoneNumber, setUserPhoneNumber] = useState();
 
   //Password fields
   const passwordFields = [{ label: "", value: "********" }];
 
+  // Handle edit profile logic here
   const EditProfile = () => {
-    // Handle edit profile logic here (e.g., navigate to edit page or open modal)
     console.log("Edit Profile button clicked");
   };
 
   const ChangePassword = () => {
-    // Handle change password logic here (e.g., navigate to change password page or open modal)
+    // Handle change password logic here
     console.log("Change Password button clicked");
   };
-
-  const { userId, loading: authLoading } = useAuth();
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function init() {
@@ -59,11 +58,26 @@ export default function ProfilePage() {
         return;
       }
 
+      const userProfile = await getUserById(userId);
+      if (userProfile) {
+        setUserName(userProfile.name);
+        setUserEmail(userProfile.email);
+        setUserAffiliation(userProfile.affiliation);
+        setUserPhoneNumber(userProfile.phone_number);
+      }
       setLoading(false);
     }
 
     init();
   }, [userId, authLoading, router]);
+  const profileFields = [
+    { label: "Name", value: userName || "" },
+    { label: "Email", value: userEmail || "" },
+    { label: "Affiliation", value: userAffiliation || "" },
+    { label: "Phone Number", value: userPhoneNumber || "" },
+  ];
+
+  if (loading || authLoading) return <p>Loading profile...</p>;
 
   return (
     <PageContainer>
