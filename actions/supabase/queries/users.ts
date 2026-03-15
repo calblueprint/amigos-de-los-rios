@@ -36,3 +36,48 @@ export async function checkUserOnboarded(userId: string): Promise<boolean> {
 
   return true;
 }
+
+export async function getUserByName(name: string) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("*")
+    .eq("name", name)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error loading user:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function getUserByAffiliation(affiliation: string) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("*")
+    .eq("affiliation", affiliation)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error loading user:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function getUserByPhoneNumber(phoneNumber: string) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("*")
+    .eq("phone_number", phoneNumber)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error loading user:", error);
+    return null;
+  }
+
+  return data;
+}
