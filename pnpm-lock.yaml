@@ -12,47 +12,47 @@ importers:
   .:
     dependencies:
       '@supabase/supabase-js':
-        specifier: ^2.52.1
+        specifier: ^2.99.1
         version: 2.99.1
       next:
         specifier: 15.5.7
         version: 15.5.7(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
-        specifier: ^19.1.1
+        specifier: ^19.2.4
         version: 19.2.4
       react-dom:
-        specifier: ^19.1.1
+        specifier: ^19.2.4
         version: 19.2.4(react@19.2.4)
       styled-components:
-        specifier: ^6.1.19
+        specifier: ^6.3.11
         version: 6.3.11(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@eslint/eslintrc':
-        specifier: ^3.3.1
+        specifier: ^3.3.5
         version: 3.3.5
       '@ianvs/prettier-plugin-sort-imports':
-        specifier: ^4.7.0
+        specifier: ^4.7.1
         version: 4.7.1(prettier@3.8.1)
       '@types/node':
-        specifier: ^20
+        specifier: ^20.19.37
         version: 20.19.37
       '@types/react':
-        specifier: ^19
+        specifier: ^19.2.14
         version: 19.2.14
       '@types/react-dom':
-        specifier: ^19
+        specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.41.0
+        specifier: ^8.57.0
         version: 8.57.0(@typescript-eslint/parser@8.57.0(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/parser':
-        specifier: ^8.41.0
+        specifier: ^8.57.0
         version: 8.57.0(eslint@9.39.4)(typescript@5.9.3)
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
       eslint:
-        specifier: ^9.32.0
+        specifier: ^9.39.4
         version: 9.39.4
       eslint-config-next:
         specifier: 15.5.2
@@ -61,19 +61,19 @@ importers:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.4)
       eslint-plugin-prettier:
-        specifier: ^5.5.4
+        specifier: ^5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.1)
       eslint-plugin-react-hooks:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.4)
       husky:
-        specifier: ^9.1.5
+        specifier: ^9.1.7
         version: 9.1.7
       prettier:
-        specifier: ^3.3.3
+        specifier: ^3.8.1
         version: 3.8.1
       typescript:
-        specifier: ^5
+        specifier: ^5.9.3
         version: 5.9.3
 
 packages:
