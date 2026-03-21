@@ -172,7 +172,7 @@ export default function RoutePage({
   const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";
   const backLinkText = isAdmin ? "← Back to Routes" : "← Back to Sessions";
 
-  const embedUrl = (() => {
+  const embedUrl = (route: Route | null) => {
     if (!route?.maps_link) return null;
 
     const url_params = new URL(route.maps_link).searchParams;
@@ -192,7 +192,7 @@ export default function RoutePage({
     if (waypoints) url.searchParams.set("waypoints", waypoints);
 
     return url.toString();
-  })();
+  };
 
   return (
     <PageContainer>
@@ -275,7 +275,7 @@ export default function RoutePage({
               height="400"
               loading="lazy"
               src={
-                embedUrl ??
+                embedUrl(route) ??
                 `https://www.google.com/maps/embed/v1/view?key=${API_KEY}&center=-34,151&zoom=8`
               }
             ></iframe>
