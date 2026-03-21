@@ -8,7 +8,6 @@ import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import RouteCard from "@/components/RouteCard/RouteCard";
-import { IconSvgs } from "@/lib/icons";
 import { Route, WateringSession } from "@/types/schema";
 import {
   BackLink,
