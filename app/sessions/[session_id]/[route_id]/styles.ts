@@ -60,7 +60,7 @@ export const DotOrange = styled.div`
   height: 0.75rem; /* 12px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #ff6900;
+  background: ${COLORS.orange};
 `;
 
 export const DotBlue = styled.div`
@@ -68,7 +68,7 @@ export const DotBlue = styled.div`
   height: 0.75rem; /* 12px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #2b7fff;
+  background: ${COLORS.blue};
 `;
 
 export const DotPurple = styled.div`
@@ -76,7 +76,7 @@ export const DotPurple = styled.div`
   height: 0.75rem; /* 12px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #ad46ff;
+  background: ${COLORS.purple};
 `;
 
 export const LargeDotPurple = styled.div`
@@ -84,7 +84,7 @@ export const LargeDotPurple = styled.div`
   height: 2rem; /* 32px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #ad46ff;
+  background: ${COLORS.purple};
 `;
 
 export const LargeDotBlue = styled.div`
@@ -92,7 +92,7 @@ export const LargeDotBlue = styled.div`
   height: 2rem; /* 32px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #2b7fff;
+  background: ${COLORS.blue};
 `;
 
 export const LargeDotOrange = styled.div`
@@ -100,7 +100,7 @@ export const LargeDotOrange = styled.div`
   height: 2rem; /* 32px */
   flex-shrink: 0;
   border-radius: 1048575rem; /* 16777200px */
-  background: #ff6900;
+  background: ${COLORS.orange};
 `;
 
 export const HeaderContainer = styled.div`
@@ -147,7 +147,7 @@ export const RouteValueCardText = styled.div`
 `;
 
 export const RouteValueVar = styled.h1`
-  color: #707070;
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
   font-size: 0.875rem; /* 14px */
   font-style: normal;
@@ -157,7 +157,7 @@ export const RouteValueVar = styled.h1`
 `;
 
 export const RouteValueVarNum = styled.h1`
-  color: #000;
+  color: ${COLORS.black};
   font-family: "DM Sans";
   font-size: 1.125rem; /* 18px */
   font-style: normal;
@@ -268,7 +268,7 @@ export const TeamAssignmentText = styled.div`
 `;
 
 export const TeamAssignmentName = styled.h1`
-  color: #${COLORS.adlr_black};
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
   font-size: 1rem; /* 16px */
   font-style: normal;
@@ -297,7 +297,7 @@ export const RouteContainer = styled.div`
   align-self: stretch;
 
   border-radius: 0.625rem; /* 10px */
-  border: 0.0625rem solid #${COLORS.adlr_light_gray}; /* 1px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),

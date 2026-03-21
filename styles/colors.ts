@@ -15,6 +15,9 @@ const COLORS = {
   adlr_white: "#FFFFFB",
   adlr_black: "#2B2C2C",
   red: "#D31919",
+  blue: "#2b7fff",
+  orange: "#ff6900",
+  purple: "#ad46ff",
 };
 
 export default COLORS;
