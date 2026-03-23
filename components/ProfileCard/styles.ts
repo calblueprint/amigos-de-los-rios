@@ -9,7 +9,7 @@ export const ProfileCardContainer = styled.div`
   flex-direction: column;
   width: 100%;
   border-radius: 0.75rem;
-  background: #fffffb;
+  background: ${COLORS.adlr_gray};
   border: 1px solid ${COLORS.adlr_gray};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;

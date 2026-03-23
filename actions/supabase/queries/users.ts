@@ -18,10 +18,7 @@ export async function getUserById(userId: string) {
     .eq("id", userId)
     .maybeSingle();
 
-  if (error) {
-    console.error("Error loading user:", error);
-    return null;
-  }
+  if (error) throw error;
 
   return data;
 }
@@ -37,47 +34,13 @@ export async function checkUserOnboarded(userId: string): Promise<boolean> {
   return true;
 }
 
-export async function getUserByName(name: string) {
+export async function getUserProfile(userId: string) {
   const { data, error } = await supabase
     .from("Users")
-    .select("*")
-    .eq("name", name)
+    .select("name, email, affiliation, phone_number")
+    .eq("id", userId)
     .maybeSingle();
 
-  if (error) {
-    console.error("Error loading user:", error);
-    return null;
-  }
-
-  return data;
-}
-
-export async function getUserByAffiliation(affiliation: string) {
-  const { data, error } = await supabase
-    .from("Users")
-    .select("*")
-    .eq("affiliation", affiliation)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Error loading user:", error);
-    return null;
-  }
-
-  return data;
-}
-
-export async function getUserByPhoneNumber(phoneNumber: string) {
-  const { data, error } = await supabase
-    .from("Users")
-    .select("*")
-    .eq("phone_number", phoneNumber)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Error loading user:", error);
-    return null;
-  }
-
+  if (error) throw error;
   return data;
 }

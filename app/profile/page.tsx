@@ -8,7 +8,7 @@ import {
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
-import ProfileCard from "@/components/ProfileCard/ProfileCard";
+import ProfileCard from "@/components/ProfileCard";
 import {
   CardsContainer,
   ContentContainer,
@@ -22,10 +22,12 @@ export default function ProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const [userName, setUserName] = useState();
-  const [userEmail, setUserEmail] = useState();
-  const [userAffiliation, setUserAffiliation] = useState();
-  const [userPhoneNumber, setUserPhoneNumber] = useState();
+  const [profile, setProfile] = useState<{
+    name: string;
+    email: string;
+    affiliation: string;
+    phone_number: string;
+  } | null>(null);
 
   //Password fields
   const passwordFields = [{ label: "", value: "********" }];
@@ -41,29 +43,25 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
+    if (authLoading) return;
+
+    if (!userId) {
+      router.push("/login");
+      return;
+    }
+
     async function init() {
       setLoading(true);
 
-      // Wait for auth to finish loading
-      if (authLoading) return;
-
-      if (!userId) {
-        router.push("/login");
-        return;
-      }
-
-      const isOnboarded = await checkUserOnboarded(userId);
+      const isOnboarded = await checkUserOnboarded(userId!);
       if (!isOnboarded) {
         router.push("/account_details");
         return;
       }
 
-      const userProfile = await getUserById(userId);
+      const userProfile = await getUserById(userId!);
       if (userProfile) {
-        setUserName(userProfile.name);
-        setUserEmail(userProfile.email);
-        setUserAffiliation(userProfile.affiliation);
-        setUserPhoneNumber(userProfile.phone_number);
+        setProfile(userProfile);
       }
       setLoading(false);
     }
@@ -71,10 +69,10 @@ export default function ProfilePage() {
     init();
   }, [userId, authLoading, router]);
   const profileFields = [
-    { label: "Name", value: userName || "" },
-    { label: "Email", value: userEmail || "" },
-    { label: "Affiliation", value: userAffiliation || "" },
-    { label: "Phone Number", value: userPhoneNumber || "" },
+    { label: "Name", value: profile?.name || "" },
+    { label: "Email", value: profile?.email || "" },
+    { label: "Affiliation", value: profile?.affiliation || "" },
+    { label: "Phone Number", value: profile?.phone_number || "" },
   ];
 
   if (loading || authLoading) return <p>Loading profile...</p>;

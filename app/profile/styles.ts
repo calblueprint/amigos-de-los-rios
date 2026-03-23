@@ -1,7 +1,6 @@
 "use client";
 
 import { DM_Sans } from "next/font/google";
-import Link from "next/link";
 import styled from "styled-components";
 import { MOBILE_BREAKPOINT } from "@/styles/containers";
 import COLORS from "../../styles/colors";
