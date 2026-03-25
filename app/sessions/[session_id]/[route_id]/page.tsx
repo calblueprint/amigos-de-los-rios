@@ -36,6 +36,8 @@ import {
   LargeDotOrange,
   LargeDotPurple,
   PageContainer,
+  PrintButton,
+  PrintHeader,
   PropertiesCard,
   PropertiesHolder,
   PropertiesList,
@@ -288,20 +290,18 @@ export default function RoutePage({
             ></iframe>
             <RouteHolder>
               <RoutePoints>
-                Route Points
-                <button
-                  onClick={() => handlePrint()}
-                  style={{
-                    padding: "0.5rem 1rem",
-                    cursor: "pointer",
-                    backgroundColor: "#0070f3",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                  }}
-                >
-                  Print Map & Properties
-                </button>
+                <span>Route Points</span>
+                <PrintHeader>
+                  <PrintButton onClick={() => handlePrint()}>
+                    <Image
+                      src="/images/print.svg"
+                      width={16.138}
+                      height={13.833}
+                      alt="Print"
+                    />
+                  </PrintButton>
+                  Print Route
+                </PrintHeader>
               </RoutePoints>
 
               <PropertiesHolder>
