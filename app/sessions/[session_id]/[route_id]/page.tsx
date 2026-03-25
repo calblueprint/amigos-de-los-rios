@@ -2,6 +2,7 @@
 
 import { use, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   fetchPropertiesByRouteId,
@@ -178,7 +179,7 @@ export default function RoutePage({
   const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";
   const backLinkText = isAdmin ? "← Back to Routes" : "← Back to Sessions";
 
-  const embedUrl = (() => {
+  const embedUrl = (route: Route | null) => {
     if (!route?.maps_link) return null;
 
     const url_params = new URL(route.maps_link).searchParams;
@@ -198,7 +199,7 @@ export default function RoutePage({
     if (waypoints) url.searchParams.set("waypoints", waypoints);
 
     return url.toString();
-  })();
+  };
 
   return (
     <PageContainer>
@@ -214,28 +215,48 @@ export default function RoutePage({
             </Header>
             <RouteValue>
               <RouteValueCard>
-                <img src="/images/distance_loc.svg" width="36" height="36" />
+                <Image
+                  src="/images/distance_loc.svg"
+                  width={36}
+                  height={36}
+                  alt="Distance icon"
+                />
                 <RouteValueCardText>
                   <RouteValueVar>Distance</RouteValueVar>
                   <RouteValueVarNum>3.2 km</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
               <RouteValueCard>
-                <img src="/images/time_loc.svg" width="36" height="36" />
+                <Image
+                  src="/images/time_loc.svg"
+                  width={36}
+                  height={36}
+                  alt="Estimated time icon"
+                />
                 <RouteValueCardText>
                   <RouteValueVar>Est. Time</RouteValueVar>
                   <RouteValueVarNum>2.5 hours</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
               <RouteValueCard>
-                <img src="/images/tree_loc.svg" width="36" height="36" />
+                <Image
+                  src="/images/tree_loc.svg"
+                  width={36}
+                  height={36}
+                  alt="Tree points icon"
+                />
                 <RouteValueCardText>
                   <RouteValueVar>Trees</RouteValueVar>
                   <RouteValueVarNum>4 points</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
               <RouteValueCard>
-                <img src="/images/checkpoint_loc.svg" width="36" height="36" />
+                <Image
+                  src="/images/checkpoint_loc.svg"
+                  width={36}
+                  height={36}
+                  alt="Checkpoints icon"
+                />
                 <RouteValueCardText>
                   <RouteValueVar>Checkpoints</RouteValueVar>
                   <RouteValueVarNum>2 stops</RouteValueVarNum>
@@ -261,7 +282,7 @@ export default function RoutePage({
               height="400"
               loading="lazy"
               src={
-                embedUrl ??
+                embedUrl(route) ??
                 `https://www.google.com/maps/embed/v1/view?key=${API_KEY}&center=-34,151&zoom=8`
               }
             ></iframe>

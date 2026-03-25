@@ -40,10 +40,10 @@ export const BackLink = styled(Link)`
 
 export const AllContent = styled.div`
   display: inline-flex;
-  height: 1268px;
+  height: 79.25rem; /* 1268px */
   justify-content: center;
   align-items: flex-start;
-  gap: 24px;
+  gap: 1.5rem; /* 24px */
   margin: 0 15%;
 `;
 
@@ -52,72 +52,72 @@ export const ContentContainer = styled.div`
   width: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 1.5rem; /* 24px */
 `;
 
 export const DotOrange = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #ff6900;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.orange};
 `;
 
 export const DotBlue = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #2b7fff;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.blue};
 `;
 
 export const DotPurple = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #ad46ff;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.purple};
 `;
 
 export const LargeDotPurple = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #ad46ff;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.purple};
 `;
 
 export const LargeDotBlue = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #2b7fff;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.blue};
 `;
 
 export const LargeDotOrange = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 16777200px;
-  background: #ff6900;
+  border-radius: 1048575rem; /* 16777200px */
+  background: ${COLORS.orange};
 `;
 
 export const HeaderContainer = styled.div`
   display: flex;
   height: auto;
-  padding: 25px;
+  padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 1.5rem; /* 24px */
   align-self: stretch;
 
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px */
   background: ${COLORS.adlr_white};
   box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid ${COLORS.adlr_light_gray};
+    0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
+    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
 `;
 
 export const RouteValue = styled.div`
@@ -125,7 +125,7 @@ export const RouteValue = styled.div`
   height: auto;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 16px;
+  gap: 1rem; /* 16px */
   flex-shrink: 0;
   align-self: stretch;
 `;
@@ -134,7 +134,7 @@ export const RouteValueCard = styled.div`
   display: flex;
   height: auto;
   align-items: flex-start;
-  gap: 12px;
+  gap: 0.75rem; /* 12px */
 `;
 
 export const RouteValueCardText = styled.div`
@@ -143,27 +143,27 @@ export const RouteValueCardText = styled.div`
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 0.25rem; /* 4px */
 `;
 
 export const RouteValueVar = styled.h1`
-  color: #707070;
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   font-style: normal;
   font-weight: 400;
-  line-height: 21px; /* 150% */
-  letter-spacing: -0.21px;
+  line-height: 1.3125rem; /* 21px */ /* 150% */
+  letter-spacing: -0.013125rem; /* -0.21px */
 `;
 
 export const RouteValueVarNum = styled.h1`
-  color: #000;
+  color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 400;
-  line-height: 27px; /* 150% */
-  letter-spacing: -0.27px;
+  line-height: 1.6875rem; /* 27px */ /* 150% */
+  letter-spacing: -0.016875rem; /* -0.27px */
 `;
 
 export const Header = styled.h1`
@@ -204,7 +204,7 @@ export const Tab = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 0.3125rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   margin-bottom: 1.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -223,39 +223,39 @@ export const TeamContainer = styled.div`
   display: flex;
   width: auto;
   height: auto;
-  padding: 25px;
+  padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 1.5rem; /* 24px */
 
-  border-radius: 10px;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   background: ${COLORS.adlr_white};
   box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
+    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
 `;
 
 export const TeamAssignment = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 24px;
+  font-size: 1.5rem; /* 24px */
   font-style: normal;
   font-weight: 700;
-  line-height: 36px; /* 150% */
-  letter-spacing: -0.36px;
+  line-height: 2.25rem; /* 36px */ /* 150% */
+  letter-spacing: -0.0225rem; /* -0.36px */
 `;
 
 export const TeamAssignmentCard = styled.div`
   display: flex;
   height: auto;
-  padding: 13px;
+  padding: 0.8125rem; /* 13px */
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   align-self: stretch;
-  border-radius: 10px;
-  border: 1px solid ${COLORS.adlr_gray};
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_gray}; /* 1px */
   background: ${COLORS.adlr_white};
 `;
 
@@ -268,34 +268,35 @@ export const TeamAssignmentText = styled.div`
 `;
 
 export const TeamAssignmentName = styled.h1`
-  color: #${COLORS.adlr_black};
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   font-style: normal;
   font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.312px;
+  line-height: 1.5rem; /* 24px */
+  letter-spacing: -0.0195rem; /* -0.312px */
 `;
 
 export const TeamAssignmentRole = styled.h1`
   color: ${COLORS.adlr_gray};
   font-family: "DM Sans";
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   font-style: normal;
   font-weight: 400;
-  line-height: 20px;
-  letter-spacing: -0.15px;
+  line-height: 1.25rem; /* 20px */
+  letter-spacing: -0.009375rem; /* -0.15px */
 `;
 
 export const RouteContainer = styled.div`
   display: flex;
   height: auto;
-  padding: 25px;
+  padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 1rem; /* 16px */
   align-self: stretch;
 
+<<<<<<< HEAD
   border-radius: 10px;
   border: 1px solid ${COLORS.adlr_light_gray};
   background: ${COLORS.adlr_white};
@@ -319,6 +320,14 @@ export const RouteContainer = styled.div`
     .no-print {
       display: none !important;
     }
+=======
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+  background: ${COLORS.adlr_white};
+  box-shadow:
+    0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
+    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+>>>>>>> dhruva/ami-39-display-google-maps-preview
 `;
 export const RouteHeader = styled.div`
   display: flex;
@@ -334,17 +343,17 @@ export const RouteType = styled.div`
   width: auto;
   height: auto;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem; /* 8px */
 `;
 
 export const RouteMap = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 20px;
+  font-size: 1.25rem; /* 20px */
   font-style: normal;
   font-weight: 700;
-  line-height: 25px; /* 125% */
-  letter-spacing: -0.3px;
+  line-height: 1.5625rem; /* 25px */ /* 125% */
+  letter-spacing: -0.01875rem; /* -0.3px */
 `;
 
 export const RouteHolder = styled.div`
@@ -352,7 +361,7 @@ export const RouteHolder = styled.div`
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 0.75rem; /* 12px */
   flex-shrink: 0;
   align-self: stretch;
 `;
@@ -360,32 +369,32 @@ export const RouteHolder = styled.div`
 export const RoutePoints = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 700;
-  line-height: 27px; /* 150% */
-  letter-spacing: -0.27px;
+  line-height: 1.6875rem; /* 27px */ /* 150% */
+  letter-spacing: -0.016875rem; /* -0.27px */
 `;
 export const PropertiesHolder = styled.div`
   display: flex;
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 0.5rem; /* 8px */
   flex-shrink: 0;
   align-self: stretch;
 `;
 
 export const PropertiesCard = styled.div`
   display: flex;
-  height: 71px;
-  padding: 0 12px;
+  height: 4.4375rem; /* 71px */
+  padding: 0 0.75rem; /* 0 12px */
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem; /* 12px */
   flex-shrink: 0;
   align-self: stretch;
-  border-radius: 10px;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   background: ${COLORS.adlr_white};
 `;
 
