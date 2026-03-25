@@ -297,11 +297,28 @@ export const RouteContainer = styled.div`
   align-self: stretch;
 
   border-radius: 10px;
-  border: 1px solid #${COLORS.adlr_light_gray};
+  border: 1px solid ${COLORS.adlr_light_gray};
   background: ${COLORS.adlr_white};
   box-shadow:
     0 1px 3px 0 rgba(0, 0, 0, 0.1),
     0 1px 2px -1px rgba(0, 0, 0, 0.1);
+
+  @media print {
+    padding: 15mm !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    iframe {
+      width: 100% !important;
+      max-width: 100% !important;
+      border-radius: 8px !important;
+    }
+    .no-print {
+      display: none !important;
+    }
 `;
 export const RouteHeader = styled.div`
   display: flex;

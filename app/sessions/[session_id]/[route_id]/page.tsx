@@ -1,6 +1,7 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import { useRouter } from "next/navigation";
 import {
   fetchPropertiesByRouteId,
@@ -78,6 +79,12 @@ export default function RoutePage({
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState("");
+
+  const printRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({
+    contentRef: printRef, // Points to the DOM element you want to print
+    documentTitle: `${sessionInfo?.watering_event_name || "Route"}-${route?.route_label || "Details"}`,
+  });
 
   useEffect(() => {
     async function init() {
@@ -237,7 +244,7 @@ export default function RoutePage({
             </RouteValue>
           </HeaderContainer>
 
-          <RouteContainer>
+          <RouteContainer ref={printRef}>
             <RouteHeader>
               <RouteMap>Route Map</RouteMap>
               <RouteType>
@@ -259,7 +266,23 @@ export default function RoutePage({
               }
             ></iframe>
             <RouteHolder>
-              <RoutePoints>Route Points</RoutePoints>
+              <RoutePoints>
+                Route Points
+                <button
+                  onClick={() => handlePrint()}
+                  style={{
+                    padding: "0.5rem 1rem",
+                    cursor: "pointer",
+                    backgroundColor: "#0070f3",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                  }}
+                >
+                  Print Map & Properties
+                </button>
+              </RoutePoints>
+
               <PropertiesHolder>
                 <PropertiesCard>
                   <LargeDotPurple></LargeDotPurple>
