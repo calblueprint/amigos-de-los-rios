@@ -175,7 +175,9 @@ async function main() {
     console.log(`  Skipped (no lat/lng):          ${counts.skipped}`);
   }
 
-  console.log(`\nUpdating ${updates.length} properties in batches of ${BATCH_SIZE}...`);
+  console.log(
+    `\nUpdating ${updates.length} properties in batches of ${BATCH_SIZE}...`,
+  );
 
   let updated = 0;
   for (let i = 0; i < updates.length; i += BATCH_SIZE) {
@@ -198,13 +200,15 @@ async function main() {
       }
     }
 
-    console.log(`  Updated ${Math.min(i + BATCH_SIZE, updates.length)} / ${updates.length}`);
+    console.log(
+      `  Updated ${Math.min(i + BATCH_SIZE, updates.length)} / ${updates.length}`,
+    );
   }
 
   console.log(`\nDone. Successfully updated ${updated} properties.`);
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error("Fatal error:", err);
   process.exit(1);
 });
