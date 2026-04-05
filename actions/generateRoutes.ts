@@ -15,6 +15,7 @@ import { VolunteerType } from "@/types/volunteerType";
 const DEFAULT_HUB = { lat: 34.0522, lng: -118.2437 };
 
 const LAMBDA_URL = process.env.LAMBDA_ROUTE_URL;
+// TODO: Replace with actual service time when available
 const SERVICE_TIME_MINUTES = 15;
 
 interface GenerateRoutesRequest {
