@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import supabase from "@/actions/supabase/client";
-import { upsertUserProfile } from "@/actions/supabase/queries/auth";
 import {
   checkUserOnboarded,
   getUserById,
 } from "@/actions/supabase/queries/users";
+import { upsertUserProfileAction } from "@/actions/supabase/server-actions";
 import whiteLogo from "@/assets/images/white_logo.svg";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import * as S from "../styles";
 
 export default function AuthCallback() {
@@ -26,7 +26,7 @@ export default function AuthCallback() {
         const type = hashParams.get("type");
 
         if (accessToken) {
-          // Exchange the access token for a session
+          const supabase = getSupabaseBrowserClient();
           const { data, error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: hashParams.get("refresh_token") || "",
@@ -44,7 +44,7 @@ export default function AuthCallback() {
             const existingUser = await getUserById(data.session.user.id);
             if (!existingUser) {
               try {
-                await upsertUserProfile({
+                await upsertUserProfileAction({
                   id: data.session.user.id,
                   email: data.session.user.email || "",
                   name: "",

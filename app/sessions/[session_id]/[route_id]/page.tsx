@@ -6,17 +6,17 @@ import {
   fetchPropertiesByRouteId,
   fetchRouteById,
 } from "@/actions/supabase/queries/routes";
-import {
-  assignUserToRoute,
-  getAssignedUsersByRouteId,
-  unassignUserFromRoute,
-} from "@/actions/supabase/queries/routeUserAssignments";
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
-  getUserByEmail,
   getUserById,
 } from "@/actions/supabase/queries/users";
+import {
+  assignUserToRouteAction,
+  getAssignedUsersByRouteIdAction,
+  getUserByEmailAction,
+  unassignUserFromRouteAction,
+} from "@/actions/supabase/server-actions";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
@@ -75,7 +75,7 @@ export default function RoutePage({
         const props = await fetchPropertiesByRouteId(route_id);
         setProperties(props);
 
-        const assigned = await getAssignedUsersByRouteId(route_id);
+        const assigned = await getAssignedUsersByRouteIdAction(route_id);
         setAssignedUsers(assigned);
 
         const route = await fetchRouteById(route_id);
@@ -101,7 +101,7 @@ export default function RoutePage({
 
       setAssignLoading(true);
 
-      const user = await getUserByEmail(emailInput);
+      const user = await getUserByEmailAction(emailInput);
 
       const alreadyAssigned = assignedUsers.some(item => item.id === user.id);
 
@@ -110,9 +110,9 @@ export default function RoutePage({
         return;
       }
 
-      await assignUserToRoute(route_id, user.id, session_id);
+      await assignUserToRouteAction(route_id, user.id, session_id);
 
-      const updated = await getAssignedUsersByRouteId(route_id);
+      const updated = await getAssignedUsersByRouteIdAction(route_id);
       setAssignedUsers(updated);
       setEmailInput("");
     } catch (err) {
@@ -126,8 +126,8 @@ export default function RoutePage({
 
   async function handleUnassign(userId: string) {
     try {
-      await unassignUserFromRoute(route_id, userId);
-      const updated = await getAssignedUsersByRouteId(route_id);
+      await unassignUserFromRouteAction(route_id, userId);
+      const updated = await getAssignedUsersByRouteIdAction(route_id);
       setAssignedUsers(updated);
     } catch (err) {
       const errorMessage =

@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateRoutes } from "@/actions/generateRoutes";
-import supabase from "@/actions/supabase/client";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
 import TeamCard from "@/components/TeamCard/TeamCard";
 import { IconSvgs } from "@/lib/icons";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import {
   AddButton,
   BackLink,
@@ -69,7 +69,7 @@ export default function TeamsPage() {
       // Get the current user's access token to pass to the server action
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await getSupabaseBrowserClient().auth.getSession();
       if (!session)
         throw new Error("No active session. Please log in and try again.");
 

@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  fetchAllSessionsForUser,
-  fetchSessions,
-} from "@/actions/supabase/queries/routes";
+import { fetchAllSessionsForUser } from "@/actions/supabase/queries/routes";
 import {
   checkUserOnboarded,
   getUserById,
 } from "@/actions/supabase/queries/users";
+import { fetchSessionsAdmin } from "@/actions/supabase/server-actions";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
@@ -62,7 +60,7 @@ export default function SessionsPage() {
 
         // Load sessions based on role
         if (adminStatus) {
-          const data = await fetchSessions();
+          const data = await fetchSessionsAdmin();
           setSessions(data);
         } else {
           const data = await fetchAllSessionsForUser(userId);

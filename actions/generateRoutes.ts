@@ -1,13 +1,13 @@
 "use server";
 
 import { UUID } from "crypto";
-import { createClient } from "@supabase/supabase-js";
 import { fetchTreesBatch } from "@/actions/planitgeo/queries/query";
 import {
   createProperties,
   createRoute,
-} from "@/actions/supabase/queries/routes";
-import { createWateringSession } from "@/actions/supabase/queries/sessions";
+} from "@/actions/supabase/queries/routes-data";
+import { createWateringSession } from "@/actions/supabase/queries/sessions-data";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Team, WateringSession } from "@/types/schema";
 import { VolunteerType } from "@/types/volunteerType";
 
@@ -191,21 +191,15 @@ export async function generateRoutes(
     );
   }
 
-  // Create a Supabase client authenticated with the user's token
-  const authClient = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${accessToken}` } } },
-  );
+  const supabase = await getSupabaseServerClient();
 
-  // Create watering session in Supabase
   const session = await createWateringSession(
     {
       date,
       watering_event_name: sessionName,
       central_hub: centralHub,
     },
-    authClient,
+    supabase,
   );
 
   // Create routes and properties in Supabase
@@ -229,7 +223,7 @@ export async function generateRoutes(
         maps_link: lambdaRoute.maps_url,
         num_volunteers: team?.size ?? 0,
       },
-      authClient,
+      supabase,
     );
 
     const propertiesToInsert = lambdaRoute.stops.map((stop, stopIndex) => ({
@@ -243,7 +237,7 @@ export async function generateRoutes(
     }));
 
     if (propertiesToInsert.length > 0) {
-      await createProperties(propertiesToInsert, authClient);
+      await createProperties(propertiesToInsert, supabase);
     }
   }
 

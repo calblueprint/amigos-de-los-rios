@@ -2,9 +2,9 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchRoutesBySessionId } from "@/actions/supabase/queries/routes";
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import { checkUserOnboarded } from "@/actions/supabase/queries/users";
+import { fetchRoutesBySessionIdAction } from "@/actions/supabase/server-actions";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import RouteCard from "@/components/RouteCard/RouteCard";
@@ -52,11 +52,11 @@ export default function SessionRoutesPage({
 
         // Load routes and session info
         const [routesData, sessionData] = await Promise.all([
-          fetchRoutesBySessionId(session_id),
+          fetchRoutesBySessionIdAction(session_id),
           fetchSessionById(session_id),
         ]);
 
-        setRoutes(routesData);
+        setRoutes(routesData ?? []);
         setSessionInfo(sessionData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load routes");

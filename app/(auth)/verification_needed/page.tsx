@@ -2,8 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import supabase from "@/actions/supabase/client";
 import whiteLogo from "@/assets/images/white_logo.svg";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import * as S from "../styles";
 
 function VerificationContent() {
@@ -35,7 +35,7 @@ function VerificationContent() {
     setMessage("");
 
     try {
-      const { error } = await supabase.auth.resend({
+      const { error } = await getSupabaseBrowserClient().auth.resend({
         type: "signup",
         email: email,
       });

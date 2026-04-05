@@ -1,6 +1,8 @@
-import supabase from "../client";
+import { upsertUserProfileAction } from "@/actions/supabase/server-actions";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export async function signIn(email: string, password: string) {
+  const supabase = getSupabaseBrowserClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -14,6 +16,7 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signUp(email: string, password: string) {
+  const supabase = getSupabaseBrowserClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -32,7 +35,7 @@ export async function signUp(email: string, password: string) {
   // after the session is established (to satisfy RLS policies)
   if (data.user && data.session) {
     try {
-      await upsertUserProfile({
+      await upsertUserProfileAction({
         id: data.user.id,
         email: data.user.email || "",
         name: "",
@@ -50,6 +53,7 @@ export async function signUp(email: string, password: string) {
 }
 
 export async function resetPasswordForEmail(email: string, redirectTo: string) {
+  const supabase = getSupabaseBrowserClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo,
   });
@@ -60,6 +64,7 @@ export async function resetPasswordForEmail(email: string, redirectTo: string) {
 }
 
 export async function updateUserPassword(newPassword: string) {
+  const supabase = getSupabaseBrowserClient();
   const { error } = await supabase.auth.updateUser({
     password: newPassword,
   });
@@ -74,7 +79,7 @@ export async function updateUserProfile(profileData: {
   affiliation: string;
   phone_number: string;
 }) {
-  // Get the current user's session
+  const supabase = getSupabaseBrowserClient();
   const {
     data: { user },
     error: sessionError,
@@ -98,7 +103,7 @@ export async function updateUserProfile(profileData: {
   }
 
   // Insert/update the Users table in the database
-  await upsertUserProfile({
+  await upsertUserProfileAction({
     id: user.id,
     email: user.email || "",
     name: profileData.name,
@@ -106,40 +111,6 @@ export async function updateUserProfile(profileData: {
     phone_number: profileData.phone_number,
     onboarded: true,
   });
-
-  return data;
-}
-
-// Insert or update user profile data in the Users table
-export async function upsertUserProfile(profileData: {
-  id: string; // Auth user ID
-  email: string;
-  name: string;
-  affiliation: string;
-  phone_number: string;
-  onboarded: boolean;
-}) {
-  const { data, error } = await supabase
-    .from("Users")
-    .upsert(
-      {
-        id: profileData.id,
-        email: profileData.email,
-        name: profileData.name,
-        affiliation: profileData.affiliation,
-        phone_number: profileData.phone_number,
-        onboarded: profileData.onboarded,
-      },
-      {
-        onConflict: "id", // Update if user already exists
-      },
-    )
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Error upserting user profile: ${error.message}`);
-  }
 
   return data;
 }
