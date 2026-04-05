@@ -53,12 +53,3 @@ export async function fetchTreesBatch(): Promise<unknown[]> {
   console.log(`Total trees fetched: ${allTrees.length}`);
   return allTrees;
 }
-
-export async function fetchTreesFake() {
-  return {
-    features: [
-      { properties: { id: "1", species: "Oak", dbh: 12 } },
-      { properties: { id: "2", species: "Maple", dbh: 8 } },
-    ],
-  };
-}
