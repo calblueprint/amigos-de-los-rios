@@ -9,9 +9,9 @@ export const ProfileCardContainer = styled.div`
   flex-direction: column;
   width: 100%;
   border-radius: 0.75rem;
-  background: ${COLORS.adlr_gray};
+  background: ${COLORS.adlr_white};
   border: 1px solid ${COLORS.adlr_gray};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -34,14 +34,14 @@ export const ProfileCardHeader = styled.div`
 `;
 
 export const ProfileCardTitle = styled.h2`
-  color: ${COLORS.adlr_black};
+  color: ${COLORS.black};
   font-family: "DM Sans";
   font-size: 1.75rem;
   font-style: normal;
   font-weight: 400;
   line-height: 1.3;
   letter-spacing: -0.02rem;
-
+  margin-bottom: -2rem;
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.125rem, 4vw, 1.5rem);
   }
@@ -57,6 +57,7 @@ export const ProfileCardButton = styled.button`
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  margin-bottom: -2rem;
   transition:
     background-color 0.2s ease,
     transform 0.1s ease;
@@ -90,7 +91,7 @@ export const ProfileField = styled.div`
 `;
 
 export const ProfileFieldLabel = styled.label`
-  color: ${COLORS.adlr_black};
+  color: ${COLORS.black};
   font-family: "DM Sans";
   font-size: 1.25rem;
   font-style: normal;
@@ -104,7 +105,7 @@ export const ProfileFieldLabel = styled.label`
 `;
 
 export const ProfileFieldValue = styled.p`
-  color: ${COLORS.black};
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
   font-size: 1.125rem;
   font-style: normal;
@@ -115,4 +116,80 @@ export const ProfileFieldValue = styled.p`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.875rem, 4vw, 1rem);
   }
+`;
+
+export const ProfileFieldInput = styled.input`
+  color: ${COLORS.black};
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.015rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid ${COLORS.adlr_dark_gray};
+  border-radius: 0.375rem;
+  background: white;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: ${COLORS.adlr_blue};
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+  }
+`;
+
+export const ProfileCardButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    flex-direction: column;
+  }
+`;
+
+export const ProfileCardSaveButton = styled(ProfileCardButton)`
+  background: ${COLORS.adlr_green};
+  margin-bottom: -2rem;
+`;
+
+export const ProfileCardCancelButton = styled.button`
+  background: white;
+  color: ${COLORS.adlr_dark_gray};
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid ${COLORS.adlr_dark_gray};
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-bottom: -2rem;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+  }
+`;
+
+export const ErrorText = styled.span`
+  color: ${COLORS.red};
+  font-family: "DM Sans";
+  font-size: 0.875rem;
+  font-style: normal;
+  line-height: 1.25rem;
+  letter-spacing: -0.0125rem;
 `;

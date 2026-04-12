@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   checkUserOnboarded,
   getUserById,
+  updateUserProfile,
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
@@ -32,16 +33,6 @@ export default function ProfilePage() {
   //Password fields
   const passwordFields = [{ label: "", value: "********" }];
 
-  // Handle edit profile logic here
-  const EditProfile = () => {
-    console.log("Edit Profile button clicked");
-  };
-
-  const ChangePassword = () => {
-    // Handle change password logic here
-    console.log("Change Password button clicked");
-  };
-
   useEffect(() => {
     if (authLoading) return;
 
@@ -68,12 +59,41 @@ export default function ProfilePage() {
 
     init();
   }, [userId, authLoading, router]);
+
   const profileFields = [
-    { label: "Name", value: profile?.name || "" },
-    { label: "Email", value: profile?.email || "" },
-    { label: "Affiliation", value: profile?.affiliation || "" },
-    { label: "Phone Number", value: profile?.phone_number || "" },
+    { key: "name", label: "Full Name", value: profile?.name || "" },
+    {
+      key: "email",
+      label: "Email Address",
+      value: profile?.email || "",
+      validate: (v: string) => {
+        if (v.length > 254) return "Email must be 254 characters or fewer.";
+        if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(v))
+          return "Enter a valid email address.";
+        return null;
+      },
+    },
+    {
+      key: "affiliation",
+      label: "Affiliation",
+      value: profile?.affiliation || "",
+    },
+    {
+      key: "phone_number",
+      label: "Phone Number",
+      value: profile?.phone_number || "",
+      validate: (v: string) => {
+        if (v.length > 15) return "Phone number must be 15 digits or fewer.";
+        if (!/^[\d\s\-().]+$/.test(v)) return "Enter a valid phone number.";
+        return null;
+      },
+    },
   ];
+
+  const handleSaveProfile = async (updatedFields: Record<string, string>) => {
+    await updateUserProfile(userId!, updatedFields);
+    setProfile(prev => (prev ? { ...prev, ...updatedFields } : prev));
+  };
 
   if (loading || authLoading) return <p>Loading profile...</p>;
 
@@ -89,16 +109,9 @@ export default function ProfilePage() {
           <ProfileCard
             title="Profile Information"
             fields={profileFields}
-            buttonText="Edit Profile"
-            onButtonClick={EditProfile}
+            onSave={handleSaveProfile}
           />
-
-          <ProfileCard
-            title="Password"
-            fields={passwordFields}
-            buttonText="Change Password"
-            onButtonClick={ChangePassword}
-          />
+          <ProfileCard title="Password" fields={passwordFields} />
         </CardsContainer>
       </ContentContainer>
     </PageContainer>

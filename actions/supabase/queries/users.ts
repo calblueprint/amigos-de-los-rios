@@ -44,3 +44,15 @@ export async function getUserProfile(userId: string) {
   if (error) throw error;
   return data;
 }
+
+export async function updateUserProfile(
+  userId: string,
+  updatedFields: Record<string, string>,
+) {
+  const { error } = await supabase
+    .from("Users")
+    .update(updatedFields)
+    .eq("id", userId);
+
+  if (error) throw error;
+}
