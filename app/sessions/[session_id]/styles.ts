@@ -91,7 +91,13 @@ export const RoutesButtonContainer = styled.div`
   flex-direction: row;
   align-items: stretch;
   gap: 0.75rem;
+`;
+
+export const LegendAnchor = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RoutesHeader = styled.h1`
@@ -170,6 +176,8 @@ export const PrintAllButton = styled.button`
 export const LegendDropdownWrapper = styled.div`
   position: absolute;
   top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   margin-top: 0.75rem;
   z-index: 100;
 `;

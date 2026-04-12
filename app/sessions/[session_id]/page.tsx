@@ -20,6 +20,7 @@ import {
   CentralHubName,
   ContentContainer,
   DateHeader,
+  LegendAnchor,
   LegendDropdownWrapper,
   LegendIconButton,
   PageContainer,
@@ -120,28 +121,30 @@ export default function SessionRoutesPage({
           <RoutesHeaderContainer>
             <RoutesHeader>Routes</RoutesHeader>
             <RoutesButtonContainer>
-              <LegendIconButton onClick={() => setShowLegend(!showLegend)}>
-                {IconSvgs.legend}
-              </LegendIconButton>
+              <LegendAnchor>
+                <LegendIconButton onClick={() => setShowLegend(!showLegend)}>
+                  {IconSvgs.legend}
+                </LegendIconButton>
+                {showLegend && (
+                  <>
+                    <div
+                      onClick={() => setShowLegend(false)}
+                      style={{
+                        position: "fixed",
+                        inset: 0,
+                        zIndex: 99,
+                      }}
+                    />
+                    <LegendDropdownWrapper>
+                      <LegendCard />
+                    </LegendDropdownWrapper>
+                  </>
+                )}
+              </LegendAnchor>
               <PrintAllButton>{IconSvgs.print} Print All Routes</PrintAllButton>
               <TrashIconButton onClick={() => setIsDeleting(!isDeleting)}>
                 {IconSvgs.trash}
               </TrashIconButton>
-              {showLegend && (
-                <>
-                  <div
-                    onClick={() => setShowLegend(false)}
-                    style={{
-                      position: "fixed",
-                      inset: 0,
-                      zIndex: 99,
-                    }}
-                  />
-                  <LegendDropdownWrapper>
-                    <LegendCard />
-                  </LegendDropdownWrapper>
-                </>
-              )}
             </RoutesButtonContainer>
           </RoutesHeaderContainer>
 
