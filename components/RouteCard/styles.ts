@@ -94,6 +94,7 @@ export const CloseIconButton = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: #f3f4f6;
+    background: #fef3f3;
+    border-color: #ffa2a3;
   }
 `;

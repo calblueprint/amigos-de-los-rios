@@ -152,3 +152,12 @@ export async function createProperties(
   if (error) throw error;
   return data as RouteStop[];
 }
+
+export async function deleteRouteById(routeId: string) {
+  const { error } = await supabase.from("Routes").delete().eq("id", routeId);
+
+  if (error) {
+    console.error("Supabase delete error:", error);
+    throw new Error(error.message);
+  }
+}
