@@ -15,6 +15,7 @@ type ApiFeatureProperty = {
     address_street?: string;
     address_num_street?: string;
     tree_comments?: string;
+    last_modified?: number;
     organization?: number;
     _useradd_6865956bca734?: number;
   };
@@ -31,12 +32,14 @@ function toPropertyDraft(f: ApiFeatureProperty): PropertyDraft {
 
   return {
     address,
+    pid: p.pid,
     latitude: p.lat,
     longitude: p.lng,
-    water_onsite: p._useradd_6865956bca734 !== 1, // 1 = hand watered, so no onsite water
+    water_onsite: p._useradd_6865956bca734 === 2, // 2 = irrigated, so there is water onsite, otherwise there isn't
     num_trees: p.tree_comments ?? "None",
-    nearest_hydrant: "401db03e-d179-4a0e-ba69-1a092f208cf8", // TODO: replace with real value
-    prev_watered: false, // TODO: replace with real value
+    prev_watered: p.last_modified
+      ? new Date(p.last_modified).toISOString()
+      : null,
     organization: p.organization,
   };
 }
@@ -101,7 +104,8 @@ export default function PropertiesPage() {
             <strong>Address:</strong> {property.address} —{" "}
             <strong>Latitude:</strong> {property.latitude} —{" "}
             <strong>Longitude:</strong> {property.longitude} —{" "}
-            <strong>Comments:</strong> {property.num_trees}
+            <strong>Comments:</strong> {property.num_trees} —{" "}
+            <strong>Last Modified:</strong> {property.prev_watered}
           </li>
         ))}
       </ul>

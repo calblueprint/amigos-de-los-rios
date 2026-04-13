@@ -12,13 +12,14 @@ export type Hydrant = {
 
 export type Property = {
   id?: UUID;
+  pid: number;
   address: string | null;
   latitude: number | null;
   longitude: number | null;
   water_onsite: boolean;
   num_trees: string | null;
-  nearest_hydrant: UUID;
-  prev_watered: boolean;
+  nearest_hydrant?: UUID | null;
+  prev_watered: string | null;
 };
 export type RouteStop = {
   id: UUID;

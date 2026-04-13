@@ -7,7 +7,7 @@ export async function createProperties(
   const { data, error } = await supabase
     .from("Property")
     .upsert(properties, {
-      onConflict: "address",
+      onConflict: "pid",
     })
     .select();
 
