@@ -113,7 +113,7 @@ export const HeaderContainer = styled.div`
   align-self: stretch;
 
   border-radius: 0.625rem;
-  background: ${COLORS.adlr_white};
+  background: white;
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
     0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
@@ -230,7 +230,7 @@ export const TeamContainer = styled.div`
 
   border-radius: 0.625rem;
   border: 0.0625rem solid ${COLORS.adlr_light_gray};
-  background: ${COLORS.adlr_white};
+  background: white;
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
     0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);

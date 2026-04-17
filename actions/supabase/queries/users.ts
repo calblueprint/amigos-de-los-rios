@@ -36,3 +36,24 @@ export async function checkUserOnboarded(userId: string): Promise<boolean> {
 
   return true;
 }
+
+export async function changeUserGroupLeader(userId: string): Promise<boolean> {
+  const user = await getUserById(userId);
+  if (!user) {
+    return false;
+  }
+
+  const newGroupLeaderStatus = !user.group_leader;
+
+  const { error } = await supabase
+    .from("Users")
+    .update({ group_leader: newGroupLeaderStatus })
+    .eq("id", userId);
+
+  if (error) {
+    console.error("Error updating group leader status:", error);
+    return false;
+  }
+
+  return true;
+}

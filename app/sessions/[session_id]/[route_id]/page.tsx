@@ -22,6 +22,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
+import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   AllContent,
@@ -322,55 +323,6 @@ export default function RoutePage({
             </RouteHolder>
           </RouteContainer>
 
-          {/* temporary input styling */}
-          {isAdmin && (
-            <div style={{ marginBottom: "2rem" }}>
-              <h3>Assign User to Route</h3>
-
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
-                  type="email"
-                  placeholder="Enter user email"
-                  value={emailInput}
-                  onChange={e => setEmailInput(e.target.value)}
-                  style={{ padding: "0.5rem", width: "250px" }}
-                />
-
-                <button onClick={handleAssign} disabled={assignLoading}>
-                  {assignLoading ? "Assigning..." : "Assign"}
-                </button>
-              </div>
-
-              <div style={{ marginTop: "1.5rem" }}>
-                <h4>Assigned Users</h4>
-
-                {assignedUsers.length === 0 ? (
-                  <p>No users assigned.</p>
-                ) : (
-                  assignedUsers.map(item => (
-                    <div
-                      key={item.id}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "0.5rem 0",
-                      }}
-                    >
-                      <div>
-                        <strong>{item.name}</strong> — {item.email}
-                      </div>
-
-                      <button onClick={() => handleUnassign(item.id)}>
-                        Unassign
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
           <TabContainer>
             <Tab $active>Properties</Tab>
           </TabContainer>
@@ -382,14 +334,19 @@ export default function RoutePage({
             )}
           </PropertiesList>
         </ContentContainer>
+
         <TeamContainer>
           <TeamAssignment>Team Assignment</TeamAssignment>
-          <TeamAssignmentCard>
-            <TeamAssignmentText>
-              <TeamAssignmentName>Placeholder</TeamAssignmentName>
-              <TeamAssignmentRole>Placeholder</TeamAssignmentRole>
-            </TeamAssignmentText>
-          </TeamAssignmentCard>
+          {assignedUsers.map(user => (
+            <VolunteerCard
+              key={user.id}
+              name={user.name}
+              organization={user.affiliation}
+              email={user.email}
+              isAdmin={isAdmin}
+              onUnassign={() => handleUnassign(user.id)}
+            />
+          ))}
         </TeamContainer>
       </AllContent>
     </PageContainer>
