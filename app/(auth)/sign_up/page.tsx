@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/actions/supabase/queries/auth";
 import whiteLogo from "@/assets/images/white_logo.svg";
+import { IconSvgs } from "@/lib/icons";
 import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
 
@@ -16,6 +17,8 @@ export default function SignUp() {
   const [successMessage, setSuccessMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [showCreatePassword, setShowCreatePassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = async () => {
     // Clear previous errors
@@ -130,7 +133,7 @@ export default function SignUp() {
             <S.Input
               name="email"
               type="email"
-              placeholder=""
+              placeholder="Enter your email"
               onChange={e => {
                 setEmail(e.target.value);
                 if (emailError) setEmailError("");
@@ -145,18 +148,38 @@ export default function SignUp() {
             <S.Label>
               Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
             </S.Label>
-            <S.Input
-              type="password"
-              name="password"
-              placeholder=""
-              onChange={e => {
-                setPassword(e.target.value);
-                if (passwordError) setPasswordError("");
-                if (confirmPasswordError) setConfirmPasswordError(""); // Clear confirm password error on password change
-              }}
-              value={password}
-              $hasError={!!passwordError}
-            />
+
+            <S.PasswordField>
+              <S.Input
+                type={showCreatePassword ? "text" : "password"}
+                name="password"
+                placeholder="Create a password"
+                onChange={e => {
+                  setPassword(e.target.value);
+                  if (passwordError) setPasswordError("");
+                }}
+                value={password}
+                $hasError={!!passwordError}
+              />
+
+              <S.ShowHideButton
+                type="button"
+                onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+                  e.preventDefault()
+                }
+              >
+                {React.cloneElement(
+                  showCreatePassword
+                    ? IconSvgs.password_hidden
+                    : IconSvgs.password_visible,
+                  {
+                    onClick: () => setShowCreatePassword(prev => !prev),
+                    style: { cursor: "pointer" },
+                  },
+                )}
+              </S.ShowHideButton>
+            </S.PasswordField>
+
             {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
           </S.InputGroup>
 
@@ -164,17 +187,38 @@ export default function SignUp() {
             <S.Label>
               Confirm Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
             </S.Label>
-            <S.Input
-              type="password"
-              name="confirmPassword"
-              placeholder=""
-              onChange={e => {
-                setConfirmPassword(e.target.value);
-                if (confirmPasswordError) setConfirmPasswordError(""); // Clear error on input change
-              }}
-              value={confirmPassword}
-              $hasError={!!confirmPasswordError}
-            />
+
+            <S.PasswordField>
+              <S.Input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                onChange={e => {
+                  setConfirmPassword(e.target.value);
+                  if (confirmPasswordError) setConfirmPasswordError("");
+                }}
+                value={confirmPassword}
+                $hasError={!!confirmPasswordError}
+              />
+
+              <S.ShowHideButton
+                type="button"
+                onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+                  e.preventDefault()
+                }
+              >
+                {React.cloneElement(
+                  showConfirmPassword
+                    ? IconSvgs.password_hidden
+                    : IconSvgs.password_visible,
+                  {
+                    onClick: () => setShowConfirmPassword(prev => !prev),
+                    style: { cursor: "pointer" },
+                  },
+                )}
+              </S.ShowHideButton>
+            </S.PasswordField>
+
             {confirmPasswordError && (
               <S.ErrorText>{confirmPasswordError}</S.ErrorText>
             )}
