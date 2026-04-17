@@ -13,7 +13,7 @@ export const TeamCard = styled.div`
   background: ${COLORS.adlr_lighter_gray};
   border: 1px solid ${COLORS.adlr_light_gray};
   border-radius: 0.625rem;
-  padding: 1.19rem 34.44rem 1rem 0.88rem;
+  padding: 1.19rem 0.88rem 1rem 0.88rem;
   position: relative;
 `;
 
