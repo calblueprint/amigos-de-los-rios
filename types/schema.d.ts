@@ -9,8 +9,9 @@ export type Property = {
   water_onsite: boolean;
   num_trees: string | null;
   nearest_hydrant: UUID;
-  prev_watered: boolean;
+  prev_watered: string | null;
 };
+
 export type RouteStop = {
   id: UUID;
   route_id: UUID;
