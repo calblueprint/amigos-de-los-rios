@@ -86,6 +86,7 @@ export const AddressAutocompleteContainer = styled.div`
   #address-autocomplete {
     display: block;
     width: 100%;
+    min-height: 3.1rem;
     color-scheme: light;
     font-family: ${Sans.style.fontFamily};
     font-size: 1.25rem;
@@ -103,6 +104,22 @@ export const AddressAutocompleteContainer = styled.div`
     --gmpx-font-size-base: 1.25rem;
     --gmpx-border-radius: 0.3125rem;
   }
+`;
+
+export const FieldErrorText = styled.p`
+  color: ${COLORS.red};
+  margin-top: 0.5rem;
+  font-family: ${Sans.style.fontFamily};
+  font-size: 1rem;
+`;
+
+export const DescriptionInput = styled(Input)`
+  resize: vertical;
+`;
+
+export const UnauthorizedContainer = styled(PageContainer)`
+  padding: 40px;
+  text-align: center;
 `;
 
 export const EditTeamsHeader = styled.div`

@@ -10,12 +10,15 @@ import {
   AddressAutocompleteContainer,
   BackLink,
   ContentContainer,
+  DescriptionInput,
+  FieldErrorText,
   FixedBottomContainer,
   GenerateButton,
   Input,
   Label,
   PageContainer,
   Title,
+  UnauthorizedContainer,
 } from "../styles";
 
 interface PlaceLike {
@@ -150,18 +153,6 @@ export default function BasicInfoPage() {
       }
 
       const autocomplete = new PlaceAutocompleteElement();
-      autocomplete.style.width = "100%";
-      autocomplete.style.display = "block";
-      autocomplete.style.minHeight = "3.1rem";
-      autocomplete.style.colorScheme = "light";
-      autocomplete.style.setProperty("--gmpx-color-surface", "#FBFBFB");
-      autocomplete.style.setProperty("--gmpx-color-on-surface", "#2B2C2C");
-      autocomplete.style.setProperty(
-        "--gmpx-color-on-surface-variant",
-        "#707070",
-      );
-      autocomplete.style.setProperty("--gmpx-color-outline", "#CFCFCF");
-      autocomplete.style.setProperty("--gmpx-color-primary", "#1A548A");
       autocomplete.setAttribute("id", "address-autocomplete");
       autocomplete.setAttribute("placeholder", "Search address");
       addressAutocompleteContainer.innerHTML = "";
@@ -315,9 +306,9 @@ export default function BasicInfoPage() {
 
   if (!isAdmin) {
     return (
-      <PageContainer style={{ padding: "40px", textAlign: "center" }}>
+      <UnauthorizedContainer>
         <h2>401 unauthorized</h2>
-      </PageContainer>
+      </UnauthorizedContainer>
     );
   }
 
@@ -360,18 +351,15 @@ export default function BasicInfoPage() {
           Address<span className="required">*</span>
         </Label>
         <AddressAutocompleteContainer ref={addressAutocompleteContainerRef} />
-        {placesApiError && (
-          <p style={{ color: "red", marginTop: "0.5rem" }}>{placesApiError}</p>
-        )}
+        {placesApiError && <FieldErrorText>{placesApiError}</FieldErrorText>}
 
         <Label>Description</Label>
-        <Input
+        <DescriptionInput
           as="textarea"
           rows={4}
           placeholder="Enter a short description"
           value={description}
           onChange={e => setDescription(e.target.value)}
-          style={{ resize: "vertical" }}
         />
       </ContentContainer>
       <FixedBottomContainer>
