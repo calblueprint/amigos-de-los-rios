@@ -38,8 +38,7 @@ export default function ProfilePage() {
   };
 
   const ChangePassword = () => {
-    // Handle change password logic here
-    console.log("Change Password button clicked");
+    router.push("/reset_password");
   };
 
   useEffect(() => {
