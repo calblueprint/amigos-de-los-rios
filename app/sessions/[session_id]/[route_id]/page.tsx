@@ -348,25 +348,25 @@ export default function RoutePage({
               <div style={{ marginTop: "1.5rem" }}>
                 <h4>Assigned Users</h4>
 
-              {assignedUsers.length === 0 ? (
-                <p>No users assigned.</p>
-              ) : (
-                assignedUsers.map(item => (
-                  <div
-                    key={item.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "0.5rem 0",
-                    }}
-                  >
-                    <div>
-                      <strong>{item.name}</strong> — {item.email}
-                    </div>
+                {assignedUsers.length === 0 ? (
+                  <p>No users assigned.</p>
+                ) : (
+                  assignedUsers.map(item => (
+                    <div
+                      key={item.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "0.5rem 0",
+                      }}
+                    >
+                      <div>
+                        <strong>{item.name}</strong> — {item.email}
+                      </div>
 
-                    {/* TODO: group leader placeholder */}
-                    {/* <button onClick={() => handleGroupLeader(item.id)}>
+                      {/* TODO: group leader placeholder */}
+                      {/* <button onClick={() => handleGroupLeader(item.id)}>
                       group leader placeholder
                     </button> */}
 
