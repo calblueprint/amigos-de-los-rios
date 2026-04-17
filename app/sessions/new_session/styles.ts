@@ -80,6 +80,31 @@ export const Input = styled.input`
   letter-spacing: -0.01875rem;
 `;
 
+export const AddressAutocompleteContainer = styled.div`
+  width: 100%;
+
+  #address-autocomplete {
+    display: block;
+    width: 100%;
+    color-scheme: light;
+    font-family: ${Sans.style.fontFamily};
+    font-size: 1.25rem;
+    line-height: 1.125rem;
+    letter-spacing: -0.01875rem;
+    color: ${COLORS.adlr_black};
+
+    /* Google Places widget theming tokens (when supported). */
+    --gmpx-color-surface: ${COLORS.white};
+    --gmpx-color-on-surface: ${COLORS.adlr_black};
+    --gmpx-color-on-surface-variant: ${COLORS.adlr_property_gray};
+    --gmpx-color-outline: ${COLORS.adlr_gray};
+    --gmpx-color-primary: ${COLORS.adlr_blue};
+    --gmpx-font-family-base: ${Sans.style.fontFamily};
+    --gmpx-font-size-base: 1.25rem;
+    --gmpx-border-radius: 0.3125rem;
+  }
+`;
+
 export const EditTeamsHeader = styled.div`
   display: flex;
   justify-content: space-between;

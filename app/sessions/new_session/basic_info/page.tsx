@@ -7,6 +7,7 @@ import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
 import {
+  AddressAutocompleteContainer,
   BackLink,
   ContentContainer,
   FixedBottomContainer,
@@ -150,7 +151,19 @@ export default function BasicInfoPage() {
 
       const autocomplete = new PlaceAutocompleteElement();
       autocomplete.style.width = "100%";
+      autocomplete.style.display = "block";
+      autocomplete.style.minHeight = "3.1rem";
+      autocomplete.style.colorScheme = "light";
+      autocomplete.style.setProperty("--gmpx-color-surface", "#FBFBFB");
+      autocomplete.style.setProperty("--gmpx-color-on-surface", "#2B2C2C");
+      autocomplete.style.setProperty(
+        "--gmpx-color-on-surface-variant",
+        "#707070",
+      );
+      autocomplete.style.setProperty("--gmpx-color-outline", "#CFCFCF");
+      autocomplete.style.setProperty("--gmpx-color-primary", "#1A548A");
       autocomplete.setAttribute("id", "address-autocomplete");
+      autocomplete.setAttribute("placeholder", "Search address");
       addressAutocompleteContainer.innerHTML = "";
       addressAutocompleteContainer.appendChild(autocomplete);
 
@@ -346,7 +359,7 @@ export default function BasicInfoPage() {
         <Label>
           Address<span className="required">*</span>
         </Label>
-        <div ref={addressAutocompleteContainerRef} />
+        <AddressAutocompleteContainer ref={addressAutocompleteContainerRef} />
         {placesApiError && (
           <p style={{ color: "red", marginTop: "0.5rem" }}>{placesApiError}</p>
         )}
