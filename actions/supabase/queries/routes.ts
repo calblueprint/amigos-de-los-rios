@@ -1,12 +1,5 @@
-import { Property, Route } from "@/types/schema";
+import { Route, RouteStop, WateringSession } from "@/types/schema";
 import supabase from "../client";
-
-type WateringSession = {
-  id: string;
-  date: string;
-  watering_event_name: string;
-  central_hub: string;
-};
 
 export async function fetchSessions() {
   const { data, error } = await supabase
@@ -35,7 +28,7 @@ export async function fetchUserRouteProperties(userId: string) {
   const routeId = assignments.route_id;
 
   const { data: props, error: propError } = await supabase
-    .from("Property")
+    .from("Route Stops")
     .select("*")
     .eq("route_id", routeId)
     .order("order_to_visit", { ascending: true });
@@ -47,7 +40,7 @@ export async function fetchUserRouteProperties(userId: string) {
 
 export async function fetchPropertiesByRouteId(routeId: string) {
   const { data: props, error: propError } = await supabase
-    .from("Property")
+    .from("Route Stops")
     .select("*")
     .eq("route_id", routeId)
     .order("order_to_visit", { ascending: true });
@@ -91,10 +84,6 @@ export async function fetchUserRouteForSession(
     .in("id", routeIds)
     .eq("watering_event_id", sessionId)
     .limit(1);
-
-  // if (routeError || !routes || routes.length === 0) {
-  //   throw new Error("No matching route found for this session and/or user.");
-  // }
 
   // ask about this its like error thrown versus null returned
   if (!routes || routes.length === 0) {
@@ -152,12 +141,14 @@ export async function createRoute(routeData: Omit<Route, "id">) {
   return data as Route;
 }
 
-export async function createProperties(propertiesData: Omit<Property, "id">[]) {
+export async function createProperties(
+  propertiesData: Omit<RouteStop, "id">[],
+) {
   const { data, error } = await supabase
-    .from("Property")
+    .from("Route Stops")
     .insert(propertiesData)
     .select();
 
   if (error) throw error;
-  return data as Property[];
+  return data as RouteStop[];
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Property } from "@/types/schema";
+import { RouteStop } from "@/types/schema";
 import {
   CardContainer,
   OrderCircle,
@@ -10,7 +10,7 @@ import {
 } from "./styles";
 
 interface PropertyCardProps {
-  property: Property;
+  property: RouteStop;
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
@@ -18,8 +18,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     <CardContainer>
       <OrderCircle>{property.order_to_visit}</OrderCircle>
       <PropertyInfo>
-        <PropertyName>{property.property_name}</PropertyName>
-        <PropertyAddress>{property.street_address}</PropertyAddress>
+        <PropertyName>{property.id}</PropertyName>
+        <PropertyAddress>{property.property_address}</PropertyAddress>
       </PropertyInfo>
     </CardContainer>
   );

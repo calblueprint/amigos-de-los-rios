@@ -83,7 +83,7 @@ function formatTimestamp(date) {
  *
  * @param {Object} hub - Starting/ending location with lat/lng
  * @param {Array} properties - Locations to visit with service times
- * @param {number} teamTimeBudgetMinutes - Total time available for the route
+ * @param {Array} vehiclesInput - Total time available for each team traveling in each vehicle
  * @param {string} accessToken - OAuth2 token from getAccessToken()
  * @param {string} projectId - Google Cloud project ID
  * @returns {Object} Optimization result with ordered route and metrics
@@ -91,31 +91,51 @@ function formatTimestamp(date) {
 async function optimizeRoute(
   hub,
   properties,
-  teamTimeBudgetMinutes,
+  vehiclesInput,
   accessToken,
   projectId,
 ) {
   const now = new Date();
-  const endTime = new Date(now.getTime() + teamTimeBudgetMinutes * 60000);
 
-  // Define the vehicle (team) - where it starts/ends and when it's available
-  // For now we handle a single vehicle, but can extend to multiple teams later
-  const vehicle = {
-    startLocation: { latitude: hub.lat, longitude: hub.lng },
-    endLocation: { latitude: hub.lat, longitude: hub.lng },
-    startTimeWindows: [
-      {
-        startTime: formatTimestamp(now),
-        endTime: formatTimestamp(endTime),
+  // Define the vehicles (teams) - where it starts/ends and when it's available
+  const vehicles = vehiclesInput.map(v => {
+    const vehicleEndTime = new Date(
+      now.getTime() + v.team_time_budget_minutes * 60000,
+    );
+
+    return {
+      label: v.id,
+      startLocation: {
+        latitude: hub.lat,
+        longitude: hub.lng,
       },
-    ],
-    endTimeWindows: [
-      {
-        startTime: formatTimestamp(now),
-        endTime: formatTimestamp(endTime),
+      endLocation: {
+        latitude: hub.lat,
+        longitude: hub.lng,
       },
-    ],
-  };
+      startTimeWindows: [
+        {
+          startTime: formatTimestamp(now),
+          endTime: formatTimestamp(vehicleEndTime),
+        },
+      ],
+      endTimeWindows: [
+        {
+          startTime: formatTimestamp(now),
+          endTime: formatTimestamp(vehicleEndTime),
+        },
+      ],
+    };
+  });
+
+  // final end, when all teams are done
+  const maxEndTime = new Date(
+    Math.max(
+      ...vehiclesInput.map(
+        v => now.getTime() + v.team_time_budget_minutes * 60000,
+      ),
+    ),
+  );
 
   // Define shipments - each property is a "delivery" the vehicle must make
   // Google's API terminology uses "shipments" for any visit/stop
@@ -130,7 +150,7 @@ async function optimizeRoute(
         timeWindows: [
           {
             startTime: formatTimestamp(now),
-            endTime: formatTimestamp(endTime),
+            endTime: formatTimestamp(maxEndTime),
           },
         ],
       },
@@ -142,9 +162,9 @@ async function optimizeRoute(
   const request = {
     model: {
       shipments,
-      vehicles: [vehicle],
+      vehicles,
       globalStartTime: formatTimestamp(now),
-      globalEndTime: formatTimestamp(endTime),
+      globalEndTime: formatTimestamp(maxEndTime),
     },
   };
 
@@ -224,10 +244,9 @@ function verifySupabaseToken(authHeader, jwtSecret) {
  * properties that couldn't fit in the time budget.
  */
 function formatResponse(optimizationResult, properties, hub) {
-  const route = optimizationResult.routes?.[0];
+  const routes = optimizationResult.routes || [];
 
-  // If no route was generated, all properties were dropped
-  if (!route) {
+  if (routes.length === 0) {
     return {
       route: null,
       dropped: properties.map(p => ({
@@ -237,36 +256,36 @@ function formatResponse(optimizationResult, properties, hub) {
     };
   }
 
-  // Map Google's "visits" back to our property data in the optimized order
-  const stops =
-    route.visits?.map(visit => {
-      const property = properties.find(p => p.id === visit.shipmentLabel);
-      return {
-        property_id: property.id,
-        address: property.address || "N/A",
-        lat: property.lat,
-        lng: property.lng,
-        service_time_min: property.service_time_minutes,
-        arrival_time: visit.startTime,
-      };
-    }) || [];
+  const formattedRoutes = routes.map(route => {
+    const stops =
+      route.visits?.map(visit => {
+        const property = properties.find(p => p.id === visit.shipmentLabel);
+        return {
+          property_id: property.id,
+          address: property.address || "N/A",
+          lat: property.lat,
+          lng: property.lng,
+          service_time_min: property.service_time_minutes,
+          arrival_time: visit.startTime,
+        };
+      }) || [];
 
-  // Calculate timing breakdown: total duration = travel time + service time
-  const totalServiceMin = stops.reduce((sum, s) => sum + s.service_time_min, 0);
-  const totalDurationSec = parseInt(
-    route.metrics?.totalDuration?.replace("s", "") || "0",
-  );
-  const totalTravelMin = Math.round(totalDurationSec / 60 - totalServiceMin);
+    const totalServiceMin = stops.reduce(
+      (sum, s) => sum + s.service_time_min,
+      0,
+    );
 
-  // Track properties that Google couldn't fit in the route
-  const dropped =
-    optimizationResult.skippedShipments?.map(s => ({
-      property_id: s.label,
-      reason: "Could not fit in time budget",
-    })) || [];
+    const totalDurationSec = Number(
+      route.metrics?.totalDuration?.replace("s", "") || "0",
+    );
 
-  return {
-    route: {
+    const totalTravelMin = Math.max(
+      0,
+      Math.round(totalDurationSec / 60 - totalServiceMin),
+    );
+
+    return {
+      vehicle_id: route.vehicleLabel,
       stops,
       totals: {
         travel_min: totalTravelMin,
@@ -274,7 +293,17 @@ function formatResponse(optimizationResult, properties, hub) {
         total_min: totalTravelMin + totalServiceMin,
       },
       maps_url: generateMapsUrl(stops, hub),
-    },
+    };
+  });
+
+  const dropped =
+    optimizationResult.skippedShipments?.map(s => ({
+      property_id: s.label,
+      reason: "Could not fit in time budget",
+    })) || [];
+
+  return {
+    route: formattedRoutes,
     dropped,
   };
 }
@@ -322,13 +351,22 @@ exports.handler = async event => {
         }),
       };
     }
-
     // Parse input
-    const input = JSON.parse(event.body);
-    const { hub, properties, team_time_budget_minutes } = input;
+    let input;
+
+    try {
+      input = JSON.parse(event.body);
+    } catch {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "Invalid JSON body" }),
+      };
+    }
+    const { hub, properties, vehicles } = input;
 
     // Validate input
-    if (!hub || !hub.lat || !hub.lng) {
+    if (!hub || hub.lat == null || hub.lng == null) {
       return {
         statusCode: 400,
         headers,
@@ -346,19 +384,44 @@ exports.handler = async event => {
       };
     }
 
-    if (!team_time_budget_minutes || team_time_budget_minutes <= 0) {
+    if (properties.length > 1000) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({
-          error: "Missing or invalid team_time_budget_minutes",
+          error: "Too many properties (max 1000)",
         }),
       };
     }
 
+    if (!vehicles || !Array.isArray(vehicles) || vehicles.length === 0) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "vehicles[] is required" }),
+      };
+    }
+
+    for (const v of vehicles) {
+      if (!v.id || !v.team_time_budget_minutes) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: "Each vehicle must have id and team_time_budget_minutes",
+          }),
+        };
+      }
+    }
+
     // Validate each property
     for (const prop of properties) {
-      if (!prop.id || !prop.lat || !prop.lng || !prop.service_time_minutes) {
+      if (
+        !prop.id ||
+        prop.lat == null ||
+        prop.lng == null ||
+        prop.service_time_minutes == null
+      ) {
         return {
           statusCode: 400,
           headers,
@@ -396,7 +459,7 @@ exports.handler = async event => {
     const optimizationResult = await optimizeRoute(
       hub,
       properties,
-      team_time_budget_minutes,
+      vehicles,
       accessToken,
       projectId,
     );

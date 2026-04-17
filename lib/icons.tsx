@@ -162,4 +162,5 @@ export const IconSvgs = {
     </svg>
   ),
 };
+
 export type IconType = keyof typeof IconSvgs;
