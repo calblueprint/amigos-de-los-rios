@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUserById } from "@/actions/supabase/queries/users";
+import { getAdminUsers, getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import AdminCard from "@/components/AdminCard/Admin";
 import Banner from "@/components/Banner/Banner";
@@ -22,27 +22,21 @@ import {
   TitleSection,
 } from "./styles";
 
-const admins = [
-  {
-    id: "1",
-    name: "John Smith",
-    email: "john.smith@amigosdelrios.org",
-    dateAdded: "Jan 4, 2025",
-  },
-  {
-    id: "2",
-    name: "Maria Garcia",
-    email: "maria.garcia@amigosdelrios.org",
-    dateAdded: "Jan 4, 2025",
-  },
-];
-
 export default function AdminPage() {
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [admins, setAdmins] = useState<
+    {
+      id: string;
+      name: string;
+      email: string;
+      affiliation: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     async function init() {
@@ -59,6 +53,9 @@ export default function AdminPage() {
         setIsAdmin(adminStatus);
 
         if (!adminStatus) return;
+
+        const adminUsers = await getAdminUsers();
+        setAdmins(adminUsers ?? []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -68,15 +65,10 @@ export default function AdminPage() {
 
     init();
   }, [userId, authLoading, router]);
-
   if (loading || authLoading) return <p>Loading...</p>;
 
   if (!isAdmin) {
-    return (
-      <ErrorMessage>
-        <h2>401 Unauthorized</h2>
-      </ErrorMessage>
-    );
+    return <ErrorMessage>401 Unauthorized</ErrorMessage>;
   }
 
   return (
@@ -111,12 +103,12 @@ export default function AdminPage() {
             </AdminCountBadge>
           </SectionHeader>
           <CardsContainer>
-            {admins.map(admin => (
+            {admins?.map(admin => (
               <AdminCard
                 key={admin.id}
                 name={admin.name}
                 email={admin.email}
-                dateAdded={admin.dateAdded}
+                affiliation={admin.affiliation}
               />
             ))}
           </CardsContainer>

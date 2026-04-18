@@ -12,8 +12,9 @@ export const CardContainer = styled.div`
   flex-shrink: 0;
   align-self: stretch;
   border-radius: 0.625rem;
-  border: 1px solid #e0e0e0;
   margin-bottom: 1rem;
+  border: 1px solid ${COLORS.adlr_gray};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const LeftSection = styled.div`
@@ -62,7 +63,7 @@ export const AdminEmail = styled.p`
   letter-spacing: -0.015rem;
 `;
 
-export const AdminDate = styled.p`
+export const AdminAffiliation = styled.p`
   color: ${COLORS.adlr_dark_gray};
   font-family: "DM Sans";
   font-size: 0.875rem;

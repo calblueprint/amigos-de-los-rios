@@ -2,7 +2,7 @@
 
 import { IconSvgs } from "@/lib/icons";
 import {
-  AdminDate,
+  AdminAffiliation,
   AdminEmail,
   AdminInfo,
   AdminName,
@@ -15,14 +15,14 @@ import {
 interface AdminCardProps {
   name: string;
   email: string;
-  dateAdded: string;
+  affiliation: string;
   onDelete?: () => void;
 }
 
 export default function AdminCard({
   name,
   email,
-  dateAdded,
+  affiliation,
   onDelete,
 }: AdminCardProps) {
   return (
@@ -32,7 +32,7 @@ export default function AdminCard({
         <AdminInfo>
           <AdminName>{name}</AdminName>
           <AdminEmail>{email}</AdminEmail>
-          <AdminDate>Added {dateAdded}</AdminDate>
+          <AdminAffiliation>{affiliation}</AdminAffiliation>
         </AdminInfo>
       </LeftSection>
       <DeleteButton onClick={onDelete} aria-label="Remove admin">

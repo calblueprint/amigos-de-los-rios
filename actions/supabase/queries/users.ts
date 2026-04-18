@@ -26,6 +26,16 @@ export async function getUserById(userId: string) {
   return data;
 }
 
+export async function getAdminUsers() {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("id, name, email, affiliation")
+    .eq("is_admin", true);
+
+  if (error) throw error;
+  return data;
+}
+
 export async function checkUserOnboarded(userId: string): Promise<boolean> {
   const user = await getUserById(userId);
 
