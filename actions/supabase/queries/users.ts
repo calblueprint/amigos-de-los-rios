@@ -57,3 +57,18 @@ export async function changeUserGroupLeader(userId: string): Promise<boolean> {
 
   return true;
 }
+
+export async function searchUsersInDatabase(searchQuery: string) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("*")
+    .or(
+      `name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,affiliation.ilike.%${searchQuery}`,
+    );
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data || [];
+}

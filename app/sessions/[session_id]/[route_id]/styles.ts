@@ -360,6 +360,16 @@ export const RouteHolder = styled.div`
   align-self: stretch;
 `;
 
+export const AssignedUsers = styled.p`
+  olor: #000;
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: -0.27px;
+`;
+
 export const RoutePoints = styled.div`
   display: flex;
   align-self: stretch;
@@ -425,4 +435,87 @@ export const PrintHeader = styled.h1`
   font-weight: 400;
   line-height: 1.25rem;
   gap: 0.5rem;
+`;
+
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const SearchInput = styled.input`
+  display: flex;
+  height: 42px;
+  padding: 8px 16px;
+  align-items: center;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 0.3125rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  font-family: "DM Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  color: ${COLORS.black};
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${COLORS.blue};
+  }
+`;
+
+export const SearchResultsDropdown = styled.div`
+  position: absolute;
+  display: flex;
+  background: white;
+  width: 100%;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-top: none;
+  border-radius: 0 0 0.3125rem 0.3125rem;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+`;
+
+export const SearchMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  font-family: "DM Sans";
+  font-size: 14px;
+  color: ${COLORS.adlr_light_gray};
+  position: center;
+`;
+
+export const PublishButton = styled.button<{ $hasChanges?: boolean }>`
+  display: flex;
+  padding: 10px 113px 11px 113.336px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 10px;
+  background: #80bc51;
+  color: white;
+  color: #fff;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: -0.27px;
+  border: none;
+  opacity: ${props => (props.$hasChanges ? 1 : 0.5)};
+  cursor: ${props => (props.$hasChanges ? "pointer" : "default")};
 `;

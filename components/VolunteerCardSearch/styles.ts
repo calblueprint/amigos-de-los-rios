@@ -22,43 +22,6 @@ export const InfoContainer = styled.div`
   align-self: stretch;
 `;
 
-export const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-`;
-
-export const CrownIcon = styled.button`
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  align-items: center;
-
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-export const CloseIcon = styled.button`
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  align-items: center;
-
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
 export const TextHolder = styled.div`
   display: flex;
   width: 185.336px;

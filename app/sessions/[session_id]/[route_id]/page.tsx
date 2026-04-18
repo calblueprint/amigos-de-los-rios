@@ -16,16 +16,18 @@ import {
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
-  getUserByEmail,
   getUserById,
+  searchUsersInDatabase,
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
+import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   AllContent,
+  AssignedUsers,
   BackLink,
   ContentContainer,
   DotBlue,
@@ -42,6 +44,7 @@ import {
   PropertiesCard,
   PropertiesHolder,
   PropertiesList,
+  PublishButton,
   RouteContainer,
   RouteHeader,
   RouteHolder,
@@ -53,13 +56,13 @@ import {
   RouteValueCardText,
   RouteValueVar,
   RouteValueVarNum,
+  SearchContainer,
+  SearchInput,
+  SearchMessage,
+  SearchResultsDropdown,
   Tab,
   TabContainer,
   TeamAssignment,
-  TeamAssignmentCard,
-  TeamAssignmentName,
-  TeamAssignmentRole,
-  TeamAssignmentText,
   TeamContainer,
 } from "./styles";
 
@@ -74,15 +77,19 @@ export default function RoutePage({
   const { userId } = useAuth();
   const router = useRouter();
   const [stops, setStops] = useState<RouteStop[]>([]);
-  const [assignedUsers, setAssignedUsers] = useState<User[]>([]);
+  const [officialUsers, setOfficialUsers] = useState<User[]>([]);
+  const [draftUsers, setDraftUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [assignLoading, setAssignLoading] = useState(false);
+  const hasUnpublishedChanges =
+    JSON.stringify(draftUsers) !== JSON.stringify(officialUsers);
   const [error, setError] = useState<string | null>(null);
   const [route, setRoute] = useState<Route | null>(null);
   const [sessionInfo, setSessionInfo] = useState<WateringSession | null>(null);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [emailInput, setEmailInput] = useState("");
 
   const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
@@ -116,7 +123,8 @@ export default function RoutePage({
         setStops(props);
 
         const assigned = await getAssignedUsersByRouteId(route_id);
-        setAssignedUsers(assigned);
+        setDraftUsers(assigned);
+        setOfficialUsers(assigned);
 
         const route = await fetchRouteById(route_id);
         setRoute(route);
@@ -135,44 +143,67 @@ export default function RoutePage({
     init();
   }, [session_id, route_id, userId, router]);
 
-  async function handleAssign() {
-    try {
-      if (!emailInput) return;
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+    setIsSearching(true);
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const fetchedUsers = await searchUsersInDatabase(searchQuery);
+        const availableUsers = fetchedUsers.filter(
+          dbUser => !draftUsers.some(draftUser => draftUser.id === dbUser.id),
+        );
 
-      setAssignLoading(true);
-
-      const user = await getUserByEmail(emailInput);
-
-      const alreadyAssigned = assignedUsers.some(item => item.id === user.id);
-
-      if (alreadyAssigned) {
-        setEmailInput("");
-        return;
+        setSearchResults(availableUsers);
+      } catch (err) {
+        console.error("Failed to search users:", err);
+      } finally {
+        setIsSearching(false);
       }
+    }, 300);
 
-      await assignUserToRoute(route_id, user.id, session_id);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, draftUsers]);
 
-      const updated = await getAssignedUsersByRouteId(route_id);
-      setAssignedUsers(updated);
-      setEmailInput("");
+  function handleAssignFromSearch(user: User) {
+    setDraftUsers(prev => [...prev, user]);
+    setSearchQuery("");
+    setSearchResults([]);
+  }
+
+  async function handlePublish() {
+    try {
+      setIsPublishing(true);
+      const usersToRemove = officialUsers.filter(
+        officialUser =>
+          !draftUsers.some(draftUser => draftUser.id === officialUser.id),
+      );
+      const usersToAdd = draftUsers.filter(
+        draftUser =>
+          !officialUsers.some(officialUser => officialUser.id === draftUser.id),
+      );
+      for (const user of usersToRemove) {
+        await unassignUserFromRoute(route_id, user.id);
+      }
+      for (const user of usersToAdd) {
+        await assignUserToRoute(route_id, user.id, session_id);
+      }
+      setOfficialUsers([...draftUsers]);
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Failed to assign user.";
+        err instanceof Error ? err.message : "Failed to publish changes.";
       alert(errorMessage);
     } finally {
-      setAssignLoading(false);
+      setIsPublishing(false);
     }
   }
 
-  // TODO: handle group leader assigning and exclusivity stuff
-  // async function handleGroupLeader(userId: string) {
-
-  // }
   async function handleUnassign(userId: string) {
     try {
-      await unassignUserFromRoute(route_id, userId);
-      const updated = await getAssignedUsersByRouteId(route_id);
-      setAssignedUsers(updated);
+      setDraftUsers(prev => prev.filter(user => user.id !== userId));
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to unassign user.";
@@ -341,7 +372,43 @@ export default function RoutePage({
 
         <TeamContainer>
           <TeamAssignment>Team Assignment</TeamAssignment>
-          {assignedUsers.map(user => (
+          <SearchContainer>
+            <SearchInput
+              type="text"
+              placeholder="Search by name, email, or affiliation..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+
+            {searchQuery && (
+              <SearchResultsDropdown>
+                {isSearching ? (
+                  <SearchMessage>Searching...</SearchMessage>
+                ) : searchResults.length > 0 ? (
+                  searchResults.map(user => (
+                    <div
+                      key={user.id}
+                      onClick={() => handleAssignFromSearch(user)}
+                      style={{
+                        cursor: "pointer",
+                        borderBottom: "1px solid #eee",
+                      }}
+                    >
+                      <VolunteerCardSearch
+                        name={user.name}
+                        organization={user.affiliation}
+                        email={user.email}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <SearchMessage>No volunteers found</SearchMessage>
+                )}
+              </SearchResultsDropdown>
+            )}
+          </SearchContainer>
+          <AssignedUsers>Assigned Team ({draftUsers.length})</AssignedUsers>
+          {[...draftUsers].map(user => (
             <VolunteerCard
               key={user.id}
               name={user.name}
@@ -351,6 +418,13 @@ export default function RoutePage({
               onUnassign={() => handleUnassign(user.id)}
             />
           ))}
+          <PublishButton
+            $hasChanges={hasUnpublishedChanges}
+            onClick={handlePublish}
+            disabled={!hasUnpublishedChanges || isPublishing}
+          >
+            Publish Team
+          </PublishButton>
         </TeamContainer>
       </AllContent>
     </PageContainer>
