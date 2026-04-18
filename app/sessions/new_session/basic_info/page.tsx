@@ -112,10 +112,7 @@ export default function BasicInfoPage() {
       addressAutocompleteContainerRef.current;
     if (loading || !isAdmin || !addressAutocompleteContainer) return;
 
-    const apiKey =
-      process.env.NEXT_PUBLIC_PLACES_API_KEY ||
-      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-      process.env.NEXT_PUBLIC_MAPS_EMBED_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_PLACES_API_KEY;
     if (!apiKey) {
       setPlacesApiError(
         "Google Places is unavailable. Set NEXT_PUBLIC_PLACES_API_KEY.",
@@ -281,7 +278,7 @@ export default function BasicInfoPage() {
     }
 
     init();
-  }, [userId, isAdmin]);
+  }, [userId]);
 
   const handleNext = () => {
     // Validate required fields
