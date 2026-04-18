@@ -1,0 +1,153 @@
+"use client";
+
+import { DM_Sans } from "next/font/google";
+import styled from "styled-components";
+import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
+
+const Sans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
+export const PageContainer = styled.div`
+  min-height: 100vh;
+  background-color: ${COLORS.adlr_white};
+`;
+
+export const ContentContainer = styled.div`
+  margin: 0 15%;
+  padding-top: 2.62rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding-top: 1.5rem;
+  }
+`;
+
+export const TitleSection = styled.div`
+  position: relative;
+  margin-bottom: 1.5rem;
+`;
+
+export const Title = styled.h1`
+  color: #000;
+  font-family: ${Sans.style.fontFamily};
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 3.125rem;
+  letter-spacing: -0.0375rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid ${COLORS.adlr_green};
+  display: inline-block;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.3rem;
+  }
+`;
+
+export const PageTitle = styled.h1`
+  color: ${COLORS.black};
+  font-family: "DM Sans";
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+`;
+
+export const Description = styled.p`
+  color: #2b2c2c;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.82813rem; /* 162.5% */
+  letter-spacing: -0.01688rem;
+  margin-bottom: 1.5rem;
+`;
+
+export const SectionCard = styled.div`
+  background: ${COLORS.adlr_white};
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+`;
+
+export const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const SectionTitle = styled.h2`
+  color: #000;
+  font-family: "DM Sans";
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.625rem; /* 150% */
+  letter-spacing: -0.02625rem;
+`;
+
+export const AddAdminButton = styled.button`
+  display: flex;
+  padding: 0.5rem 1.43019rem 0.5625rem 1.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: ${COLORS.adlr_blue};
+  color: ${COLORS.white};
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6875rem;
+  letter-spacing: -0.01688rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+`;
+
+export const AdminCountBadge = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background-color: ${COLORS.adlr_light_green};
+  color: ${COLORS.adlr_black};
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6875rem;
+  letter-spacing: -0.015rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.3125rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+`;
+
+export const CardsContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+export const ErrorMessage = styled.p`
+  color: ${COLORS.red};
+  font-family: "DM Sans";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+  letter-spacing: -0.015rem;
+  margin-top: 0.5rem;
+`;

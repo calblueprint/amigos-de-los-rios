@@ -5,6 +5,7 @@ const COLORS = {
   adlr_blue: "#1A548A",
   adlr_green: "#80BC51",
   adlr_forest_green: "#22AB72",
+  adlr_light_green: "#E6F3DC",
   adlr_hover_green: "#3b8c3f",
   adlr_navy: "#22354D",
   adlr_gray: "#CFCFCF",
