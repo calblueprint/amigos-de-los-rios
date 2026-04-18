@@ -104,6 +104,7 @@ export async function generateRoutes(
       volunteer_type: getVolunteerType(team.type),
       maps_link: null,
       num_volunteers: team.size,
+      group_leader_id: null,
     });
 
     // Generate 3-5 mock properties for this route

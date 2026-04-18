@@ -226,7 +226,7 @@ export const TeamContainer = styled.div`
   padding: 1.5625rem;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1rem;
 
   border-radius: 0.625rem;
   border: 0.0625rem solid ${COLORS.adlr_light_gray};

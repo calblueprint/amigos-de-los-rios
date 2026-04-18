@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import {
   fetchPropertiesByRouteId,
   fetchRouteById,
+  getGroupLeaderId,
+  updateGroupLeader,
 } from "@/actions/supabase/queries/routes";
 import {
   assignUserToRoute,
@@ -80,8 +82,6 @@ export default function RoutePage({
   const [officialUsers, setOfficialUsers] = useState<User[]>([]);
   const [draftUsers, setDraftUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const hasUnpublishedChanges =
-    JSON.stringify(draftUsers) !== JSON.stringify(officialUsers);
   const [error, setError] = useState<string | null>(null);
   const [route, setRoute] = useState<Route | null>(null);
   const [sessionInfo, setSessionInfo] = useState<WateringSession | null>(null);
@@ -89,7 +89,16 @@ export default function RoutePage({
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [officialGroupLeaderId, setOfficialGroupLeaderId] = useState<
+    string | null
+  >(null);
+  const [draftGroupLeaderId, setDraftGroupLeaderId] = useState<string | null>(
+    null,
+  );
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const hasUnpublishedChanges =
+    JSON.stringify(draftUsers) !== JSON.stringify(officialUsers) ||
+    draftGroupLeaderId !== officialGroupLeaderId;
 
   const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
@@ -125,6 +134,10 @@ export default function RoutePage({
         const assigned = await getAssignedUsersByRouteId(route_id);
         setDraftUsers(assigned);
         setOfficialUsers(assigned);
+
+        const leaderId = await getGroupLeaderId(route_id);
+        setOfficialGroupLeaderId(leaderId);
+        setDraftGroupLeaderId(leaderId);
 
         const route = await fetchRouteById(route_id);
         setRoute(route);
@@ -177,6 +190,7 @@ export default function RoutePage({
   async function handlePublish() {
     try {
       setIsPublishing(true);
+
       const usersToRemove = officialUsers.filter(
         officialUser =>
           !draftUsers.some(draftUser => draftUser.id === officialUser.id),
@@ -185,13 +199,20 @@ export default function RoutePage({
         draftUser =>
           !officialUsers.some(officialUser => officialUser.id === draftUser.id),
       );
+
       for (const user of usersToRemove) {
         await unassignUserFromRoute(route_id, user.id);
       }
       for (const user of usersToAdd) {
         await assignUserToRoute(route_id, user.id, session_id);
       }
+
+      if (draftGroupLeaderId !== officialGroupLeaderId) {
+        await updateGroupLeader(route_id, draftGroupLeaderId);
+      }
+
       setOfficialUsers([...draftUsers]);
+      setOfficialGroupLeaderId(draftGroupLeaderId); // ---> ADDED THIS
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to publish changes.";
@@ -204,11 +225,19 @@ export default function RoutePage({
   async function handleUnassign(userId: string) {
     try {
       setDraftUsers(prev => prev.filter(user => user.id !== userId));
+
+      if (draftGroupLeaderId === userId) {
+        setDraftGroupLeaderId(null);
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to unassign user.";
       alert(errorMessage);
     }
+  }
+
+  function handleGroupLeader(userId: string) {
+    setDraftGroupLeaderId(prev => (prev === userId ? null : userId));
   }
 
   if (loading) return <p>Loading route...</p>;
@@ -408,16 +437,24 @@ export default function RoutePage({
             )}
           </SearchContainer>
           <AssignedUsers>Assigned Team ({draftUsers.length})</AssignedUsers>
-          {[...draftUsers].map(user => (
-            <VolunteerCard
-              key={user.id}
-              name={user.name}
-              organization={user.affiliation}
-              email={user.email}
-              isAdmin={isAdmin}
-              onUnassign={() => handleUnassign(user.id)}
-            />
-          ))}
+          {[...draftUsers]
+            .sort(
+              (a, b) =>
+                Number(b.id === draftGroupLeaderId) -
+                Number(a.id === draftGroupLeaderId),
+            )
+            .map(user => (
+              <VolunteerCard
+                key={user.id}
+                name={user.name}
+                organization={user.affiliation}
+                email={user.email}
+                isAdmin={isAdmin}
+                isGroupLeader={user.id === draftGroupLeaderId}
+                onMakeLeader={() => handleGroupLeader(user.id)}
+                onUnassign={() => handleUnassign(user.id)}
+              />
+            ))}
           <PublishButton
             $hasChanges={hasUnpublishedChanges}
             onClick={handlePublish}

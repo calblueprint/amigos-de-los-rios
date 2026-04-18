@@ -18,8 +18,10 @@ interface VolunteerCardProps {
   name: string;
   organization?: string | null;
   email: string;
-  onUnassign?: () => void; //fix later
+  onUnassign?: () => void;
+  onMakeLeader?: () => void; // Added this!
   isAdmin?: boolean;
+  isGroupLeader?: boolean;
 }
 
 function getInitials(name: string) {
@@ -34,22 +36,27 @@ export default function VolunteerCard({
   organization,
   email,
   onUnassign,
+  onMakeLeader,
   isAdmin,
+  isGroupLeader,
 }: VolunteerCardProps) {
   return (
-    <CardContainer>
+    <CardContainer $isGroupLeader={isGroupLeader}>
       <InfoContainer>
         <ProfileContainer>{getInitials(name)}</ProfileContainer>
         <TextHolder>
           <HeaderText>{name}</HeaderText>
-
           <OrgText>{organization || "Volunteer"}</OrgText>
-
           <EmailText>{email}</EmailText>
         </TextHolder>
 
         <ButtonContainer>
-          <CrownIcon>{IconSvgs.CrownIcon}</CrownIcon>
+          {isAdmin && (
+            <CrownIcon $isGroupLeader={isGroupLeader} onClick={onMakeLeader}>
+              {IconSvgs.CrownIcon}
+            </CrownIcon>
+          )}
+
           {isAdmin && onUnassign && (
             <CloseIcon onClick={onUnassign}>{IconSvgs.CloseIcon}</CloseIcon>
           )}

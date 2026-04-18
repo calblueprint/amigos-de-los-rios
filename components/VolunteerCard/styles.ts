@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<{ $isGroupLeader?: boolean }>`
   display: flex;
   padding: 13px;
   flex-direction: column;
@@ -12,6 +12,11 @@ export const CardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background: #fff;
+
+  border: 1px solid ${props => (props.$isGroupLeader ? "#D4AF37" : "#e5e7eb")};
+  background: ${props => (props.$isGroupLeader ? "#FFF9E6" : "#fff")};
+
+  transition: all 0.2s ease-in-out;
 `;
 
 export const InfoContainer = styled.div`
@@ -29,18 +34,31 @@ export const ButtonContainer = styled.div`
   margin-left: auto;
 `;
 
-export const CrownIcon = styled.button`
+export const CrownIcon = styled.button<{ $isGroupLeader?: boolean }>`
   display: flex;
+  width: 32px;
+  height: 32px;
   padding: 6px;
   justify-content: center;
+  border-radius: 50%;
   align-items: center;
 
   background: transparent;
   border: none;
   cursor: pointer;
+  background: ${props => (props.$isGroupLeader ? "#E9A23B" : "transparent")};
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  svg {
+    filter: ${props =>
+      props.$isGroupLeader ? "brightness(0) invert(1)" : "none"};
+  }
 
   &:hover {
-    opacity: 0.7;
+    opacity: ${props => (props.$isGroupLeader ? 1 : 0.7)};
+    background: ${props => (props.$isGroupLeader ? "#E9A23B" : "#FFFBED")};
   }
 `;
 
