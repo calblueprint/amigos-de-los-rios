@@ -98,7 +98,7 @@ export default function AdminPage() {
           <SectionHeader>
             <SectionTitle>Current Admins</SectionTitle>
             <AdminCountBadge>
-              {IconSvgs.admin_group}
+              {IconSvgs.admin_green}
               {admins.length} Admins
             </AdminCountBadge>
           </SectionHeader>

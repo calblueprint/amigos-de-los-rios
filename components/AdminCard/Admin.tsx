@@ -28,7 +28,7 @@ export default function AdminCard({
   return (
     <CardContainer>
       <LeftSection>
-        <Avatar>{IconSvgs.admin_group}</Avatar>
+        <Avatar>{IconSvgs.admin_white}</Avatar>
         <AdminInfo>
           <AdminName>{name}</AdminName>
           <AdminEmail>{email}</AdminEmail>
