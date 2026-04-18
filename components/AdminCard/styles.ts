@@ -14,7 +14,7 @@ export const CardContainer = styled.div`
   border-radius: 0.625rem;
   margin-bottom: 1rem;
   border: 1px solid ${COLORS.adlr_gray};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 export const LeftSection = styled.div`
@@ -24,8 +24,8 @@ export const LeftSection = styled.div`
 `;
 
 export const Avatar = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.125rem;
+  height: 3.125rem;
   border-radius: 50%;
   background-color: ${COLORS.adlr_blue};
   display: flex;

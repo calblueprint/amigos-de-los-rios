@@ -78,6 +78,7 @@ export const SectionCard = styled.div`
   border-radius: 0.75rem;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 export const SectionHeader = styled.div`
