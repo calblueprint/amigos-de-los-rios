@@ -5,7 +5,7 @@ import {
 } from "@/actions/supabase/queries/routes";
 import { createWateringSession } from "@/actions/supabase/queries/sessions";
 import { random } from "@/lib/utils";
-import { Property, Team, WateringSession } from "@/types/schema";
+import { RouteStop, Team, WateringSession } from "@/types/schema";
 import { VolunteerType } from "@/types/volunteerType";
 
 interface GenerateRoutesRequest {
@@ -25,7 +25,7 @@ interface GenerateRoutesResponse {
 function generateMockProperties(
   routeId: UUID,
   count: number,
-): Omit<Property, "id">[] {
+): Omit<RouteStop, "id">[] {
   const streetNames = [
     "Oak Street",
     "Elm Avenue",
@@ -38,21 +38,12 @@ function generateMockProperties(
     "Spruce Street",
     "Redwood Circle",
   ];
-  const propertyTypes = [
-    "Residential",
-    "Park",
-    "Community Garden",
-    "School",
-    "Library",
-    "Community Center",
-  ];
 
   return Array.from({ length: count }, (_, index) => ({
     route_id: routeId,
-    planit_geo_reference: null,
     order_to_visit: index + 1,
-    street_address: `${random(100, 9999)} ${streetNames[random(0, streetNames.length - 1)]}, Berkeley, CA`,
-    property_name: `${propertyTypes[random(0, propertyTypes.length - 1)]} - ${streetNames[random(0, streetNames.length - 1)]}`,
+    property_address: `${random(100, 9999)} ${streetNames[random(0, streetNames.length - 1)]}, Berkeley, CA`,
+    property_id: "f1715554-3ef4-4156-8032-f02e91788d25",
   }));
 }
 
