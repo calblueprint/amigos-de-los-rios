@@ -251,8 +251,8 @@ export default function RoutePage({
                   alt="Checkpoints icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Central Hub</RouteValueVar>
-                  <RouteValueVarNum>1</RouteValueVarNum>
+                  <RouteValueVar>Checkpoints</RouteValueVar>
+                  <RouteValueVarNum>2 stops</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
             </RouteValue>
