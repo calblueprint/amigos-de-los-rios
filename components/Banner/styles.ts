@@ -11,8 +11,10 @@ export const BannerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.25rem 0;
+  padding: 1.25rem 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  min-height: 4.5rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     padding: clamp(0.25rem, 4vw, 0.75rem) 0;
