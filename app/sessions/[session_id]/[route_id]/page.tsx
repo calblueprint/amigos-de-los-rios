@@ -26,6 +26,9 @@ import {
   AllContent,
   BackLink,
   ContentContainer,
+  DotBlue,
+  DotOrange,
+  DotPurple,
   Header,
   HeaderContainer,
   LargeDotBlue,
@@ -40,6 +43,7 @@ import {
   RouteHolder,
   RouteMap,
   RoutePoints,
+  RouteType,
   RouteValue,
   RouteValueCard,
   RouteValueCardText,
@@ -150,10 +154,6 @@ export default function RoutePage({
     }
   }
 
-  // TODO: handle group leader assigning and exclusivity stuff
-  // async function handleGroupLeader(userId: string) {
-
-  // }
   async function handleUnassign(userId: string) {
     try {
       await unassignUserFromRoute(route_id, userId);
@@ -251,8 +251,8 @@ export default function RoutePage({
                   alt="Checkpoints icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Checkpoints</RouteValueVar>
-                  <RouteValueVarNum>2 stops</RouteValueVarNum>
+                  <RouteValueVar>Central Hub</RouteValueVar>
+                  <RouteValueVarNum>1</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
             </RouteValue>
@@ -261,6 +261,14 @@ export default function RoutePage({
           <RouteContainer>
             <RouteHeader>
               <RouteMap>Route Map</RouteMap>
+              <RouteType>
+                <DotOrange></DotOrange>
+                Trees
+                <DotBlue></DotBlue>
+                Hydrants
+                <DotPurple></DotPurple>
+                Central Hub
+              </RouteType>
             </RouteHeader>
             <iframe
               width="800"
