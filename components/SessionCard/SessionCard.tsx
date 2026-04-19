@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Session } from "inspector/promises";
 import { fetchUserRouteForSession } from "@/actions/supabase/queries/routes";
 import { getUserById } from "@/actions/supabase/queries/users";
-import { CentralHubName } from "@/app/sessions/[session_id]/styles";
 import { useAuth } from "@/app/utils/AuthContext";
 import { WateringSession } from "@/types/schema";
 import {
@@ -80,7 +79,12 @@ export default function SessionCard({ session }: SessionCardProps) {
           </SessionDate>
 
           <DeleteButton onClick={handleDelete}>
-            <img src="/icons/delete.svg" alt="Delete" />
+            <Image
+              src="/icons/delete.svg"
+              alt="Delete"
+              width={18}
+              height={18}
+            />
           </DeleteButton>
         </SessionHeader>
         <SessionTitle>Central Hub Address</SessionTitle>

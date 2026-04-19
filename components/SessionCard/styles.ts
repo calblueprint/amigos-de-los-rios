@@ -74,7 +74,7 @@ export const SessionDate = styled.p`
 `;
 
 export const SessionHub = styled.p`
-  color: var(--Light-text, #707070);
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
   font-size: 1.03rem;
   font-style: italic;
@@ -90,7 +90,7 @@ export const SessionHub = styled.p`
 `;
 
 export const SessionTitle = styled.h1`
-  color: var(--Light-text, #707070);
+  color: ${COLORS.adlr_property_gray};
   fontfamily: "DM Sans";
   font-size: 1.03rem;
   font-style: normal;
@@ -114,14 +114,14 @@ export const DeleteButton = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: 1px solid #d9d9d9;
-  background: #fff;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.white};
   cursor: pointer;
   flex-shrink: 0;
 
   &:hover {
-    background: #f5f5f5;
-    border-color: #707070;
+    background: ${COLORS.adlr_white_hover};
+    border-color: ${COLORS.adlr_property_gray};
   }
 
   img {

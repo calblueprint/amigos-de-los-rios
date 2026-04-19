@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   fetchAllSessionsForUser,
@@ -144,13 +145,23 @@ export default function SessionsPage() {
           </ToggleContainer>
           {isAdmin && (
             <ButtonGroup>
-              <AddButton href="/sessions/new_session">
-                <img src="/icons/addicon.svg" alt="Add" />
-              </AddButton>
               <EditButton>
                 {" "}
-                <img src="/icons/editicon.svg" alt="Edit" />{" "}
+                <Image
+                  src="/icons/editicon.svg"
+                  alt="Edit"
+                  width={20}
+                  height={20}
+                />
               </EditButton>
+              <AddButton href="/sessions/new_session">
+                <Image
+                  src="/icons/addicon.svg"
+                  alt="Add"
+                  width={30}
+                  height={30}
+                />
+              </AddButton>
             </ButtonGroup>
           )}
         </ControlsRow>

@@ -60,8 +60,8 @@ export const AddButton = styled(Link)`
   justify-content: center;
   align-items: center;
   border-radius: 1540094.5rem;
-  border: 1.469px solid var(--ADLR-Green, #80bc51);
-  background: var(--ADLR-Green, #80bc51);
+  border: ${COLORS.adlr_green} 1.469px solid;
+  background: ${COLORS.adlr_green};
   transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};
@@ -76,10 +76,10 @@ export const EditButton = styled.button`
   display: flex;
   width: 2.9375rem;
   height: 2.9375rem;
-  background: white;
+  background: ${COLORS.white};
   padding: 0.73438rem;
   align-items: center;
-  border: #707070 1px solid;
+  border: ${COLORS.adlr_property_gray} 1px solid;
   border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s;
@@ -107,8 +107,8 @@ export const ToggleContainer = styled.div`
   align-items: center;
   flex-shrink: 0;
   border-radius: 0.3125rem;
-  border: 1px solid #d9d9d9;
-  background: #efefef;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.adlr_lighter_gray};
   overflow: hidden;
 `;
 
@@ -120,8 +120,10 @@ export const UpcomingButton = styled.button<{ $active: boolean }>`
   flex: 1 0 0;
   border: none;
   border-radius: 0.3125rem 0 0 0.3125rem;
-  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
-  color: ${props => (props.$active ? "#000000" : "#707070")};
+  background: ${props =>
+    props.$active ? COLORS.adlr_light_gray : "transparent"};
+  color: ${props =>
+    props.$active ? COLORS.adlr_black : COLORS.adlr_property_gray};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
   font-size: 1rem;
@@ -136,8 +138,10 @@ export const PastButton = styled.button<{ $active: boolean }>`
   align-items: center;
   border: none;
   border-radius: 0 0.3125rem 0.3125rem 0;
-  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
-  color: ${props => (props.$active ? "#000000" : "#707070")};
+  background: ${props =>
+    props.$active ? COLORS.adlr_light_gray : "transparent"};
+  color: ${props =>
+    props.$active ? COLORS.adlr_black : COLORS.adlr_property_gray};
   font-family: ${Sans.style.fontFamily};
   font-weight: 100;
   font-size: 1rem;
