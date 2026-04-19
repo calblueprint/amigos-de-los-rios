@@ -26,6 +26,8 @@ import Banner from "@/components/Banner/Banner";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
 import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
+import VolunteerEmailCard from "@/components/VolunteerEmailCard/VolunteerEmailCard";
+import VolunteerEmailCardSearch from "@/components/VolunteerEmailCardSearch/VolunteerEmailCardSearch";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   AllContent,
@@ -102,7 +104,7 @@ export default function RoutePage({
 
   const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
-    contentRef: printRef, // Points to the DOM element you want to print
+    contentRef: printRef,
     documentTitle: `${sessionInfo?.watering_event_name || "Route"}-${route?.route_label || "Details"}`,
   });
 
@@ -111,7 +113,6 @@ export default function RoutePage({
       try {
         setLoading(true);
 
-        // Check authentication and onboarding
         if (!userId) {
           router.push("/login");
           return;
@@ -123,11 +124,9 @@ export default function RoutePage({
           return;
         }
 
-        // Load user role
         const userRow = await getUserById(userId);
         setIsAdmin(userRow?.is_admin ?? false);
 
-        // Load properties
         const props = await fetchPropertiesByRouteId(route_id);
         setStops(props);
 
@@ -187,6 +186,20 @@ export default function RoutePage({
     setSearchResults([]);
   }
 
+  function handleAssignNewEmail(email: string) {
+    const pendingUser = {
+      id: `pending-${email}`,
+      name: email.split("@")[0],
+      email: email,
+      affiliation: "Pending Invitation",
+      is_admin: false,
+    } as User;
+
+    setDraftUsers(prev => [...prev, pendingUser]);
+    setSearchQuery("");
+    setSearchResults([]);
+  }
+
   async function handlePublish() {
     try {
       setIsPublishing(true);
@@ -195,15 +208,24 @@ export default function RoutePage({
         officialUser =>
           !draftUsers.some(draftUser => draftUser.id === officialUser.id),
       );
+
       const usersToAdd = draftUsers.filter(
         draftUser =>
           !officialUsers.some(officialUser => officialUser.id === draftUser.id),
       );
 
+      const realUsersToAdd = usersToAdd.filter(
+        u => !u.id.startsWith("pending-"),
+      );
+      const pendingEmailsToInvite = usersToAdd.filter(u =>
+        u.id.startsWith("pending-"),
+      );
+
       for (const user of usersToRemove) {
         await unassignUserFromRoute(route_id, user.id);
       }
-      for (const user of usersToAdd) {
+
+      for (const user of realUsersToAdd) {
         await assignUserToRoute(route_id, user.id, session_id);
       }
 
@@ -212,7 +234,7 @@ export default function RoutePage({
       }
 
       setOfficialUsers([...draftUsers]);
-      setOfficialGroupLeaderId(draftGroupLeaderId); // ---> ADDED THIS
+      setOfficialGroupLeaderId(draftGroupLeaderId);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to publish changes.";
@@ -430,31 +452,63 @@ export default function RoutePage({
                       />
                     </div>
                   ))
+                ) : searchQuery.includes("@") ? (
+                  <div
+                    onClick={() => handleAssignNewEmail(searchQuery)}
+                    style={{
+                      cursor: "pointer",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    <VolunteerEmailCardSearch
+                      name={searchQuery.split("@")[0]}
+                      email={searchQuery}
+                    />
+                  </div>
                 ) : (
                   <SearchMessage>No volunteers found</SearchMessage>
                 )}
               </SearchResultsDropdown>
             )}
           </SearchContainer>
+
           <AssignedUsers>Assigned Team ({draftUsers.length})</AssignedUsers>
+
           {[...draftUsers]
             .sort(
               (a, b) =>
                 Number(b.id === draftGroupLeaderId) -
                 Number(a.id === draftGroupLeaderId),
             )
-            .map(user => (
-              <VolunteerCard
-                key={user.id}
-                name={user.name}
-                organization={user.affiliation}
-                email={user.email}
-                isAdmin={isAdmin}
-                isGroupLeader={user.id === draftGroupLeaderId}
-                onMakeLeader={() => handleGroupLeader(user.id)}
-                onUnassign={() => handleUnassign(user.id)}
-              />
-            ))}
+            .map(user => {
+              if (user.id.startsWith("pending-")) {
+                return (
+                  <VolunteerEmailCard
+                    key={user.id}
+                    name={user.name}
+                    email={user.email}
+                    isAdmin={isAdmin}
+                    isGroupLeader={user.id === draftGroupLeaderId}
+                    onMakeLeader={() => handleGroupLeader(user.id)}
+                    onUnassign={() => handleUnassign(user.id)}
+                  />
+                );
+              }
+
+              return (
+                <VolunteerCard
+                  key={user.id}
+                  name={user.name}
+                  organization={user.affiliation}
+                  email={user.email}
+                  isAdmin={isAdmin}
+                  isGroupLeader={user.id === draftGroupLeaderId}
+                  onMakeLeader={() => handleGroupLeader(user.id)}
+                  onUnassign={() => handleUnassign(user.id)}
+                />
+              );
+            })}
+
           <PublishButton
             $hasChanges={hasUnpublishedChanges}
             onClick={handlePublish}
