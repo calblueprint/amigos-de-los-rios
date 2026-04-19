@@ -150,6 +150,10 @@ export default function RoutePage({
     }
   }
 
+  // TODO: handle group leader assigning and exclusivity stuff
+  // async function handleGroupLeader(userId: string) {
+
+  // }
   async function handleUnassign(userId: string) {
     try {
       await unassignUserFromRoute(route_id, userId);
