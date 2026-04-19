@@ -55,30 +55,6 @@ export const ContentContainer = styled.div`
   gap: 1.5rem; /* 24px */
 `;
 
-export const DotOrange = styled.div`
-  width: 0.75rem; /* 12px */
-  height: 0.75rem; /* 12px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.orange};
-`;
-
-export const DotBlue = styled.div`
-  width: 0.75rem; /* 12px */
-  height: 0.75rem; /* 12px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.blue};
-`;
-
-export const DotPurple = styled.div`
-  width: 0.75rem; /* 12px */
-  height: 0.75rem; /* 12px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.purple};
-`;
-
 export const LargeDotPurple = styled.div`
   width: 2rem; /* 32px */
   height: 2rem; /* 32px */
