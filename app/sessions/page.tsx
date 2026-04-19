@@ -87,11 +87,24 @@ export default function SessionsPage() {
   }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
 
   // Filter sessions based on selected date filter
-  const filteredSessions = sessions.filter(session => {
-    const sessionDate = session.date;
-    const now = new Date().toISOString().split("T")[0];
-    return filterState === "Upcoming" ? sessionDate >= now : sessionDate < now;
-  });
+  const filteredSessions = sessions
+    .filter(session => {
+      const sessionDate = session.date;
+      const now = new Date().toISOString().split("T")[0];
+      return filterState === "Upcoming"
+        ? sessionDate >= now
+        : sessionDate < now;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+
+      if (filterState === "Upcoming") {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+    });
 
   const handleSignOut = async () => {
     await signOut();
