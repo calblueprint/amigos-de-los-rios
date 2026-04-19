@@ -312,14 +312,6 @@ export const RouteHeader = styled.div`
   align-self: stretch;
 `;
 
-export const RouteType = styled.div`
-  display: flex;
-  width: auto;
-  height: auto;
-  align-items: center;
-  gap: 0.5rem; /* 8px */
-`;
-
 export const RouteMap = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";

@@ -43,7 +43,6 @@ import {
   RouteHolder,
   RouteMap,
   RoutePoints,
-  RouteType,
   RouteValue,
   RouteValueCard,
   RouteValueCardText,
@@ -261,14 +260,6 @@ export default function RoutePage({
           <RouteContainer>
             <RouteHeader>
               <RouteMap>Route Map</RouteMap>
-              <RouteType>
-                <DotOrange></DotOrange>
-                Trees
-                <DotBlue></DotBlue>
-                Hydrants
-                <DotPurple></DotPurple>
-                Checkpoints
-              </RouteType>
             </RouteHeader>
             <iframe
               width="800"
