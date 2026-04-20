@@ -143,7 +143,6 @@ const TEAM_TYPE_TO_VOLUNTEER_TYPE = {
   B: "Type B",
   C: "Type C",
   D: "Type D",
-  E: "Type E",
 };
 
 /**
