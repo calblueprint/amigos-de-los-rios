@@ -8,6 +8,8 @@ interface SessionCreationData {
   centralHub: string;
   date: string;
   address: string;
+  centralHubLat: number | null;
+  centralHubLong: number | null;
   description: string;
   teams: Team[];
 }
@@ -20,6 +22,8 @@ interface SessionCreationContextType {
     date: string,
     address: string,
     description: string,
+    centralHubLat: number | null,
+    centralHubLong: number | null,
   ) => void;
   updateTeams: (teams: Team[]) => void;
   addTeam: () => void;
@@ -32,6 +36,8 @@ const defaultData: SessionCreationData = {
   centralHub: "",
   date: "",
   address: "",
+  centralHubLat: null,
+  centralHubLong: null,
   description: "",
   teams: [],
 };
@@ -49,6 +55,8 @@ export function SessionCreationProvider({ children }: { children: ReactNode }) {
     date: string,
     address: string,
     description: string,
+    centralHubLat: number | null,
+    centralHubLong: number | null,
   ) => {
     setData(prev => ({
       ...prev,
@@ -57,6 +65,8 @@ export function SessionCreationProvider({ children }: { children: ReactNode }) {
       date,
       address,
       description,
+      centralHubLat,
+      centralHubLong,
     }));
   };
 

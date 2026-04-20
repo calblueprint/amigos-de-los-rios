@@ -23,7 +23,10 @@ import {
 
 interface PlaceLike {
   formattedAddress?: string;
-  location?: unknown;
+  location?: {
+    lat?: () => number;
+    lng?: () => number;
+  };
   fetchFields: (options: { fields: string[] }) => Promise<void>;
 }
 
@@ -67,6 +70,8 @@ export default function BasicInfoPage() {
   const [centralHub, setCentralHub] = useState(data.centralHub);
   const [date, setDate] = useState(data.date);
   const [address, setAddress] = useState(data.address);
+  const [centralHubLat, setCentralHubLat] = useState(data.centralHubLat);
+  const [centralHubLong, setCentralHubLong] = useState(data.centralHubLong);
   const [isAddressValid, setIsAddressValid] = useState(
     data.address.trim() !== "",
   );
@@ -97,6 +102,11 @@ export default function BasicInfoPage() {
     setCentralHub(data.centralHub);
     setDate(data.date);
     setAddress(data.address);
+    if (addressAutocompleteRef.current) {
+      addressAutocompleteRef.current.value = data.address;
+    }
+    setCentralHubLat(data.centralHubLat);
+    setCentralHubLong(data.centralHubLong);
     setIsAddressValid(data.address.trim() !== "");
     setDescription(data.description);
   }, [
@@ -104,6 +114,8 @@ export default function BasicInfoPage() {
     data.centralHub,
     data.date,
     data.address,
+    data.centralHubLat,
+    data.centralHubLong,
     data.description,
   ]);
 
@@ -154,12 +166,16 @@ export default function BasicInfoPage() {
       autocomplete.setAttribute("placeholder", "Search address");
       addressAutocompleteContainer.innerHTML = "";
       addressAutocompleteContainer.appendChild(autocomplete);
+      autocomplete.value = data.address;
 
       autocompleteRef.current = autocomplete;
       addressAutocompleteRef.current = autocomplete;
       setPlacesApiError(null);
 
       autocomplete.addEventListener("input", () => {
+        setAddress("");
+        setCentralHubLat(null);
+        setCentralHubLong(null);
         setIsAddressValid(false);
       });
 
@@ -175,14 +191,16 @@ export default function BasicInfoPage() {
         }
 
         const place = placePrediction.toPlace();
-        await place.fetchFields({
-          fields: ["formattedAddress", "location"],
-        });
+        await place.fetchFields({ fields: ["formattedAddress", "location"] });
 
         const formattedAddress = place?.formattedAddress?.trim();
         const hasGeometry = Boolean(place?.location);
+        const lat = place.location?.lat?.();
+        const lng = place.location?.lng?.();
         if (formattedAddress && hasGeometry) {
           setAddress(formattedAddress);
+          setCentralHubLat(typeof lat === "number" ? lat : null);
+          setCentralHubLong(typeof lng === "number" ? lng : null);
           setIsAddressValid(true);
           setPlacesApiError(null);
           return;
@@ -292,7 +310,15 @@ export default function BasicInfoPage() {
     }
 
     // Update context with basic info
-    updateBasicInfo(sessionName, centralHub, date, address, description);
+    updateBasicInfo(
+      sessionName,
+      centralHub,
+      date,
+      address,
+      description,
+      centralHubLat,
+      centralHubLong,
+    );
 
     // Navigate to teams page
     router.push("/sessions/new_session/teams");
