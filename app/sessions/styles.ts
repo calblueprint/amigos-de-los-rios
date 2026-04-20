@@ -147,4 +147,3 @@ export const PastButton = styled.button<{ $active: boolean }>`
   font-size: 1rem;
   cursor: pointer;
 `;
-
