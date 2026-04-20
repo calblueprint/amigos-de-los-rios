@@ -7,6 +7,7 @@ import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import RouteCard from "@/components/RouteCard/RouteCard";
 import { Route, WateringSession } from "@/types/schema";
 import {
@@ -73,6 +74,7 @@ export default function SessionRoutesPage({
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
 
       <BackLink href="/sessions">← Back to Sessions</BackLink>

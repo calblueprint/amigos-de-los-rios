@@ -6,7 +6,18 @@ import { useRouter } from "next/navigation";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { IconSvgs } from "@/lib/icons";
-import COLORS from "@/styles/colors";
+import {
+  Avatar,
+  FooterSection,
+  MenuButton,
+  NavItemButton,
+  NavSection,
+  Overlay,
+  Panel,
+  SidebarHead,
+  UserName,
+  UserRole,
+} from "./styles";
 
 export default function MenuSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,84 +46,25 @@ export default function MenuSidebar() {
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen(true)}
-        style={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 10 }}
-        className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center bg-white/10"
-      >
+      <MenuButton onClick={() => setIsOpen(true)}>
         {IconSvgs.menu_sidebar_three_lines}
-      </button>
+      </MenuButton>
 
       {isOpen &&
         createPortal(
           <>
-            <div
-              style={{
-                position: "fixed",
-                inset: 0,
-                background: "rgba(0,0,0,0.4)",
-                zIndex: 40,
-              }}
-              onClick={() => setIsOpen(false)}
-            />
+            <Overlay onClick={() => setIsOpen(false)} />
 
-            <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                height: "100%",
-                width: "420px",
-                background: "white",
-                zIndex: 50,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div
-                style={{
-                  background: COLORS.adlr_blue,
-                  padding: "1.5rem 1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "50%",
-                    background: "rgba(255,255,255,0.2)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {IconSvgs.profile_person_white}
-                </div>
+            <Panel>
+              <SidebarHead>
+                <Avatar>{IconSvgs.profile_person_white}</Avatar>
                 <div>
-                  <div
-                    style={{
-                      color: "white",
-                      fontWeight: 700,
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {userName}
-                  </div>
-                  <div
-                    style={{
-                      color: "rgba(255,255,255,0.8)",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    {isAdmin ? "Admin" : "Volunteer"}
-                  </div>
+                  <UserName>{userName}</UserName>
+                  <UserRole>{isAdmin ? "Admin" : "Volunteer"}</UserRole>
                 </div>
-              </div>
+              </SidebarHead>
 
-              <div style={{ flex: 1, padding: "1rem" }}>
+              <NavSection>
                 <NavItem
                   icon={IconSvgs.home_menu_gray}
                   label="Home"
@@ -140,16 +92,16 @@ export default function MenuSidebar() {
                     }}
                   />
                 )}
-              </div>
+              </NavSection>
 
-              <div style={{ borderTop: "1px solid #e5e7eb", padding: "1rem" }}>
+              <FooterSection>
                 <NavItem
                   icon={IconSvgs.logout_gray}
                   label="Logout"
                   onClick={handleSignOut}
                 />
-              </div>
-            </div>
+              </FooterSection>
+            </Panel>
           </>,
           document.body,
         )}
@@ -169,25 +121,9 @@ function NavItem({
   onClick?: () => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      style={{
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        padding: "0.75rem 1rem",
-        borderRadius: "0.5rem",
-        border: "none",
-        background: active ? "#f3f4f6" : "transparent",
-        cursor: "pointer",
-        marginBottom: "0.25rem",
-        fontSize: "1rem",
-        color: "#111",
-      }}
-    >
+    <NavItemButton $active={active} onClick={onClick}>
       {icon}
       {label}
-    </button>
+    </NavItemButton>
   );
 }
