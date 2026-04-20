@@ -18,6 +18,7 @@ const COLORS = {
   blue: "#2b7fff",
   orange: "#ff6900",
   purple: "#ad46ff",
+  print_header: "#4A5565",
 };
 
 export default COLORS;

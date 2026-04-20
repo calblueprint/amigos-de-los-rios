@@ -1,6 +1,7 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -35,6 +36,8 @@ import {
   LargeDotOrange,
   LargeDotPurple,
   PageContainer,
+  PrintButton,
+  PrintHeader,
   PropertiesCard,
   PropertiesHolder,
   PropertiesList,
@@ -79,6 +82,12 @@ export default function RoutePage({
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState("");
+
+  const printRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({
+    contentRef: printRef, // Points to the DOM element you want to print
+    documentTitle: `${sessionInfo?.watering_event_name || "Route"}-${route?.route_label || "Details"}`,
+  });
 
   useEffect(() => {
     async function init() {
@@ -154,6 +163,10 @@ export default function RoutePage({
     }
   }
 
+  // TODO: handle group leader assigning and exclusivity stuff
+  // async function handleGroupLeader(userId: string) {
+
+  // }
   async function handleUnassign(userId: string) {
     try {
       await unassignUserFromRoute(route_id, userId);
@@ -258,7 +271,7 @@ export default function RoutePage({
             </RouteValue>
           </HeaderContainer>
 
-          <RouteContainer>
+          <RouteContainer ref={printRef}>
             <RouteHeader>
               <RouteMap>Route Map</RouteMap>
               <RouteType>
@@ -280,7 +293,21 @@ export default function RoutePage({
               }
             ></iframe>
             <RouteHolder>
-              <RoutePoints>Route Points</RoutePoints>
+              <RoutePoints>
+                <span>Route Points</span>
+                <PrintHeader>
+                  <PrintButton onClick={() => handlePrint()}>
+                    <Image
+                      src="/images/print.svg"
+                      width={16.138}
+                      height={13.833}
+                      alt="Print"
+                    />
+                  </PrintButton>
+                  Print Route
+                </PrintHeader>
+              </RoutePoints>
+
               <PropertiesHolder>
                 <PropertiesCard>
                   <LargeDotPurple></LargeDotPurple>
@@ -337,6 +364,11 @@ export default function RoutePage({
                       <div>
                         <strong>{item.name}</strong> — {item.email}
                       </div>
+
+                      {/* TODO: group leader placeholder */}
+                      {/* <button onClick={() => handleGroupLeader(item.id)}>
+                      group leader placeholder
+                    </button> */}
 
                       <button onClick={() => handleUnassign(item.id)}>
                         Unassign
