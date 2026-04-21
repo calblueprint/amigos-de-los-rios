@@ -204,11 +204,7 @@ export const Tab = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 0.3125rem;
-<<<<<<< HEAD
   border: 0.0625rem solid ${COLORS.adlr_light_gray};
-=======
-  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
->>>>>>> 00f7dffe0c0f7abd33c9a6ff6466ca2f8f01d6ac
   margin-bottom: 1.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -365,13 +361,13 @@ export const RouteHolder = styled.div`
 `;
 
 export const AssignedUsers = styled.p`
-  olor: #000;
+  color: #000;
   font-family: "DM Sans";
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 700;
-  line-height: 27px;
-  letter-spacing: -0.27px;
+  line-height: 1.6875rem; /* 27px */
+  letter-spacing: -0.016875rem; /* -0.27px */
 `;
 
 export const RoutePoints = styled.div`
@@ -448,15 +444,15 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   display: flex;
-  height: 42px;
-  padding: 8px 16px;
+  height: 2.625rem; /* 42px */
+  padding: 0.5rem 1rem; /* 8px 16px */
   align-items: center;
   align-self: stretch;
   width: 100%;
   border-radius: 0.3125rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  border: 0.0625rem solid ${COLORS.adlr_light_gray};
   font-family: "DM Sans";
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   font-style: normal;
   font-weight: 400;
   color: ${COLORS.black};
@@ -477,17 +473,17 @@ export const SearchResultsDropdown = styled.div`
   display: flex;
   background: white;
   width: 100%;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   border-top: none;
   border-radius: 0 0 0.3125rem 0.3125rem;
-  max-height: 300px;
+  max-height: 18.75rem; /* 300px */
   overflow-y: auto;
   z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
 
   flex-direction: column;
-  gap: 8px;
-  padding: 8px;
+  gap: 0.5rem; /* 8px */
+  padding: 0.5rem; /* 8px */
 `;
 
 export const SearchMessage = styled.div`
@@ -495,30 +491,29 @@ export const SearchMessage = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 1rem; /* 16px */
   font-family: "DM Sans";
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: ${COLORS.adlr_light_gray};
   position: center;
 `;
 
 export const PublishButton = styled.button<{ $hasChanges?: boolean }>`
   display: flex;
-  padding: 10px 113px 11px 113.336px;
+  padding: 0.625rem 7.0625rem 0.6875rem 7.0835rem; /* 10px 113px 11px 113.336px */
   justify-content: center;
   align-items: center;
   align-self: stretch;
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px */
   background: #80bc51;
   color: white;
-  color: #fff;
   text-align: center;
   font-family: "DM Sans";
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 700;
-  line-height: 27px;
-  letter-spacing: -0.27px;
+  line-height: 1.6875rem; /* 27px */
+  letter-spacing: -0.016875rem; /* -0.27px */
   border: none;
   opacity: ${props => (props.$hasChanges ? 1 : 0.5)};
   cursor: ${props => (props.$hasChanges ? "pointer" : "default")};

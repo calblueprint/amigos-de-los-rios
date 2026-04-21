@@ -425,8 +425,6 @@ export default function RoutePage({
                 onChange={e => {
                   const val = e.target.value;
                   setSearchQuery(val);
-
-                  // NOTE: Added the empty check and isSearching state back here!
                   if (!val.trim()) {
                     setSearchResults([]);
                     setIsSearching(false);
