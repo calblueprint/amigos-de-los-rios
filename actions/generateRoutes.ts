@@ -1,3 +1,5 @@
+"use server";
+
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import { Team, WateringSession } from "@/types/schema";
 
@@ -14,7 +16,7 @@ interface GenerateRoutesResponse {
 }
 
 const DEFAULT_HUB = { lat: 34.187457, lng: -118.149968 };
-const LAMBDA_ROUTE_URL = process.env.NEXT_PUBLIC_LAMBDA_ROUTE_URL;
+const LAMBDA_ROUTE_URL = process.env.LAMBDA_ROUTE_URL;
 
 interface LambdaVehicle {
   id: string;
