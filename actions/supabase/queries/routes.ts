@@ -154,11 +154,37 @@ export async function createProperties(
 }
 
 export async function deleteRouteById(routeId: string) {
-  const { error } = await supabase.from("Routes").delete().eq("id", routeId);
+  const { error: routeStopsDeleteError } = await supabase
+    .from("Route Stops")
+    .delete()
+    .eq("route_id", routeId);
 
-  if (error) {
-    console.error("Supabase delete error:", error);
-    throw new Error(error.message);
+  if (routeStopsDeleteError) {
+    console.error("Supabase delete route stops error:", routeStopsDeleteError);
+    throw new Error(routeStopsDeleteError.message);
+  }
+
+  const { error: routeAssignmentsDeleteError } = await supabase
+    .from("Route User Assignments")
+    .delete()
+    .eq("route_id", routeId);
+
+  if (routeAssignmentsDeleteError) {
+    console.error(
+      "Supabase delete route assignments error:",
+      routeAssignmentsDeleteError,
+    );
+    throw new Error(routeAssignmentsDeleteError.message);
+  }
+
+  const { error: routeDeleteError } = await supabase
+    .from("Routes")
+    .delete()
+    .eq("id", routeId);
+
+  if (routeDeleteError) {
+    console.error("Supabase delete route error:", routeDeleteError);
+    throw new Error(routeDeleteError.message);
   }
 }
 

@@ -40,10 +40,10 @@ export const BackLink = styled(Link)`
 
 export const AllContent = styled.div`
   display: inline-flex;
-  height: 79.25rem;
+  height: 79.25rem; /* 1268px */
   justify-content: center;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1.5rem; /* 24px */
   margin: 0 15%;
 `;
 
@@ -52,72 +52,72 @@ export const ContentContainer = styled.div`
   width: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1.5rem; /* 24px */
 `;
 
 export const DotOrange = styled.div`
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.orange};
 `;
 
 export const DotBlue = styled.div`
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.blue};
 `;
 
 export const DotPurple = styled.div`
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.purple};
 `;
 
 export const LargeDotPurple = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.purple};
 `;
 
 export const LargeDotBlue = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.blue};
 `;
 
 export const LargeDotOrange = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
   flex-shrink: 0;
-  border-radius: 1048575rem;
+  border-radius: 1048575rem; /* 16777200px */
   background: ${COLORS.orange};
 `;
 
 export const HeaderContainer = styled.div`
   display: flex;
   height: auto;
-  padding: 1.5625rem;
+  padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1.5rem; /* 24px */
   align-self: stretch;
 
-  border-radius: 0.625rem;
-  background: white;
+  border-radius: 0.625rem; /* 10px */
+  background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
-    0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
-  border: 0.0625rem solid ${COLORS.adlr_light_gray};
+    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
 `;
 
 export const RouteValue = styled.div`
@@ -125,7 +125,7 @@ export const RouteValue = styled.div`
   height: auto;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1rem; /* 16px */
   flex-shrink: 0;
   align-self: stretch;
 `;
@@ -134,7 +134,7 @@ export const RouteValueCard = styled.div`
   display: flex;
   height: auto;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.75rem; /* 12px */
 `;
 
 export const RouteValueCardText = styled.div`
@@ -143,27 +143,27 @@ export const RouteValueCardText = styled.div`
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
+  gap: 0.25rem; /* 4px */
 `;
 
 export const RouteValueVar = styled.h1`
   color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 0.875rem;
+  font-size: 0.875rem; /* 14px */
   font-style: normal;
   font-weight: 400;
-  line-height: 1.3125rem;
-  letter-spacing: -0.013125rem;
+  line-height: 1.3125rem; /* 21px */ /* 150% */
+  letter-spacing: -0.013125rem; /* -0.21px */
 `;
 
 export const RouteValueVarNum = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 1.125rem;
+  font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 400;
-  line-height: 1.6875rem;
-  letter-spacing: -0.016875rem;
+  line-height: 1.6875rem; /* 27px */ /* 150% */
+  letter-spacing: -0.016875rem; /* -0.27px */
 `;
 
 export const Header = styled.h1`
@@ -204,7 +204,11 @@ export const Tab = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 0.3125rem;
+<<<<<<< HEAD
   border: 0.0625rem solid ${COLORS.adlr_light_gray};
+=======
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+>>>>>>> 00f7dffe0c0f7abd33c9a6ff6466ca2f8f01d6ac
   margin-bottom: 1.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -223,39 +227,39 @@ export const TeamContainer = styled.div`
   display: flex;
   width: auto;
   height: auto;
-  padding: 1.5625rem;
+  padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.5rem; /* 24px */
 
-  border-radius: 0.625rem;
-  border: 0.0625rem solid ${COLORS.adlr_light_gray};
-  background: white;
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+  background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
-    0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
+    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
 `;
 
 export const TeamAssignment = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* 24px */
   font-style: normal;
   font-weight: 700;
-  line-height: 2.25rem;
-  letter-spacing: -0.0225rem;
+  line-height: 2.25rem; /* 36px */ /* 150% */
+  letter-spacing: -0.0225rem; /* -0.36px */
 `;
 
 export const TeamAssignmentCard = styled.div`
   display: flex;
   height: auto;
-  padding: 0.8125rem;
+  padding: 0.8125rem; /* 13px */
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   align-self: stretch;
-  border-radius: 0.625rem;
-  border: 0.0625rem solid ${COLORS.adlr_gray};
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_gray}; /* 1px */
   background: ${COLORS.adlr_white};
 `;
 
@@ -270,21 +274,21 @@ export const TeamAssignmentText = styled.div`
 export const TeamAssignmentName = styled.h1`
   color: ${COLORS.adlr_black};
   font-family: "DM Sans";
-  font-size: 1rem;
+  font-size: 1rem; /* 16px */
   font-style: normal;
   font-weight: 400;
-  line-height: 1.5rem;
-  letter-spacing: -0.0195rem;
+  line-height: 1.5rem; /* 24px */
+  letter-spacing: -0.0195rem; /* -0.312px */
 `;
 
 export const TeamAssignmentRole = styled.h1`
   color: ${COLORS.adlr_gray};
   font-family: "DM Sans";
-  font-size: 0.875rem;
+  font-size: 0.875rem; /* 14px */
   font-style: normal;
   font-weight: 400;
-  line-height: 1.25rem;
-  letter-spacing: -0.009375rem;
+  line-height: 1.25rem; /* 20px */
+  letter-spacing: -0.009375rem; /* -0.15px */
 `;
 
 export const RouteContainer = styled.div`
@@ -337,17 +341,17 @@ export const RouteType = styled.div`
   width: auto;
   height: auto;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5rem; /* 8px */
 `;
 
 export const RouteMap = styled.h1`
   color: ${COLORS.black};
   font-family: "DM Sans";
-  font-size: 1.25rem;
+  font-size: 1.25rem; /* 20px */
   font-style: normal;
   font-weight: 700;
-  line-height: 1.5625rem;
-  letter-spacing: -0.01875rem;
+  line-height: 1.5625rem; /* 25px */ /* 125% */
+  letter-spacing: -0.01875rem; /* -0.3px */
 `;
 
 export const RouteHolder = styled.div`
@@ -355,7 +359,7 @@ export const RouteHolder = styled.div`
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.75rem; /* 12px */
   flex-shrink: 0;
   align-self: stretch;
 `;
@@ -389,21 +393,21 @@ export const PropertiesHolder = styled.div`
   height: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.5rem; /* 8px */
   flex-shrink: 0;
   align-self: stretch;
 `;
 
 export const PropertiesCard = styled.div`
   display: flex;
-  height: 4.4375rem;
-  padding: 0 0.75rem;
+  height: 4.4375rem; /* 71px */
+  padding: 0 0.75rem; /* 0 12px */
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.75rem; /* 12px */
   flex-shrink: 0;
   align-self: stretch;
-  border-radius: 0.625rem;
-  border: 0.0625rem solid ${COLORS.adlr_light_gray};
+  border-radius: 0.625rem; /* 10px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
   background: ${COLORS.adlr_white};
 `;
 

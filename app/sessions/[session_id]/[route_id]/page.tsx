@@ -156,12 +156,7 @@ export default function RoutePage({
   }, [session_id, route_id, userId, router]);
 
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      setIsSearching(false);
-      return;
-    }
-    setIsSearching(true);
+    if (!searchQuery.trim()) return;
     const delayDebounceFn = setTimeout(async () => {
       try {
         const fetchedUsers = await searchUsersInDatabase(searchQuery);
@@ -217,9 +212,7 @@ export default function RoutePage({
       const realUsersToAdd = usersToAdd.filter(
         u => !u.id.startsWith("pending-"),
       );
-      const pendingEmailsToInvite = usersToAdd.filter(u =>
-        u.id.startsWith("pending-"),
-      );
+      // NOTE: Removed pendingEmailsToInvite to fix the unused variable lint error!
 
       for (const user of usersToRemove) {
         await unassignUserFromRoute(route_id, user.id);
@@ -429,7 +422,18 @@ export default function RoutePage({
                 type="text"
                 placeholder="Search by name, email, or affiliation..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => {
+                  const val = e.target.value;
+                  setSearchQuery(val);
+
+                  // NOTE: Added the empty check and isSearching state back here!
+                  if (!val.trim()) {
+                    setSearchResults([]);
+                    setIsSearching(false);
+                  } else {
+                    setIsSearching(true);
+                  }
+                }}
               />
 
               {searchQuery && (
