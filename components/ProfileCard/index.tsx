@@ -37,11 +37,12 @@ export default function ProfileCard({
 }: ProfileCardProps) {
   const [isEditable, setIsEditable] = useState(false);
   const [editedFields, setEditedFields] = useState(fields);
+  const displayFields = isEditable ? editedFields : fields;
   const [initialData, setInitialData] = useState(fields);
   const [errors, setErrors] = useState<Record<number, string>>({});
 
   const handleEditClick = () => {
-    setInitialData(editedFields);
+    setInitialData(fields);
     setErrors({});
     setIsEditable(true);
   };
@@ -114,7 +115,7 @@ export default function ProfileCard({
         )}
       </ProfileCardHeader>
       <ProfileCardContent>
-        {editedFields.map((field, index) => (
+        {displayFields.map((field, index) => (
           <ProfileField key={field.key ?? index}>
             <ProfileFieldLabel>{field.label}</ProfileFieldLabel>
             {isEditable ? (
