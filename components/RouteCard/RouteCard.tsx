@@ -42,9 +42,6 @@ export default function RouteCard({ route, sessionId }: RouteCardProps) {
     "Type D": {
       ImageURL: "/images/D_truck.svg",
     },
-    "Type E": {
-      ImageURL: "/orange.jpg",
-    },
   };
 
   const img_src = ImageRecord[route.volunteer_type].ImageURL ?? "/orange.jpg";

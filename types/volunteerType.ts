@@ -3,5 +3,4 @@ export enum VolunteerType {
   TypeB = "Type B",
   TypeC = "Type C",
   TypeD = "Type D",
-  TypeE = "Type E",
 }

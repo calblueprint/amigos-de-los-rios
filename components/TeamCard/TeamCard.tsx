@@ -29,7 +29,7 @@ export default function TeamCard({ team, onDelete, onUpdate }: teamCardProps) {
           <TeamLabel>Volunteer Type</TeamLabel>
           <Dropdown
             value={team.type}
-            options={["Type A", "Type B", "Type C", "Type D", "Type E"]}
+            options={["Type A", "Type B", "Type C", "Type D"]}
             onChange={(value: string | number) =>
               onUpdate({ ...team, type: value as string })
             }
