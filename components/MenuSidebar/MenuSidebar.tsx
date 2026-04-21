@@ -78,7 +78,7 @@ export default function MenuSidebar() {
                   icon={IconSvgs.personal_details_menu_gray}
                   label="Personal Details"
                   onClick={() => {
-                    router.push("/");
+                    router.push("/profile");
                     setIsOpen(false);
                   }}
                 />
