@@ -35,11 +35,18 @@ export default function RouteCard({
   type VolunteerImageRecord = { ImageURL: string };
 
   const ImageRecord: Record<VolunteerType, VolunteerImageRecord> = {
-    "Type A": { ImageURL: "/images/A_tree.svg" },
-    "Type B": { ImageURL: "/images/B_water.svg" },
-    "Type C": { ImageURL: "/images/C_truck.svg" },
-    "Type D": { ImageURL: "/images/D_truck.svg" },
-    "Type E": { ImageURL: "/orange.jpg" },
+    "Type A": {
+      ImageURL: "/images/A_tree.svg",
+    },
+    "Type B": {
+      ImageURL: "/images/B_water.svg",
+    },
+    "Type C": {
+      ImageURL: "/images/C_truck.svg",
+    },
+    "Type D": {
+      ImageURL: "/images/D_truck.svg",
+    },
   };
 
   const img_src = ImageRecord[route.volunteer_type]?.ImageURL ?? "/orange.jpg";
