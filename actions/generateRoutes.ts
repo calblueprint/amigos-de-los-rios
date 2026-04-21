@@ -11,6 +11,7 @@ import { VolunteerType } from "@/types/volunteerType";
 interface GenerateRoutesRequest {
   sessionName: string;
   centralHub: string;
+  centralHubAddress: string;
   centralHubLat: number | null;
   centralHubLong: number | null;
   date: string;
@@ -83,6 +84,7 @@ export async function generateRoutes(
   const {
     sessionName,
     centralHub,
+    centralHubAddress,
     centralHubLat,
     centralHubLong,
     date,
@@ -100,6 +102,7 @@ export async function generateRoutes(
     date,
     watering_event_name: sessionName,
     central_hub: centralHub,
+    central_hub_address: centralHubAddress.trim() || null,
     central_hub_lat: centralHubLat,
     central_hub_long: centralHubLong,
   });

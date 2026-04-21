@@ -69,6 +69,7 @@ export default function TeamsPage() {
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
+        centralHubAddress: data.address,
         centralHubLat: data.centralHubLat,
         centralHubLong: data.centralHubLong,
         date: data.date,
