@@ -280,3 +280,21 @@ export const SuccessIconContainer = styled.div`
   justify-content: center;
   margin: 2rem 0 1.5rem 0;
 `;
+
+// Password show/hide
+export const PasswordField = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+export const ShowHideButton = styled.button`
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+`;

@@ -46,6 +46,15 @@ export const SessionImage = styled.img`
 export const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
+`;
+
+export const SessionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.5rem;
 `;
 
 export const SessionDate = styled.p`
@@ -56,7 +65,7 @@ export const SessionDate = styled.p`
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02625rem;
-  margin-bottom: 1.375rem;
+  margin: 0;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1rem, 4vw, 1.3125rem);
@@ -65,13 +74,13 @@ export const SessionDate = styled.p`
 `;
 
 export const SessionHub = styled.p`
-  color: ${COLORS.black};
-  fontfamily: "DM Sans";
-  font-size: 1.17rem;
-  font-style: normal;
+  color: ${COLORS.adlr_property_gray};
+  font-family: "DM Sans";
+  font-size: 1.03rem;
+  font-style: italic;
   font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.02344rem;
+  line-height: 2.03125rem;
+  letter-spacing: -0.01875rem;
   margin-bottom: 0.45rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -80,8 +89,8 @@ export const SessionHub = styled.p`
   }
 `;
 
-export const SessionTitle = styled.h2`
-  color: var(--Light-text, #707070);
+export const SessionTitle = styled.h1`
+  color: ${COLORS.adlr_property_gray};
   fontfamily: "DM Sans";
   font-size: 1.03rem;
   font-style: normal;
@@ -93,5 +102,30 @@ export const SessionTitle = styled.h2`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.75rem, 4vw, 1.03rem);
     margin-bottom: 0.25rem;
+  }
+`;
+
+export const DeleteButton = styled.button`
+  top: 0.5rem;
+  right: 1.75rem;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.white};
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    background: ${COLORS.adlr_white_hover};
+    border-color: ${COLORS.adlr_property_gray};
+  }
+
+  img {
+    width: 1rem;
+    height: 1rem;
   }
 `;
