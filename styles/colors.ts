@@ -13,8 +13,12 @@ const COLORS = {
   adlr_light_gray: "#D9D9D9",
   adlr_lighter_gray: "#EFEFEF",
   adlr_white: "#FFFFFB",
+  adlr_white_hover: "#F5F5F5",
   adlr_black: "#2B2C2C",
   red: "#D31919",
+  blue: "#2b7fff",
+  orange: "#ff6900",
+  purple: "#ad46ff",
 };
 
 export default COLORS;

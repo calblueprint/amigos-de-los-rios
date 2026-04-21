@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { fetchUserRouteForSession } from "@/actions/supabase/queries/routes";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { WateringSession } from "@/types/schema";
 import {
+  DeleteButton,
   SessionDate,
+  SessionHeader,
   SessionHub,
   SessionImage,
   SessionInfo,
@@ -53,21 +56,39 @@ export default function SessionCard({ session }: SessionCardProps) {
       console.error(err);
     }
   };
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent triggering handleClick
+    // TODO: Implement delete functionality
+    console.log("Delete session", session.id);
+  };
 
   return (
     <StyledSessionCard onClick={handleClick} style={{ cursor: "pointer" }}>
       <SessionImage src="/campanile.svg" alt="Session" />
+
       <SessionInfo>
-        <SessionDate>
-          {new Date(session.date + "T00:00:00").toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            timeZone: "America/Los_Angeles",
-          })}
-        </SessionDate>
-        <SessionHub>{session.central_hub}</SessionHub>
-        <SessionTitle>Property Address</SessionTitle>
+        <SessionHeader>
+          <SessionDate>
+            {session.central_hub},{" "}
+            {new Date(session.date + "T00:00:00").toLocaleDateString("en-US", {
+              month: "2-digit",
+              day: "2-digit",
+              year: "numeric",
+              timeZone: "America/Los_Angeles",
+            })}
+          </SessionDate>
+
+          <DeleteButton onClick={handleDelete}>
+            <Image
+              src="/icons/delete.svg"
+              alt="Delete"
+              width={18}
+              height={18}
+            />
+          </DeleteButton>
+        </SessionHeader>
+        <SessionTitle>Central Hub Address</SessionTitle>
+        <SessionHub>{session.watering_event_name}</SessionHub>
       </SessionInfo>
     </StyledSessionCard>
   );
