@@ -43,6 +43,7 @@ export default function ProfileCard({
 
   const handleEditClick = () => {
     setInitialData(fields);
+    setEditedFields(fields);
     setErrors({});
     setIsEditable(true);
   };
