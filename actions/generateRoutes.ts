@@ -11,6 +11,9 @@ import { VolunteerType } from "@/types/volunteerType";
 interface GenerateRoutesRequest {
   sessionName: string;
   centralHub: string;
+  centralHubAddress: string;
+  centralHubLat: number | null;
+  centralHubLong: number | null;
   date: string;
   teams: Team[];
 }
@@ -78,7 +81,15 @@ function getVolunteerType(type: string): VolunteerType {
 export async function generateRoutes(
   request: GenerateRoutesRequest,
 ): Promise<GenerateRoutesResponse> {
-  const { sessionName, centralHub, date, teams } = request;
+  const {
+    sessionName,
+    centralHub,
+    centralHubAddress,
+    centralHubLat,
+    centralHubLong,
+    date,
+    teams,
+  } = request;
 
   if (!sessionName || !centralHub || !date || teams.length === 0) {
     throw new Error(
@@ -91,6 +102,9 @@ export async function generateRoutes(
     date,
     watering_event_name: sessionName,
     central_hub: centralHub,
+    central_hub_address: centralHubAddress.trim() || null,
+    central_hub_lat: centralHubLat,
+    central_hub_long: centralHubLong,
   });
 
   // Create routes for each team

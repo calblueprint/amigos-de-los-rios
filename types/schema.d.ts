@@ -35,6 +35,9 @@ export type WateringSession = {
   date: string;
   watering_event_name: string;
   central_hub: string;
+  central_hub_address: string | null;
+  central_hub_lat: number | null;
+  central_hub_long: number | null;
 };
 
 export type User = {
