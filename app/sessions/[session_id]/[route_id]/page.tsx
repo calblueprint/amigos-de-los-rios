@@ -423,54 +423,56 @@ export default function RoutePage({
 
         <TeamContainer>
           <TeamAssignment>Team Assignment</TeamAssignment>
-          <SearchContainer>
-            <SearchInput
-              type="text"
-              placeholder="Search by name, email, or affiliation..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
+          {isAdmin && (
+            <SearchContainer>
+              <SearchInput
+                type="text"
+                placeholder="Search by name, email, or affiliation..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
 
-            {searchQuery && (
-              <SearchResultsDropdown>
-                {isSearching ? (
-                  <SearchMessage>Searching...</SearchMessage>
-                ) : searchResults.length > 0 ? (
-                  searchResults.map(user => (
+              {searchQuery && (
+                <SearchResultsDropdown>
+                  {isSearching ? (
+                    <SearchMessage>Searching...</SearchMessage>
+                  ) : searchResults.length > 0 ? (
+                    searchResults.map(user => (
+                      <div
+                        key={user.id}
+                        onClick={() => handleAssignFromSearch(user)}
+                        style={{
+                          cursor: "pointer",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        <VolunteerCardSearch
+                          name={user.name}
+                          organization={user.affiliation}
+                          email={user.email}
+                        />
+                      </div>
+                    ))
+                  ) : searchQuery.includes("@") ? (
                     <div
-                      key={user.id}
-                      onClick={() => handleAssignFromSearch(user)}
+                      onClick={() => handleAssignNewEmail(searchQuery)}
                       style={{
                         cursor: "pointer",
                         borderBottom: "1px solid #eee",
                       }}
                     >
-                      <VolunteerCardSearch
-                        name={user.name}
-                        organization={user.affiliation}
-                        email={user.email}
+                      <VolunteerEmailCardSearch
+                        name={searchQuery.split("@")[0]}
+                        email={searchQuery}
                       />
                     </div>
-                  ))
-                ) : searchQuery.includes("@") ? (
-                  <div
-                    onClick={() => handleAssignNewEmail(searchQuery)}
-                    style={{
-                      cursor: "pointer",
-                      borderBottom: "1px solid #eee",
-                    }}
-                  >
-                    <VolunteerEmailCardSearch
-                      name={searchQuery.split("@")[0]}
-                      email={searchQuery}
-                    />
-                  </div>
-                ) : (
-                  <SearchMessage>No volunteers found</SearchMessage>
-                )}
-              </SearchResultsDropdown>
-            )}
-          </SearchContainer>
+                  ) : (
+                    <SearchMessage>No volunteers found</SearchMessage>
+                  )}
+                </SearchResultsDropdown>
+              )}
+            </SearchContainer>
+          )}
 
           <AssignedUsers>Assigned Team ({draftUsers.length})</AssignedUsers>
 
@@ -509,13 +511,15 @@ export default function RoutePage({
               );
             })}
 
-          <PublishButton
-            $hasChanges={hasUnpublishedChanges}
-            onClick={handlePublish}
-            disabled={!hasUnpublishedChanges || isPublishing}
-          >
-            Publish Team
-          </PublishButton>
+          {isAdmin && (
+            <PublishButton
+              $hasChanges={hasUnpublishedChanges}
+              onClick={handlePublish}
+              disabled={!hasUnpublishedChanges || isPublishing}
+            >
+              Publish Team
+            </PublishButton>
+          )}
         </TeamContainer>
       </AllContent>
     </PageContainer>
