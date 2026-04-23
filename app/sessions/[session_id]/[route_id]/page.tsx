@@ -18,6 +18,7 @@ import {
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
+  createUnregisteredUser,
   getUserById,
   searchUsersInDatabase,
 } from "@/actions/supabase/queries/users";
@@ -186,9 +187,10 @@ export default function RoutePage({
       id: `pending-${email}`,
       name: email.split("@")[0],
       email: email,
-      affiliation: "Pending Invitation",
+      affiliation: null,
       is_admin: false,
-    } as User;
+      is_registered: false,
+    } as unknown as User;
 
     setDraftUsers(prev => [...prev, pendingUser]);
     setSearchQuery("");
@@ -209,10 +211,12 @@ export default function RoutePage({
           !officialUsers.some(officialUser => officialUser.id === draftUser.id),
       );
 
+      const pendingUsersToAdd = usersToAdd.filter(u =>
+        u.id.startsWith("pending-"),
+      );
       const realUsersToAdd = usersToAdd.filter(
         u => !u.id.startsWith("pending-"),
       );
-      // NOTE: Removed pendingEmailsToInvite to fix the unused variable lint error!
 
       for (const user of usersToRemove) {
         await unassignUserFromRoute(route_id, user.id);
@@ -222,12 +226,35 @@ export default function RoutePage({
         await assignUserToRoute(route_id, user.id, session_id);
       }
 
-      if (draftGroupLeaderId !== officialGroupLeaderId) {
-        await updateGroupLeader(route_id, draftGroupLeaderId);
+      let currentDraftLeaderId = draftGroupLeaderId;
+      const updatedDraftUsers = [...draftUsers];
+
+      for (const pendingUser of pendingUsersToAdd) {
+        const newDbUser = await createUnregisteredUser({
+          email: pendingUser.email,
+          name: pendingUser.name,
+        });
+
+        await assignUserToRoute(route_id, newDbUser.id, session_id);
+
+        if (currentDraftLeaderId === pendingUser.id) {
+          currentDraftLeaderId = newDbUser.id;
+        }
+
+        const index = updatedDraftUsers.findIndex(u => u.id === pendingUser.id);
+        if (index !== -1) {
+          updatedDraftUsers[index] = newDbUser;
+        }
       }
 
-      setOfficialUsers([...draftUsers]);
-      setOfficialGroupLeaderId(draftGroupLeaderId);
+      if (currentDraftLeaderId !== officialGroupLeaderId) {
+        await updateGroupLeader(route_id, currentDraftLeaderId);
+      }
+
+      setOfficialUsers([...updatedDraftUsers]);
+      setDraftUsers([...updatedDraftUsers]);
+      setOfficialGroupLeaderId(currentDraftLeaderId);
+      setDraftGroupLeaderId(currentDraftLeaderId);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to publish changes.";
@@ -450,7 +477,7 @@ export default function RoutePage({
                       >
                         <VolunteerCardSearch
                           name={user.name}
-                          organization={user.affiliation}
+                          organization={user.affiliation || ""}
                           email={user.email}
                         />
                       </div>
@@ -485,7 +512,10 @@ export default function RoutePage({
                 Number(a.id === draftGroupLeaderId),
             )
             .map(user => {
-              if (user.id.startsWith("pending-")) {
+              if (
+                user.id.startsWith("pending-") ||
+                user.is_registered === false
+              ) {
                 return (
                   <VolunteerEmailCard
                     key={user.id}
@@ -503,7 +533,7 @@ export default function RoutePage({
                 <VolunteerCard
                   key={user.id}
                   name={user.name}
-                  organization={user.affiliation}
+                  organization={user.affiliation || ""}
                   email={user.email}
                   isAdmin={isAdmin}
                   isGroupLeader={user.id === draftGroupLeaderId}

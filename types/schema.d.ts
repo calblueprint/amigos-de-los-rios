@@ -46,6 +46,7 @@ export type User = {
   phone_number: string;
   onboarded: boolean;
   is_admin: boolean;
+  is_registered: boolean;
 };
 
 export type Team = {

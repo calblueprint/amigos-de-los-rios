@@ -91,3 +91,27 @@ export async function updateUserProfile(
 
   if (error) throw error;
 }
+
+export async function createUnregisteredUser({
+  email,
+  name,
+}: {
+  email: string;
+  name: string;
+}) {
+  const { data, error } = await supabase
+    .from("Users")
+    .insert({
+      email: email,
+      name: name,
+      affiliation: null,
+      is_registered: false,
+      is_admin: false,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
