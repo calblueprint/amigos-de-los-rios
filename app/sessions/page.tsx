@@ -7,6 +7,7 @@ import {
   fetchAllSessionsForUser,
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
+import { deleteSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
   getUserById,
@@ -14,6 +15,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import SessionCard from "@/components/SessionCard/SessionCard";
+import WarningCard from "@/components/WarningCard/WarningCard";
 import { WateringSession } from "@/types/schema";
 import {
   AddButton,
@@ -40,6 +42,9 @@ export default function SessionsPage() {
     "Upcoming",
   );
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [sessionToDelete, setSessionToDelete] =
+    useState<WateringSession | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -91,19 +96,21 @@ export default function SessionsPage() {
   const filteredSessions = sessions
     .filter(session => {
       const sessionDate = session.date;
-      const now = new Date().toISOString().split("T")[0];
+      const todayObj = new Date();
+      const year = todayObj.getFullYear();
+      const month = String(todayObj.getMonth() + 1).padStart(2, "0");
+      const day = String(todayObj.getDate()).padStart(2, "0");
+      const localNow = `${year}-${month}-${day}`;
+
       return filterState === "Upcoming"
-        ? sessionDate >= now
-        : sessionDate < now;
+        ? sessionDate >= localNow
+        : sessionDate < localNow;
     })
     .sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-
       if (filterState === "Upcoming") {
-        return dateA - dateB;
+        return a.date.localeCompare(b.date);
       } else {
-        return dateB - dateA;
+        return b.date.localeCompare(a.date);
       }
     });
 
@@ -114,6 +121,19 @@ export default function SessionsPage() {
 
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const handleConfirmDelete = async () => {
+    if (!sessionToDelete) return;
+    try {
+      await deleteSessionById(sessionToDelete.id);
+
+      setSessions(prev => prev.filter(s => s.id !== sessionToDelete.id));
+      setSessionToDelete(null);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to delete session:", err);
+    }
+  };
 
   return (
     <PageContainer>
@@ -145,7 +165,7 @@ export default function SessionsPage() {
           </ToggleContainer>
           {isAdmin && (
             <ButtonGroup>
-              <EditButton>
+              <EditButton onClick={() => setIsEditing(!isEditing)}>
                 {" "}
                 <Image
                   src="/icons/editicon.svg"
@@ -169,9 +189,26 @@ export default function SessionsPage() {
 
       <SessionsList>
         {filteredSessions.map(session => (
-          <SessionCard key={session.id} session={session} />
+          <SessionCard
+            key={session.id}
+            session={session}
+            isEditing={isEditing}
+            onDeleteClick={() => setSessionToDelete(session)}
+            onUpdate={updatedSession => {
+              setSessions(prev =>
+                prev.map(s =>
+                  s.id === updatedSession.id ? updatedSession : s,
+                ),
+              );
+            }}
+          />
         ))}
       </SessionsList>
+      <WarningCard
+        isOpen={sessionToDelete !== null}
+        onClose={() => setSessionToDelete(null)}
+        onConfirm={handleConfirmDelete}
+      />
     </PageContainer>
   );
 }
