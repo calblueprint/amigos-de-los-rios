@@ -9,7 +9,7 @@ import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { WateringSession } from "@/types/schema";
 import {
-  DateInput, // ADDED
+  DateInput,
   DeleteButton,
   NameInput, // ADDED
   SessionDateCard,
@@ -154,7 +154,9 @@ export default function SessionCard({
             </DeleteButton>
           )}
 
-          <SessionTitle>Central Hub Address</SessionTitle>
+          <SessionTitle>
+            {session.central_hub_address || "Central Hub Address"}
+          </SessionTitle>
           <SessionHub>{session.watering_event_name}</SessionHub>
         </SessionHeader>
       </SessionInfo>
