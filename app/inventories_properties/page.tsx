@@ -14,7 +14,7 @@ type ApiFeatureProperty = {
     address_number?: string;
     address_street?: string;
     address_num_street?: string;
-    tree_comments?: string;
+    tree_num?: number;
     last_modified?: number;
     organization?: number;
     _useradd_6865956bca734?: number;
@@ -36,7 +36,7 @@ function toPropertyDraft(f: ApiFeatureProperty): PropertyDraft {
     latitude: p.lat,
     longitude: p.lng,
     water_onsite: p._useradd_6865956bca734 === 2, // 2 = irrigated, so there is water onsite, otherwise there isn't
-    num_trees: p.tree_comments ?? "None",
+    num_trees: p.tree_num ?? null,
     prev_watered: p.last_modified
       ? new Date(p.last_modified).toISOString()
       : null,
@@ -104,7 +104,7 @@ export default function PropertiesPage() {
             <strong>Address:</strong> {property.address} —{" "}
             <strong>Latitude:</strong> {property.latitude} —{" "}
             <strong>Longitude:</strong> {property.longitude} —{" "}
-            <strong>Comments:</strong> {property.num_trees} —{" "}
+            <strong>Num Trees:</strong> {property.num_trees} —{" "}
             <strong>Last Modified:</strong> {property.prev_watered}
           </li>
         ))}

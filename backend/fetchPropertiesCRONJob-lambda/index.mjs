@@ -108,7 +108,7 @@ function toDbProperty(f) {
     latitude: p.lat,
     longitude: p.lng,
     water_onsite: p._useradd_6865956bca734 === 2,
-    num_trees: p.tree_comments ?? "None",
+    num_trees: p.tree_num ?? null,
     prev_watered: p.last_modified
       ? new Date(p.last_modified).toISOString()
       : null,

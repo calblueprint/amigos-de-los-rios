@@ -17,7 +17,7 @@ export type Property = {
   latitude: number | null;
   longitude: number | null;
   water_onsite: boolean;
-  num_trees: string | null;
+  num_trees: number | null;
   nearest_hydrant?: UUID | null;
   prev_watered: string | null;
 };
