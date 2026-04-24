@@ -1,0 +1,13 @@
+{
+  "name": "route-generation-advanced-3-call",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for route optimization using 3 calls toGoogle Route Optimization API",
+  "main": "index.js",
+  "scripts": {
+    "zip": "zip -r function.zip index.js node_modules/ package.json"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "@supabase/supabase-js": "^2.49.4"
+  }
+}

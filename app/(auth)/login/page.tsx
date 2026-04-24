@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/supabase/queries/auth";
 import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import whiteLogo from "@/assets/images/white_logo.svg";
+import { IconSvgs } from "@/lib/icons";
 import { handleAuthError } from "@/lib/utils";
 import * as S from "../styles";
 
@@ -14,6 +15,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSignIn = async () => {
@@ -103,7 +105,7 @@ export default function Login() {
             <S.Input
               name="email"
               type="email"
-              placeholder=""
+              placeholder="Enter your email"
               onChange={e => {
                 setEmail(e.target.value);
                 if (emailError) setEmailError("");
@@ -118,17 +120,38 @@ export default function Login() {
             <S.Label>
               Password<S.RequiredAsterisk>*</S.RequiredAsterisk>
             </S.Label>
-            <S.Input
-              type="password"
-              name="password"
-              placeholder=""
-              onChange={e => {
-                setPassword(e.target.value);
-                if (passwordError) setPasswordError("");
-              }}
-              value={password}
-              $hasError={!!passwordError}
-            />
+
+            <S.PasswordField>
+              <S.Input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                onChange={e => {
+                  setPassword(e.target.value);
+                  if (passwordError) setPasswordError("");
+                }}
+                value={password}
+                $hasError={!!passwordError}
+              />
+
+              <S.ShowHideButton
+                type="button"
+                onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+                  e.preventDefault()
+                }
+              >
+                {React.cloneElement(
+                  showPassword
+                    ? IconSvgs.password_hidden
+                    : IconSvgs.password_visible,
+                  {
+                    onClick: () => setShowPassword(prev => !prev),
+                    style: { cursor: "pointer" },
+                  },
+                )}
+              </S.ShowHideButton>
+            </S.PasswordField>
+
             {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
           </S.InputGroup>
 
