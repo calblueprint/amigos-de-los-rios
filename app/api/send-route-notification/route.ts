@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
           <p>You've been assigned to <strong>${route.route_label}</strong> for
           <strong>${session.watering_event_name}</strong> on ${session.date}.</p>
           <p>Log in to the app to view your full route details.</p>
-          <p>Thank you,<br/>Amigos de los Rios Route Generation</p>
+          <p>Thank you,<br/>Amigos de los Rios</p>
         `,
       });
     } catch (err) {
@@ -145,7 +145,7 @@ export async function POST(req: NextRequest) {
             <strong>${session.watering_event_name}</strong> on ${session.date}.</p>
             <p>Your route details are in the attached PDF. Your central hub is
             <strong>${session.central_hub}</strong>.</p>
-            <p>Thank you,<br/>Amigos de los Rios Route Generation</p>
+            <p>Thank you,<br/>Amigos de los Rios</p>
           `,
           attachment: { content: pdfBase64, name: pdfName },
         });
