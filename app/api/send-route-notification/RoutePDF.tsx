@@ -67,6 +67,10 @@ type RoutePDFProps = {
     date: string;
     central_hub: string;
   };
+  groupLeader: {
+    name: string;
+    email: string;
+  } | null;
   route: {
     route_label: string;
     volunteer_type: string;
@@ -78,7 +82,12 @@ type RoutePDFProps = {
   }[];
 };
 
-export function RoutePDF({ session, route, stops }: RoutePDFProps) {
+export function RoutePDF({
+  session,
+  route,
+  groupLeader,
+  stops,
+}: RoutePDFProps) {
   const sortedStops = [...stops].sort(
     (a, b) => a.order_to_visit - b.order_to_visit,
   );
@@ -99,6 +108,15 @@ export function RoutePDF({ session, route, stops }: RoutePDFProps) {
           <Text style={styles.label}>Route</Text>
           <Text style={styles.value}>
             {route.route_label} — {route.volunteer_type}
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>Group Leader</Text>
+          <Text style={styles.value}>
+            {groupLeader
+              ? `${groupLeader.name} (${groupLeader.email})`
+              : "Not assigned"}
           </Text>
         </View>
 

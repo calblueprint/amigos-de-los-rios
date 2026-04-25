@@ -258,18 +258,29 @@ export default function RoutePage({
       setOfficialGroupLeaderId(currentDraftLeaderId);
       setDraftGroupLeaderId(currentDraftLeaderId);
 
-      if (realUsersToAdd.length > 0 || resolvedUnregisteredUsers.length > 0) {
+      const registeredUsersToNotify = realUsersToAdd.filter(
+        u => u.is_registered !== false,
+      );
+      const unregisteredUsersToNotify = [
+        ...realUsersToAdd.filter(u => u.is_registered === false),
+        ...resolvedUnregisteredUsers,
+      ];
+
+      if (
+        registeredUsersToNotify.length > 0 ||
+        unregisteredUsersToNotify.length > 0
+      ) {
         try {
           await fetch("/api/send-route-notification", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              registeredUsers: realUsersToAdd.map(u => ({
+              registeredUsers: registeredUsersToNotify.map(u => ({
                 id: u.id,
                 email: u.email,
                 name: u.name,
               })),
-              unregisteredUsers: resolvedUnregisteredUsers.map(u => ({
+              unregisteredUsers: unregisteredUsersToNotify.map(u => ({
                 id: u.id,
                 email: u.email,
                 name: u.name,
@@ -284,6 +295,9 @@ export default function RoutePage({
                 date: sessionInfo!.date,
                 central_hub: sessionInfo!.central_hub,
               },
+              groupLeader:
+                updatedDraftUsers.find(u => u.id === currentDraftLeaderId) ??
+                null,
               stops: stops.map(s => ({
                 order_to_visit: s.order_to_visit,
                 property_address: s.property_address,

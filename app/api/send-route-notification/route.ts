@@ -15,6 +15,7 @@ type NotificationUser = {
 type RouteNotificationBody = {
   registeredUsers: NotificationUser[];
   unregisteredUsers: NotificationUser[];
+  groupLeader: NotificationUser | null;
   route: {
     route_label: string;
     volunteer_type: string;
@@ -89,7 +90,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { registeredUsers, unregisteredUsers, route, session, stops } = data;
+  const {
+    registeredUsers,
+    unregisteredUsers,
+    groupLeader,
+    route,
+    session,
+    stops,
+  } = data;
   const errors: string[] = [];
 
   for (const user of registeredUsers) {
@@ -113,12 +121,19 @@ export async function POST(req: NextRequest) {
   if (unregisteredUsers.length > 0) {
     let pdfBase64: string;
     try {
+      const routePdfProps: React.ComponentProps<typeof RoutePDF> = {
+        session,
+        route,
+        groupLeader,
+        stops,
+      };
       const pdfBuffer = await renderToBuffer(
-        React.createElement(RoutePDF, {
-          session,
-          route,
-          stops,
-        }) as React.ReactElement<DocumentProps>,
+        React.createElement(
+          RoutePDF as React.ComponentType<
+            React.ComponentProps<typeof RoutePDF>
+          >,
+          routePdfProps,
+        ) as React.ReactElement<DocumentProps>,
       );
       pdfBase64 = pdfBuffer.toString("base64");
     } catch (err) {
