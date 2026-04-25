@@ -228,6 +228,7 @@ export default function RoutePage({
 
       let currentDraftLeaderId = draftGroupLeaderId;
       const updatedDraftUsers = [...draftUsers];
+      const resolvedUnregisteredUsers: User[] = [];
 
       for (const pendingUser of pendingUsersToAdd) {
         const newDbUser = await createUnregisteredUser({
@@ -236,6 +237,7 @@ export default function RoutePage({
         });
 
         await assignUserToRoute(route_id, newDbUser.id, session_id);
+        resolvedUnregisteredUsers.push(newDbUser);
 
         if (currentDraftLeaderId === pendingUser.id) {
           currentDraftLeaderId = newDbUser.id;
@@ -255,6 +257,43 @@ export default function RoutePage({
       setDraftUsers([...updatedDraftUsers]);
       setOfficialGroupLeaderId(currentDraftLeaderId);
       setDraftGroupLeaderId(currentDraftLeaderId);
+
+      if (realUsersToAdd.length > 0 || resolvedUnregisteredUsers.length > 0) {
+        try {
+          await fetch("/api/send-route-notification", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              registeredUsers: realUsersToAdd.map(u => ({
+                id: u.id,
+                email: u.email,
+                name: u.name,
+              })),
+              unregisteredUsers: resolvedUnregisteredUsers.map(u => ({
+                id: u.id,
+                email: u.email,
+                name: u.name,
+              })),
+              route: {
+                route_label: route!.route_label,
+                volunteer_type: route!.volunteer_type,
+                maps_link: route!.maps_link,
+              },
+              session: {
+                watering_event_name: sessionInfo!.watering_event_name,
+                date: sessionInfo!.date,
+                central_hub: sessionInfo!.central_hub,
+              },
+              stops: stops.map(s => ({
+                order_to_visit: s.order_to_visit,
+                property_address: s.property_address,
+              })),
+            }),
+          });
+        } catch (emailErr) {
+          console.error("Failed to send route notifications:", emailErr);
+        }
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to publish changes.";
