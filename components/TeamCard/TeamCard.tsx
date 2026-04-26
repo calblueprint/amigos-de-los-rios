@@ -1,28 +1,39 @@
 "use client";
 
+import { IconSvgs } from "@/lib/icons";
 import { Team } from "@/types/schema";
 import Dropdown from "../Dropdown/Dropdown";
+import DropdownMulti from "../DropdownMulti/DropdownMulti";
 import {
   TeamCard as Card,
   DeleteButton,
+  Divider,
+  RouteNameInput,
   TeamField,
   TeamFieldsRow,
-  TeamHeader,
   TeamLabel,
+  TimeInput,
 } from "./styles";
 
 interface teamCardProps {
   team: Team;
+  index: number;
   onDelete: () => void;
   onUpdate: (updatedTeam: Team) => void;
 }
 
-export default function TeamCard({ team, onDelete, onUpdate }: teamCardProps) {
+export default function TeamCard({
+  team,
+  index,
+  onDelete,
+  onUpdate,
+}: teamCardProps) {
   return (
     <Card>
-      <DeleteButton onClick={onDelete}>✕</DeleteButton>
+      <DeleteButton onClick={onDelete}>{IconSvgs.close}</DeleteButton>
 
-      <TeamHeader>New Team</TeamHeader>
+      <RouteNameInput placeholder={`Route ${index + 1}`} />
+      <Divider />
 
       <TeamFieldsRow>
         <TeamField>
@@ -33,6 +44,27 @@ export default function TeamCard({ team, onDelete, onUpdate }: teamCardProps) {
             onChange={(value: string | number) =>
               onUpdate({ ...team, type: value as string })
             }
+          />
+        </TeamField>
+
+        <TeamField>
+          <TeamLabel>Fire Hydrant Type</TeamLabel>
+          <DropdownMulti
+            value={
+              team.type === "Type A"
+                ? []
+                : (team.hydrant_type ?? ["Las Flores WC"])
+            }
+            options={[
+              "Las Flores WC",
+              "Lincoln Avenue WC",
+              "Pasadena WP",
+              "Rubio Canon WC",
+            ]}
+            onChange={value =>
+              onUpdate({ ...team, hydrant_type: value as string[] })
+            }
+            disabled={team.type === "Type A"}
           />
         </TeamField>
 
@@ -48,17 +80,12 @@ export default function TeamCard({ team, onDelete, onUpdate }: teamCardProps) {
         </TeamField>
 
         <TeamField>
-          <TeamLabel>Time Per Field</TeamLabel>
+          <TeamLabel>Time Per Field (hrs)</TeamLabel>
 
-          <Dropdown
-            value={team.time}
-            options={Array.from({ length: 6 }, (_, i) => {
-              const hour = i + 1;
-              return `${hour} hour${hour > 1 ? "s" : ""}`;
-            })}
-            onChange={(value: string | number) =>
-              onUpdate({ ...team, time: value as string })
-            }
+          <TimeInput
+            type="number"
+            defaultValue={10}
+            onChange={e => onUpdate({ ...team, time: Number(e.target.value) })}
           />
         </TeamField>
       </TeamFieldsRow>

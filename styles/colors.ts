@@ -2,6 +2,7 @@ const COLORS = {
   // Add colors here as needed
   black: "#000000",
   white: "#FBFBFB",
+  adlr_red: "#E8857A",
   adlr_blue: "#1A548A",
   adlr_green: "#80BC51",
   adlr_forest_green: "#22AB72",

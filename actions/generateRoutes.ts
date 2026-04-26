@@ -31,12 +31,6 @@ interface LambdaResponse {
   details?: string;
 }
 
-function parseTimeBudgetMinutes(time: string): number {
-  const match = time.match(/(\d+)/);
-  if (!match) return 60;
-  return parseInt(match[1], 10) * 60;
-}
-
 function toTeamTypeCode(type: string): "A" | "B" | "C" | "D" {
   switch (type) {
     case "Type A":
@@ -58,7 +52,7 @@ function buildVehiclesPayload(teams: Team[]): LambdaVehicle[] {
     return {
       id: `V-${teamTypeCode}${index + 1}`,
       team_type: teamTypeCode,
-      team_time_budget_minutes: parseTimeBudgetMinutes(team.time),
+      team_time_budget_minutes: team.time * 60,
       team_size: team.size,
     };
   });

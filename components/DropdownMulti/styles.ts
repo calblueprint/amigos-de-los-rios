@@ -14,14 +14,13 @@ export const DropdownWrapper = styled.div`
   width: 100%;
 `;
 
-export const FakeInput = styled.div`
+export const FakeInput = styled.div<{ $disabled?: boolean }>`
   padding: 0.87rem 1rem 0.81rem 0.96rem;
-  background: ${COLORS.adlr_white};
   border: 1px solid ${COLORS.adlr_dark_gray};
   border-radius: 0.3125rem;
   width: 100%;
   box-sizing: border-box;
-  cursor: pointer;
+  overflow: hidden;
 
   display: flex;
   align-items: center;
@@ -30,6 +29,18 @@ export const FakeInput = styled.div`
   color: ${COLORS.adlr_property_gray};
   font-family: ${Sans.style.fontFamily};
   font-size: 1.25rem;
+
+  opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  background: ${({ $disabled }) =>
+    $disabled ? COLORS.adlr_light_gray : COLORS.adlr_white};
+`;
+
+export const FakeInputText = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 `;
 
 export const DropdownMenu = styled.div`
@@ -67,4 +78,26 @@ export const DropdownIcon = styled.div<{ $isOpen: boolean }>`
 
   transform: ${({ $isOpen }) => ($isOpen ? "rotate(0deg)" : "rotate(180deg)")};
   transition: transform 0.2s ease;
+`;
+
+export const CheckboxBox = styled.div<{ $checked: boolean }>`
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.2rem;
+  border: 1.5px solid
+    ${({ $checked }) => ($checked ? "#3B82F6" : COLORS.adlr_dark_gray)};
+  background: ${({ $checked }) => ($checked ? "#3B82F6" : COLORS.adlr_white)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+`;
+
+export const DropdownMultiItem = styled(DropdownItem)`
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 `;

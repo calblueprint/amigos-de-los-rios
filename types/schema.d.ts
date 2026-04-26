@@ -49,8 +49,9 @@ export type User = {
 
 export type Team = {
   type: string;
+  hydrant_type: string[];
   size: number;
-  time: string;
+  time: number;
 };
 
 export type RouteUserAssignment = {
