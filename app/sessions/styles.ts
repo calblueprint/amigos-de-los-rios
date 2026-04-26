@@ -147,3 +147,40 @@ export const PastButton = styled.button<{ $active: boolean }>`
   font-size: 1rem;
   cursor: pointer;
 `;
+
+export const SaveButton = styled.button`
+  display: flex;
+  padding: 11.5px 20.578px 10.5px 21px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #80bc51;
+  background: #80bc51;
+  color: #fff;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px; /* 150% */
+  letter-spacing: -0.27px;
+`;
+
+export const CancelButton = styled.button`
+  display: flex;
+  padding: 11.5px 20.109px 10.5px 21px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  background: #efefef;
+  color: #707070;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px; /* 150% */
+  letter-spacing: -0.27px;
+`;

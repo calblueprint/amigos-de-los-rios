@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { fetchUserRouteForSession } from "@/actions/supabase/queries/routes";
-import { updateSession } from "@/actions/supabase/queries/sessions";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { WateringSession } from "@/types/schema";
 import {
+  BorderLine,
   DateInput,
   DeleteButton,
-  NameInput, // ADDED
+  NameInput,
   SessionDateCard,
   SessionDateDay,
   SessionDateMonth,
@@ -27,21 +27,22 @@ interface SessionCardProps {
   session: WateringSession;
   isEditing?: boolean;
   onDeleteClick?: () => void;
-  onUpdate?: (updatedSession: WateringSession) => void;
+  onDraftChange?: (
+    id: string,
+    field: "date" | "watering_event_name",
+    value: string,
+  ) => void;
 }
 
 export default function SessionCard({
   session,
   isEditing,
   onDeleteClick,
-  onUpdate,
+  onDraftChange,
 }: SessionCardProps) {
   const router = useRouter();
   const { userId }: { userId?: string | null } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-
-  const [editedDate, setEditedDate] = useState(session.date);
-  const [editedName, setEditedName] = useState(session.central_hub);
 
   useEffect(() => {
     async function loadUserRole() {
@@ -74,37 +75,14 @@ export default function SessionCard({
     if (onDeleteClick) onDeleteClick();
   };
 
-  const handleDateBlur = async () => {
-    if (editedDate === session.date) return;
-    try {
-      await updateSession(session.id, { date: editedDate });
-      if (onUpdate) onUpdate({ ...session, date: editedDate });
-    } catch (err) {
-      console.error("Failed to update date", err);
-      setEditedDate(session.date);
-    }
-  };
-
-  const handleNameBlur = async () => {
-    if (editedName === session.central_hub) return;
-    try {
-      await updateSession(session.id, { central_hub: editedName });
-      if (onUpdate) onUpdate({ ...session, central_hub: editedName });
-    } catch (err) {
-      console.error("Failed to update name", err);
-      setEditedName(session.central_hub);
-    }
-  };
-
   return (
     <StyledSessionCard onClick={handleClick} $isEditing={isEditing}>
       <SessionDateCard>
         {isEditing ? (
           <DateInput
             type="date"
-            value={editedDate}
-            onChange={e => setEditedDate(e.target.value)}
-            onBlur={handleDateBlur}
+            value={session.date}
+            onChange={e => onDraftChange?.(session.id, "date", e.target.value)}
             onClick={e => e.stopPropagation()}
           />
         ) : (
@@ -129,19 +107,11 @@ export default function SessionCard({
         )}
       </SessionDateCard>
 
+      <BorderLine></BorderLine>
+
       <SessionInfo>
         <SessionHeader>
-          {isEditing ? (
-            <NameInput
-              type="text"
-              value={editedName}
-              onChange={e => setEditedName(e.target.value)}
-              onBlur={handleNameBlur}
-              onClick={e => e.stopPropagation()}
-            />
-          ) : (
-            <SessionName>{session.central_hub}</SessionName>
-          )}
+          <SessionName>{session.central_hub}</SessionName>
 
           {isEditing && (
             <DeleteButton onClick={handleDelete}>
@@ -157,7 +127,23 @@ export default function SessionCard({
           <SessionTitle>
             {session.central_hub_address || "Central Hub Address"}
           </SessionTitle>
-          <SessionHub>{session.watering_event_name}</SessionHub>
+
+          {isEditing ? (
+            <NameInput
+              type="text"
+              value={session.watering_event_name}
+              onChange={e =>
+                onDraftChange?.(
+                  session.id,
+                  "watering_event_name",
+                  e.target.value,
+                )
+              }
+              onClick={e => e.stopPropagation()}
+            />
+          ) : (
+            <SessionHub>{session.watering_event_name}</SessionHub>
+          )}
         </SessionHeader>
       </SessionInfo>
     </StyledSessionCard>

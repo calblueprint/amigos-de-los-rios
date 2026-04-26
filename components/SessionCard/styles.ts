@@ -129,27 +129,20 @@ export const DeleteButton = styled.button`
 `;
 
 export const NameInput = styled.input`
-  color: #000;
+  color: #707070;
   font-family: "DM Sans";
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 30px;
-  letter-spacing: -0.36px;
-
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  padding: 2px 8px;
-  margin-left: -9px;
-  width: calc(100% - 3.5rem);
-  background: #fff;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: #707070;
-    background: #fdfdfd;
-  }
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.24px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  border: 0;
 `;
 
 export const DateInput = styled.input`
@@ -165,4 +158,11 @@ export const DateInput = styled.input`
     outline: none;
     border-color: #707070;
   }
+`;
+
+export const BorderLine = styled.div`
+  width: 1px;
+  height: 120px;
+  flex-shrink: 0;
+  border: 1px solid #bfbfbf;
 `;

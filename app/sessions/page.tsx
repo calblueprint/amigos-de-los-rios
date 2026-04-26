@@ -7,7 +7,10 @@ import {
   fetchAllSessionsForUser,
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
-import { deleteSessionById } from "@/actions/supabase/queries/sessions";
+import {
+  deleteSessionById,
+  updateSession,
+} from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
   getUserById,
@@ -21,12 +24,14 @@ import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
+  CancelButton,
   ControlsRow,
   EditButton,
   Header,
   HeaderSection,
   PageContainer,
   PastButton,
+  SaveButton,
   SessionsList,
   ToggleContainer,
   UpcomingButton,
@@ -34,7 +39,9 @@ import {
 
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
+  const [drafts, setDrafts] = useState<WateringSession[]>([]); // Holds unsaved edits
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -60,19 +67,16 @@ export default function SessionsPage() {
           return;
         }
 
-        // Check if user has completed onboarding
         const isOnboarded = await checkUserOnboarded(userId);
         if (!isOnboarded) {
           router.push("/account_details");
           return;
         }
 
-        // Load the user role
         const userRow = await getUserById(userId);
         const adminStatus = userRow?.is_admin ?? false;
         setIsAdmin(adminStatus);
 
-        // Load sessions based on role
         if (adminStatus) {
           const data = await fetchSessions();
           setSessions(data);
@@ -90,10 +94,64 @@ export default function SessionsPage() {
     }
 
     init();
-  }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
+  }, [userId, router, authLoading]);
 
-  // Filter sessions based on selected date filter
-  const filteredSessions = sessions
+  const handleStartEditing = () => {
+    setDrafts([...sessions]);
+    setIsEditing(true);
+  };
+
+  const handleCancelEditing = () => {
+    setDrafts([]);
+    setIsEditing(false);
+  };
+
+  const handleDraftChange = (
+    id: string,
+    field: "date" | "watering_event_name",
+    value: string,
+  ) => {
+    setDrafts(prev =>
+      prev.map(draft =>
+        draft.id === id ? { ...draft, [field]: value } : draft,
+      ),
+    );
+  };
+
+  const handleSaveDrafts = async () => {
+    setIsSaving(true);
+    try {
+      const changedSessions = drafts.filter(draft => {
+        const original = sessions.find(s => s.id === draft.id);
+        return (
+          original &&
+          (original.date !== draft.date ||
+            original.watering_event_name !== draft.watering_event_name)
+        );
+      });
+
+      await Promise.all(
+        changedSessions.map(draft =>
+          updateSession(draft.id, {
+            date: draft.date,
+            watering_event_name: draft.watering_event_name,
+          }),
+        ),
+      );
+
+      setSessions(drafts);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to save changes:", err);
+      alert("Failed to save some changes. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const activeList = isEditing ? drafts : sessions;
+
+  const filteredSessions = activeList
     .filter(session => {
       const sessionDate = session.date;
       const todayObj = new Date();
@@ -123,8 +181,8 @@ export default function SessionsPage() {
       await deleteSessionById(sessionToDelete.id);
 
       setSessions(prev => prev.filter(s => s.id !== sessionToDelete.id));
+      setDrafts(prev => prev.filter(s => s.id !== sessionToDelete.id));
       setSessionToDelete(null);
-      setIsEditing(false);
     } catch (err) {
       console.error("Failed to delete session:", err);
     }
@@ -160,23 +218,38 @@ export default function SessionsPage() {
           </ToggleContainer>
           {isAdmin && (
             <ButtonGroup>
-              <EditButton onClick={() => setIsEditing(!isEditing)}>
-                {" "}
-                <Image
-                  src="/icons/editicon.svg"
-                  alt="Edit"
-                  width={20}
-                  height={20}
-                />
-              </EditButton>
-              <AddButton href="/sessions/new_session">
-                <Image
-                  src="/icons/addicon.svg"
-                  alt="Add"
-                  width={30}
-                  height={30}
-                />
-              </AddButton>
+              {isEditing ? (
+                <>
+                  <SaveButton onClick={handleSaveDrafts} disabled={isSaving}>
+                    {isSaving ? "Saving..." : "Save"}
+                  </SaveButton>
+                  <CancelButton
+                    onClick={handleCancelEditing}
+                    disabled={isSaving}
+                  >
+                    Cancel
+                  </CancelButton>
+                </>
+              ) : (
+                <>
+                  <EditButton onClick={handleStartEditing}>
+                    <Image
+                      src="/icons/editicon.svg"
+                      alt="Edit"
+                      width={20}
+                      height={20}
+                    />
+                  </EditButton>
+                  <AddButton href="/sessions/new_session">
+                    <Image
+                      src="/icons/addicon.svg"
+                      alt="Add"
+                      width={30}
+                      height={30}
+                    />
+                  </AddButton>
+                </>
+              )}
             </ButtonGroup>
           )}
         </ControlsRow>
@@ -189,13 +262,7 @@ export default function SessionsPage() {
             session={session}
             isEditing={isEditing}
             onDeleteClick={() => setSessionToDelete(session)}
-            onUpdate={updatedSession => {
-              setSessions(prev =>
-                prev.map(s =>
-                  s.id === updatedSession.id ? updatedSession : s,
-                ),
-              );
-            }}
+            onDraftChange={handleDraftChange}
           />
         ))}
       </SessionsList>
