@@ -29,6 +29,7 @@ import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
 import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
 import VolunteerEmailCard from "@/components/VolunteerEmailCard/VolunteerEmailCard";
 import VolunteerEmailCardSearch from "@/components/VolunteerEmailCardSearch/VolunteerEmailCardSearch";
+import { IconSvgs } from "@/lib/icons";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   AllContent,
@@ -40,6 +41,8 @@ import {
   DotPurple,
   Header,
   HeaderContainer,
+  HeaderSpacer,
+  NavigateMaps,
   PageContainer,
   PrintButton,
   PrintHeader,
@@ -303,6 +306,9 @@ export default function RoutePage({
     return url.toString();
   };
 
+  const hydrantCount = stops.filter(stop => stop.property_id === null).length;
+  const propertyCount = stops.filter(stop => stop.property_id !== null).length;
+
   return (
     <PageContainer>
       <Banner />
@@ -312,9 +318,24 @@ export default function RoutePage({
       <AllContent>
         <ContentContainer>
           <HeaderContainer>
-            <Header>
-              {sessionInfo?.watering_event_name} — {route?.route_label}
-            </Header>
+            <HeaderSpacer>
+              <Header>
+                {sessionInfo?.watering_event_name} — {route?.route_label}
+              </Header>
+              <NavigateMaps
+                onClick={() => {
+                  if (route?.maps_link) {
+                    window.open(
+                      route.maps_link,
+                      "_blank",
+                      "noopener,noreferrer",
+                    );
+                  }
+                }}
+              >
+                {IconSvgs.open} Navigate in Google Maps
+              </NavigateMaps>
+            </HeaderSpacer>
             <RouteValue>
               <RouteValueCard>
                 <Image
@@ -342,26 +363,26 @@ export default function RoutePage({
               </RouteValueCard>
               <RouteValueCard>
                 <Image
-                  src="/images/tree_loc.svg"
+                  src="/images/property_loc.svg"
                   width={36}
                   height={36}
-                  alt="Tree points icon"
+                  alt="Properties icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Trees</RouteValueVar>
-                  <RouteValueVarNum>4 points</RouteValueVarNum>
+                  <RouteValueVar>Properties</RouteValueVar>
+                  <RouteValueVarNum>{propertyCount}</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
               <RouteValueCard>
                 <Image
-                  src="/images/checkpoint_loc.svg"
+                  src="/images/hydrant_loc.svg"
                   width={36}
                   height={36}
-                  alt="Checkpoints icon"
+                  alt="Hydrant icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Checkpoints</RouteValueVar>
-                  <RouteValueVarNum>2 stops</RouteValueVarNum>
+                  <RouteValueVar>Hydrants</RouteValueVar>
+                  <RouteValueVarNum>{hydrantCount}</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
             </RouteValue>
@@ -408,9 +429,17 @@ export default function RoutePage({
                 {stops.length === 0 ? (
                   <p>No properties found for your route.</p>
                 ) : (
-                  stops.map(stop => (
-                    <PropertyCard key={stop.id} property={stop} />
-                  ))
+                  stops.map((stop, index) => {
+                    const isCentralHub =
+                      index === 0 || index === stops.length - 1;
+                    return (
+                      <PropertyCard
+                        key={stop.id}
+                        property={stop}
+                        isHub={isCentralHub} // Pass the flag down!
+                      />
+                    );
+                  })
                 )}
               </PropertiesHolder>
             </RouteHolder>

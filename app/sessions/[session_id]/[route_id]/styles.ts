@@ -301,7 +301,7 @@ export const RouteHolder = styled.div`
 `;
 
 export const AssignedUsers = styled.p`
-  color: #000;
+  color: black;
   font-family: "DM Sans";
   font-size: 1.125rem; /* 18px */
   font-style: normal;
@@ -437,4 +437,28 @@ export const PublishButton = styled.button<{ $hasChanges?: boolean }>`
   border: none;
   opacity: ${props => (props.$hasChanges ? 1 : 0.5)};
   cursor: ${props => (props.$hasChanges ? "pointer" : "default")};
+`;
+
+export const NavigateMaps = styled.div`
+  display: flex;
+  width: 180.414px;
+  height: 21px;
+  align-items: center;
+  gap: 8px;
+  color: #1a548a;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px; /* 150% */
+  letter-spacing: -0.21px;
+  cursor: pointer;
+`;
+
+export const HeaderSpacer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 `;

@@ -12,23 +12,26 @@ export const CardContainer = styled.div`
   flex-shrink: 0;
   align-self: stretch;
   border-radius: 10px;
-  border: 1px solid #d9d9d9;
-  background: #fff;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: white;
 `;
 
-export const OrderCircle = styled.div<{ $isHydrant: boolean }>`
+export const OrderCircle = styled.div<{
+  $isHydrant: boolean;
+  $isHub?: boolean;
+}>`
   display: flex;
   border-radius: 16777200px;
-  background: ${({ $isHydrant }) => ($isHydrant ? "#2B7FFF" : "#FF6900")};
+  background-color: ${({ $isHub, $isHydrant }) => {
+    if ($isHub) return "#AD46FF;";
+    if ($isHydrant) return "#2B7FFF";
+    return "#FF6900";
+  }};
   width: 32px;
   height: 32px;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: white;
   font-family: "DM Sans";
   font-size: 14px;
   font-style: normal;
@@ -48,7 +51,7 @@ export const PropertyAddress = styled.h3`
   display: flex;
   align-items: flex-start;
   align-self: stretch;
-  color: #000;
+  color: black;
   font-family: "DM Sans";
   font-size: 16px;
   font-style: normal;
