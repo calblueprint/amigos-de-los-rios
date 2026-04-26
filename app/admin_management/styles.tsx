@@ -76,8 +76,8 @@ export const SectionCard = styled.div`
   background-color: ${COLORS.adlr_white};
   border: 1px solid ${COLORS.adlr_light_gray};
   border-radius: 1.25rem;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
 `;
 
