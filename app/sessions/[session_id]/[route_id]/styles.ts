@@ -99,7 +99,7 @@ export const HeaderContainer = styled.div`
 export const RouteValue = styled.div`
   display: flex;
   height: auto;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: flex-start;
   gap: 1rem; /* 16px */
   flex-shrink: 0;
