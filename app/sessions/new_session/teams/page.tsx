@@ -9,6 +9,7 @@ import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
 import LegendCard from "@/components/LegendCard/LegendCard";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import TeamCard from "@/components/TeamCard/TeamCard";
 import { IconSvgs } from "@/lib/icons";
 import {
@@ -117,7 +118,9 @@ export default function TeamsPage() {
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
+
       <BackLink href="/sessions/new_session/basic_info">
         ← Back to Session Details
       </BackLink>
