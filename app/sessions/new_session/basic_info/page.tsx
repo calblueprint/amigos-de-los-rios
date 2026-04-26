@@ -6,6 +6,7 @@ import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import {
   BackLink,
   ContentContainer,
@@ -99,6 +100,7 @@ export default function BasicInfoPage() {
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
       <BackLink href="/sessions">← Back to Sessions</BackLink>
 

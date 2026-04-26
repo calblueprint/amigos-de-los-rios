@@ -24,6 +24,7 @@ import {
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
 import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
@@ -311,6 +312,7 @@ export default function RoutePage({
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
 
       <BackLink href={backLink}>{backLinkText}</BackLink>
