@@ -485,9 +485,9 @@ export const IconSvgs = {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       data-fg-gie60="3.49:2003.521:/components/TeamAssignment.tsx:211:43:8641:28:e:Mail::::::D4VR"
       data-fgid-gie60=":rfd:"
     >
