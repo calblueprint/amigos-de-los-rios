@@ -182,18 +182,24 @@ export const FormLabel = styled.label`
 `;
 
 export const FormInput = styled.input`
+  display: flex;
+  height: 2.8125rem;
+  padding: 0 1rem;
+  align-items: center;
+  flex-shrink: 0;
+  align-self: stretch;
   width: 100%;
-  padding: 0.625rem 0.875rem;
   border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.375rem;
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  color: ${COLORS.adlr_black};
   outline: none;
   box-sizing: border-box;
+  border-radius: 0.3125rem;
+  background: ${COLORS.adlr_white};
 
   &::placeholder {
     color: ${COLORS.adlr_gray};
