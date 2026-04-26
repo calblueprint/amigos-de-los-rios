@@ -5,7 +5,7 @@ export async function getUserByEmail(email: string) {
     .from("Users")
     .select("*")
     .eq("email", email)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data;

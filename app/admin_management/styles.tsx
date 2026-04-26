@@ -78,6 +78,7 @@ export const SectionCard = styled.div`
   border-radius: 0.75rem;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
 `;
 
 export const SectionHeader = styled.div`
@@ -87,7 +88,7 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  color: #000;
+  color: ${COLORS.black};
   font-family: "DM Sans";
   font-size: 1.75rem;
   font-style: normal;
@@ -150,4 +151,104 @@ export const ErrorMessage = styled.p`
   line-height: 1.5rem;
   letter-spacing: -0.015rem;
   margin-top: 0.5rem;
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
+
+export const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+`;
+
+export const FormLabel = styled.label`
+  color: ${COLORS.black};
+  font-family: "DM Sans";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.875rem; /* 150% */
+  letter-spacing: -0.01875rem;
+
+  span {
+    color: ${COLORS.red};
+  }
+`;
+
+export const FormInput = styled.input`
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.375rem;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: ${COLORS.adlr_black};
+  outline: none;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    border-color: ${COLORS.adlr_blue};
+  }
+`;
+
+export const FormActions = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+`;
+
+export const GrantButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  background-color: ${COLORS.adlr_green};
+  color: ${COLORS.white};
+  border-radius: 0.3125rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6875rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+`;
+
+export const CancelButton = styled.button`
+  display: flex;
+  padding: 0.5rem 1.99563rem 0.5625rem 2.0625rem;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: ${COLORS.adlr_black};
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6875rem; /* 150% */
+  letter-spacing: -0.01688rem;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;

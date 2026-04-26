@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAdminUsers, getUserById } from "@/actions/supabase/queries/users";
+import {
+  getAdminUsers,
+  getUserByEmail,
+  getUserById,
+} from "@/actions/supabase/queries/users";
+import { setUserAdminStatus } from "@/actions/supabase/mutations/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import AdminCard from "@/components/AdminCard/Admin";
 import Banner from "@/components/Banner/Banner";
@@ -10,10 +15,17 @@ import { IconSvgs } from "@/lib/icons";
 import {
   AddAdminButton,
   AdminCountBadge,
+  CancelButton,
   CardsContainer,
   ContentContainer,
   Description,
   ErrorMessage,
+  FormActions,
+  FormContainer,
+  FormField,
+  FormInput,
+  FormLabel,
+  GrantButton,
   PageContainer,
   SectionCard,
   SectionHeader,
@@ -28,6 +40,11 @@ export default function AdminPage() {
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
+  const [newName, setNewName] = useState("");
+  const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const [admins, setAdmins] = useState<
     {
@@ -65,6 +82,48 @@ export default function AdminPage() {
 
     init();
   }, [userId, authLoading, router]);
+  async function handleGrantAdmin() {
+    setFormError("");
+    if (!newEmail.trim()) {
+      setFormError("Email address is required.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const user = await getUserByEmail(newEmail.trim());
+      if (!user) {
+        setFormError("No user found with that email address.");
+        return;
+      }
+      if (user.is_admin) {
+        setFormError("This user is already an admin.");
+        return;
+      }
+      await setUserAdminStatus(user.id, true);
+      const updated = await getAdminUsers();
+      setAdmins(updated ?? []);
+      setIsAdding(false);
+      setNewEmail("");
+      setNewName("");
+    } catch {
+      setFormError("Failed to grant admin access. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleDeleteAdmin(adminId: string) {
+    try {
+      await setUserAdminStatus(adminId, false);
+      setAdmins(prev => prev.filter(a => a.id !== adminId));
+      if (adminId === userId) {
+        router.push("/");
+      }
+    } catch {
+      console.error("Failed to remove admin.");
+    }
+  }
+
   if (loading || authLoading) return <p>Loading...</p>;
 
   if (!isAdmin) {
@@ -87,11 +146,53 @@ export default function AdminPage() {
         <SectionCard>
           <SectionHeader>
             <SectionTitle>Add New Admin</SectionTitle>
-            <AddAdminButton>
-              {IconSvgs.add_admin}
-              Add Admin
-            </AddAdminButton>
+            {!isAdding && (
+              <AddAdminButton onClick={() => setIsAdding(true)}>
+                {IconSvgs.add_admin}
+                Add Admin
+              </AddAdminButton>
+            )}
           </SectionHeader>
+          {isAdding && (
+            <FormContainer>
+              <FormField>
+                <FormLabel>
+                  Full Name<span>*</span>
+                </FormLabel>
+                <FormInput
+                  placeholder="Enter admin's full name"
+                  value={newName}
+                  onChange={e => setNewName(e.target.value)}
+                />
+              </FormField>
+              <FormField>
+                <FormLabel>
+                  Email Address<span>*</span>
+                </FormLabel>
+                <FormInput
+                  placeholder="Enter admin's email address"
+                  value={newEmail}
+                  onChange={e => setNewEmail(e.target.value)}
+                />
+              </FormField>
+              {formError && <ErrorMessage>{formError}</ErrorMessage>}
+              <FormActions>
+                <GrantButton onClick={handleGrantAdmin} disabled={submitting}>
+                  {submitting ? "Granting..." : "Grant Admin Access"}
+                </GrantButton>
+                <CancelButton
+                  onClick={() => {
+                    setIsAdding(false);
+                    setFormError("");
+                    setNewEmail("");
+                    setNewName("");
+                  }}
+                >
+                  Cancel
+                </CancelButton>
+              </FormActions>
+            </FormContainer>
+          )}
         </SectionCard>
 
         <SectionCard>
@@ -109,6 +210,7 @@ export default function AdminPage() {
                 name={admin.name}
                 email={admin.email}
                 affiliation={admin.affiliation}
+                onDelete={() => handleDeleteAdmin(admin.id)}
               />
             ))}
           </CardsContainer>
