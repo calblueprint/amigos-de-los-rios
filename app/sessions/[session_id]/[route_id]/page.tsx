@@ -37,7 +37,7 @@ export default function RoutePage({
   params: Promise<{ session_id: string; route_id: string }>;
 }) {
   const { session_id, route_id } = use(params);
-  const { userId } = useAuth();
+  const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
   const [stops, setStops] = useState<RouteStop[]>([]);
   const [assignedUsers, setAssignedUsers] = useState<User[]>([]);
@@ -54,6 +54,8 @@ export default function RoutePage({
     async function init() {
       try {
         setLoading(true);
+
+        if (authLoading) return;
 
         // Check authentication and onboarding
         if (!userId) {
@@ -93,7 +95,7 @@ export default function RoutePage({
     }
 
     init();
-  }, [session_id, route_id, userId, router]);
+  }, [session_id, route_id, userId, router, authLoading]);
 
   async function handleAssign() {
     try {
@@ -140,7 +142,7 @@ export default function RoutePage({
     }
   }
 
-  if (loading) return <p>Loading route...</p>;
+  if (loading || authLoading) return <p>Loading route...</p>;
   if (error) return <p>Error: {error}</p>;
 
   const backLink = isAdmin ? `/sessions/${session_id}` : "/sessions";

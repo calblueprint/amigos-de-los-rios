@@ -25,7 +25,7 @@ export default function SessionRoutesPage({
   params: Promise<{ session_id: string }>;
 }) {
   const { session_id } = use(params);
-  const { userId } = useAuth();
+  const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -37,6 +37,8 @@ export default function SessionRoutesPage({
     async function init() {
       try {
         setLoading(true);
+
+        if (authLoading) return;
 
         // Check authentication and onboarding
         if (!userId) {
@@ -66,9 +68,9 @@ export default function SessionRoutesPage({
     }
 
     init();
-  }, [session_id, userId, router]);
+  }, [session_id, userId, router, authLoading]);
 
-  if (loading) return <p>Loading routes...</p>;
+  if (loading || authLoading) return <p>Loading routes...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
