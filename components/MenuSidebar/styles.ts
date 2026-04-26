@@ -110,4 +110,8 @@ export const NavItemButton = styled.button<{ $active?: boolean }>`
     display: block;
     flex-shrink: 0;
   }
+
+  &:hover {
+    background: ${({ $active }) => ($active ? "#e5e7eb" : "#f9fafb")};
+  }
 `;
