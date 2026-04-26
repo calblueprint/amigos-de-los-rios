@@ -11,6 +11,7 @@ import { checkUserOnboarded } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import LegendCard from "@/components/LegendCard/LegendCard";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import RouteCard from "@/components/RouteCard/RouteCard";
 import WarningCard from "@/components/WarningCard/WarningCard";
 import { IconSvgs } from "@/lib/icons";
@@ -96,6 +97,7 @@ export default function SessionRoutesPage({
   return (
     <>
       <PageContainer>
+        <MenuSidebar />
         <Banner />
         <BackLink href="/sessions">← Back to Sessions</BackLink>
 

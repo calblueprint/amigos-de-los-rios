@@ -20,6 +20,7 @@ import {
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
@@ -196,6 +197,7 @@ export default function RoutePage({
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
 
       <BackLink href={backLink}>{backLinkText}</BackLink>
