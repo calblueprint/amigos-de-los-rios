@@ -143,6 +143,7 @@ export const NameInput = styled.input`
   text-underline-offset: auto;
   text-underline-position: from-font;
   border: 0;
+  width: 100%;
 `;
 
 export const DateInput = styled.input`
