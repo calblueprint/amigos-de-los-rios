@@ -17,6 +17,9 @@ export type RouteStop = {
   property_id: UUID;
   order_to_visit: number;
   property_address: string;
+  Property?: {
+    num_trees: string;
+  } | null;
 };
 
 export type Route = {

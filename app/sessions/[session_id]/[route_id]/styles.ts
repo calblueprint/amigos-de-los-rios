@@ -79,30 +79,6 @@ export const DotPurple = styled.div`
   background: ${COLORS.purple};
 `;
 
-export const LargeDotPurple = styled.div`
-  width: 2rem; /* 32px */
-  height: 2rem; /* 32px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.purple};
-`;
-
-export const LargeDotBlue = styled.div`
-  width: 2rem; /* 32px */
-  height: 2rem; /* 32px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.blue};
-`;
-
-export const LargeDotOrange = styled.div`
-  width: 2rem; /* 32px */
-  height: 2rem; /* 32px */
-  flex-shrink: 0;
-  border-radius: 1048575rem; /* 16777200px */
-  background: ${COLORS.orange};
-`;
-
 export const HeaderContainer = styled.div`
   display: flex;
   height: auto;
@@ -180,42 +156,6 @@ export const Header = styled.h1`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     line-height: 2rem;
-  }
-`;
-
-export const TabContainer = styled.div`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-`;
-
-export const Tab = styled.div<{ $active?: boolean }>`
-  padding: 0.75rem 0.81rem;
-  background: ${props =>
-    props.$active ? COLORS.adlr_light_gray : COLORS.adlr_lighter_gray};
-  color: "black";
-  font-family: ${Sans.style.fontFamily};
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 0.72625rem;
-  letter-spacing: -0.01875rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 0.3125rem;
-  border: 0.0625rem solid ${COLORS.adlr_light_gray};
-  margin-bottom: 1.25rem;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(0.75rem, 4vw, 1rem);
-    padding: 0.5rem 0.75rem;
-    line-height: 1.2;
-  }
-
-  &:hover {
-    background: ${props =>
-      props.$active ? COLORS.adlr_light_gray : COLORS.adlr_light_gray};
   }
 `;
 
@@ -392,26 +332,6 @@ export const PropertiesHolder = styled.div`
   gap: 0.5rem; /* 8px */
   flex-shrink: 0;
   align-self: stretch;
-`;
-
-export const PropertiesCard = styled.div`
-  display: flex;
-  height: 4.4375rem; /* 71px */
-  padding: 0 0.75rem; /* 0 12px */
-  align-items: center;
-  gap: 0.75rem; /* 12px */
-  flex-shrink: 0;
-  align-self: stretch;
-  border-radius: 0.625rem; /* 10px */
-  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
-  background: ${COLORS.adlr_white};
-`;
-
-export const PropertiesList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
 `;
 
 export const PrintButton = styled.button`

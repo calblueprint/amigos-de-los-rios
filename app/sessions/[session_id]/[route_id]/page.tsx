@@ -40,15 +40,10 @@ import {
   DotPurple,
   Header,
   HeaderContainer,
-  LargeDotBlue,
-  LargeDotOrange,
-  LargeDotPurple,
   PageContainer,
   PrintButton,
   PrintHeader,
-  PropertiesCard,
   PropertiesHolder,
-  PropertiesList,
   PublishButton,
   RouteContainer,
   RouteHeader,
@@ -65,8 +60,6 @@ import {
   SearchInput,
   SearchMessage,
   SearchResultsDropdown,
-  Tab,
-  TabContainer,
   TeamAssignment,
   TeamContainer,
 } from "./styles";
@@ -412,33 +405,16 @@ export default function RoutePage({
               </RoutePoints>
 
               <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotPurple></LargeDotPurple>
-                </PropertiesCard>
-              </PropertiesHolder>
-              <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotBlue></LargeDotBlue>
-                </PropertiesCard>
-              </PropertiesHolder>
-              <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotOrange></LargeDotOrange>
-                </PropertiesCard>
+                {stops.length === 0 ? (
+                  <p>No properties found for your route.</p>
+                ) : (
+                  stops.map(stop => (
+                    <PropertyCard key={stop.id} property={stop} />
+                  ))
+                )}
               </PropertiesHolder>
             </RouteHolder>
           </RouteContainer>
-
-          <TabContainer>
-            <Tab $active>Properties</Tab>
-          </TabContainer>
-          <PropertiesList>
-            {stops.length === 0 ? (
-              <p>No properties found for your route.</p>
-            ) : (
-              stops.map(stop => <PropertyCard key={stop.id} property={stop} />)
-            )}
-          </PropertiesList>
         </ContentContainer>
 
         <TeamContainer>

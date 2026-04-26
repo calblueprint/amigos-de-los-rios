@@ -6,7 +6,7 @@ import {
   OrderCircle,
   PropertyAddress,
   PropertyInfo,
-  PropertyName,
+  PropertyType,
 } from "./styles";
 
 interface PropertyCardProps {
@@ -14,12 +14,20 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
+  const isHydrant = property.property_id === null;
+  const numTrees = property.Property?.num_trees ?? 0;
+
   return (
     <CardContainer>
-      <OrderCircle>{property.order_to_visit}</OrderCircle>
+      <OrderCircle $isHydrant={isHydrant}>
+        {property.order_to_visit}
+      </OrderCircle>
+
       <PropertyInfo>
-        <PropertyName>{property.id}</PropertyName>
         <PropertyAddress>{property.property_address}</PropertyAddress>
+        <PropertyType>
+          {isHydrant ? "Hydrants" : `Property | ${numTrees} Trees`}
+        </PropertyType>
       </PropertyInfo>
     </CardContainer>
   );

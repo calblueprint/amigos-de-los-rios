@@ -29,7 +29,7 @@ export async function fetchUserRouteProperties(userId: string) {
 
   const { data: props, error: propError } = await supabase
     .from("Route Stops")
-    .select("*")
+    .select("*, Property(num_trees)")
     .eq("route_id", routeId)
     .order("order_to_visit", { ascending: true });
 
