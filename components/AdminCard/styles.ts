@@ -76,7 +76,7 @@ export const DeleteButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  color: ${COLORS.red};
+  color: ${COLORS.adlr_dark_gray};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,6 +86,7 @@ export const DeleteButton = styled.button`
   transition: opacity 0.2s;
 
   &:hover {
+    color: ${COLORS.red};
     opacity: 0.7;
   }
 `;
