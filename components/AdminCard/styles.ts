@@ -14,7 +14,6 @@ export const CardContainer = styled.div`
   border-radius: 0.625rem;
   margin-bottom: 1rem;
   border: 1px solid ${COLORS.adlr_gray};
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 export const LeftSection = styled.div`
@@ -26,7 +25,7 @@ export const LeftSection = styled.div`
 export const Avatar = styled.div`
   width: 3.125rem;
   height: 3.125rem;
-  border-radius: 50%;
+  border-radius: 1048575rem;
   background-color: ${COLORS.adlr_blue};
   display: flex;
   align-items: center;
@@ -83,6 +82,7 @@ export const DeleteButton = styled.button`
   justify-content: center;
   padding: 0.25rem;
   border-radius: 0.25rem;
+  height: 1.25rem;
   transition: opacity 0.2s;
 
   &:hover {

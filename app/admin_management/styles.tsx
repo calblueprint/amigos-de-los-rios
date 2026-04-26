@@ -12,7 +12,7 @@ const Sans = DM_Sans({
 
 export const PageContainer = styled.div`
   min-height: 100vh;
-  background-color: ${COLORS.adlr_white};
+  background-color: ${COLORS.white};
 `;
 
 export const ContentContainer = styled.div`
@@ -30,7 +30,7 @@ export const TitleSection = styled.div`
 `;
 
 export const Title = styled.h1`
-  color: #000;
+  color: ${COLORS.black};
   font-family: ${Sans.style.fontFamily};
   font-size: 2.5rem;
   font-style: normal;
@@ -62,7 +62,7 @@ export const PageTitle = styled.h1`
 `;
 
 export const Description = styled.p`
-  color: #2b2c2c;
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
   font-size: 1.125rem;
   font-style: normal;
@@ -73,9 +73,9 @@ export const Description = styled.p`
 `;
 
 export const SectionCard = styled.div`
-  background: ${COLORS.adlr_white};
+  background-color: ${COLORS.adlr_white};
   border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
@@ -133,13 +133,14 @@ export const AdminCountBadge = styled.span`
   font-weight: 400;
   line-height: 1.6875rem;
   letter-spacing: -0.015rem;
-  padding: 0.25rem 0.75rem;
+  width: 8.46631rem;
+  height: 2.6875rem;
+  padding: 0 1rem;
   border-radius: 0.3125rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
 `;
 
 export const CardsContainer = styled.div`
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 `;
 
 export const ErrorMessage = styled.p`
