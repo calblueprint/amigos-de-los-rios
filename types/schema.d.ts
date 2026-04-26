@@ -28,6 +28,7 @@ export type Route = {
   volunteer_type: VolunteerType;
   maps_link: string | null;
   num_volunteers: number;
+  group_leader_id: UUID | null;
 };
 
 export type WateringSession = {
@@ -45,6 +46,7 @@ export type User = {
   phone_number: string;
   onboarded: boolean;
   is_admin: boolean;
+  is_registered: boolean;
 };
 
 export type Team = {
