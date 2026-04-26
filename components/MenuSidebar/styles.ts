@@ -33,7 +33,7 @@ export const Panel = styled.div`
   top: 0;
   left: 0;
   height: 100%;
-  width: 400px;
+  width: 17.5rem;
   background: ${COLORS.adlr_white};
   z-index: 50;
   display: flex;
