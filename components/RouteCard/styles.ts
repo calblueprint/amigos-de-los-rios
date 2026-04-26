@@ -10,19 +10,15 @@ export const RouteCardContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   border-radius: 0.5rem;
-  border: 1px solid ${COLORS.adlr_lighter_gray};
-  background: ${COLORS.adlr_white};
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: white;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
   min-height: 6rem;
+  transition: box-shadow 0.2s ease-in-out;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 2px 5px rgba(84, 84, 84, 0.15);
   }
 `;
 
@@ -94,6 +90,7 @@ export const CloseIconButton = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: #f3f4f6;
+    background: #fef3f3;
+    border-color: #ffa2a3;
   }
 `;
