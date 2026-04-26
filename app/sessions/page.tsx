@@ -14,6 +14,7 @@ import {
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import SessionCard from "@/components/SessionCard/SessionCard";
 import WarningCard from "@/components/WarningCard/WarningCard";
 import { WateringSession } from "@/types/schema";
@@ -27,7 +28,6 @@ import {
   PageContainer,
   PastButton,
   SessionsList,
-  SignOutButton,
   ToggleContainer,
   UpcomingButton,
 } from "./styles";
@@ -36,7 +36,7 @@ export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId, loading: authLoading, signOut } = useAuth();
+  const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
   const [filterState, setFilterState] = useState<"Upcoming" | "Past">(
     "Upcoming",
@@ -114,11 +114,6 @@ export default function SessionsPage() {
       }
     });
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.push("/login");
-  };
-
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -137,7 +132,7 @@ export default function SessionsPage() {
 
   return (
     <PageContainer>
-      <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
+      <MenuSidebar />
       <Banner />
 
       <HeaderSection>

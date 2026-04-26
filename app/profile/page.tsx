@@ -9,6 +9,7 @@ import {
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import ProfileCard from "@/components/ProfileCard";
 import {
   CardsContainer,
@@ -100,6 +101,7 @@ export default function ProfilePage() {
   return (
     <PageContainer>
       <Banner />
+      <MenuSidebar />
       <ContentContainer>
         <TitleSection>
           <Title>Personal Details</Title>
