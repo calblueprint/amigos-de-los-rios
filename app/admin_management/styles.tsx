@@ -167,7 +167,7 @@ export const FormField = styled.div`
 `;
 
 export const FormLabel = styled.label`
-  color: ${COLORS.black};
+  color: ${COLORS.adlr_black};
   font-family: "DM Sans";
   font-size: 1.25rem;
   font-style: normal;
@@ -195,11 +195,7 @@ export const FormInput = styled.input`
   box-sizing: border-box;
 
   &::placeholder {
-    color: #9ca3af;
-  }
-
-  &:focus {
-    border-color: ${COLORS.adlr_blue};
+    color: ${COLORS.adlr_gray};
   }
 `;
 
@@ -217,11 +213,13 @@ export const GrantButton = styled.button`
   background-color: ${COLORS.adlr_green};
   color: ${COLORS.white};
   border-radius: 0.3125rem;
+  opacity: 0.5;
   border: 1px solid ${COLORS.adlr_light_gray};
   font-family: "DM Sans";
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.6875rem;
+  letter-spacing: -0.01688rem;
   cursor: pointer;
   transition: opacity 0.2s;
 
@@ -238,7 +236,7 @@ export const CancelButton = styled.button`
   background-color: transparent;
   color: ${COLORS.adlr_black};
   border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.4rem;
+  border-radius: 0.3125rem;
   cursor: pointer;
   text-align: center;
   font-family: "DM Sans";
