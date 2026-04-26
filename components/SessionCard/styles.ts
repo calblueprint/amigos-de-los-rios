@@ -28,7 +28,7 @@ export const SessionCard = styled.div<{ $isEditing?: boolean }>`
 
 export const SessionDateCard = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 20px 20px 20px 24px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
