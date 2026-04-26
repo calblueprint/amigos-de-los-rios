@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { setUserAdminStatus } from "@/actions/supabase/mutations/users";
 import {
   getAdminUsers,
   getUserByEmail,
   getUserById,
 } from "@/actions/supabase/queries/users";
-import { setUserAdminStatus } from "@/actions/supabase/mutations/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import AdminCard from "@/components/AdminCard/Admin";
 import Banner from "@/components/Banner/Banner";
