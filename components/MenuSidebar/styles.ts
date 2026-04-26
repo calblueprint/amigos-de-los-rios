@@ -25,7 +25,7 @@ export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 40;
+  z-index: 110;
 `;
 
 export const Panel = styled.div`
@@ -35,7 +35,7 @@ export const Panel = styled.div`
   height: 100%;
   width: 17.5rem;
   background: ${COLORS.adlr_white};
-  z-index: 50;
+  z-index: 120;
   display: flex;
   flex-direction: column;
 `;
