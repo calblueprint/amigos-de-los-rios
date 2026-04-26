@@ -26,6 +26,7 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
+import SuccessCard from "@/components/SuccessCard/SuccessCard"; // Added SuccessCard import
 import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
 import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
 import VolunteerEmailCard from "@/components/VolunteerEmailCard/VolunteerEmailCard";
@@ -89,6 +90,7 @@ export default function RoutePage({
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // Added Modal state
   const [officialGroupLeaderId, setOfficialGroupLeaderId] = useState<
     string | null
   >(null);
@@ -252,6 +254,8 @@ export default function RoutePage({
       setDraftUsers([...updatedDraftUsers]);
       setOfficialGroupLeaderId(currentDraftLeaderId);
       setDraftGroupLeaderId(currentDraftLeaderId);
+
+      setIsSuccessModalOpen(true); // Open Success Modal on completion
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to publish changes.";
@@ -561,6 +565,12 @@ export default function RoutePage({
           )}
         </TeamContainer>
       </AllContent>
+
+      <SuccessCard
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        onConfirm={() => {}}
+      />
     </PageContainer>
   );
 }
