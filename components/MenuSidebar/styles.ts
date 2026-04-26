@@ -6,12 +6,12 @@ import COLORS from "@/styles/colors";
 export const MenuButton = styled.div`
   background: transparent;
   position: absolute;
-  top: 3.125rem;
+  top: 3.75rem;
   left: 3.125rem;
   z-index: 10;
   border-radius: 50%;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 3.75rem;
+  height: 3.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,8 +49,8 @@ export const SidebarHead = styled.div`
 `;
 
 export const Avatar = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   display: flex;
