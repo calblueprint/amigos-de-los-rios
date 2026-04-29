@@ -380,6 +380,31 @@ export const IconSvgs = {
     </svg>
   ),
 
+  CrownIcon: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M7.70796 2.17647C7.73673 2.12421 7.77901 2.08062 7.83037 2.05027C7.88173 2.01992 7.9403 2.00391 7.99996 2.00391C8.05962 2.00391 8.11819 2.01992 8.16955 2.05027C8.22091 2.08062 8.26318 2.12421 8.29196 2.17647L10.26 5.91247C10.3069 5.99898 10.3724 6.07402 10.4518 6.13221C10.5311 6.19041 10.6224 6.2303 10.719 6.24904C10.8156 6.26778 10.9152 6.26489 11.0106 6.24059C11.106 6.21628 11.1948 6.17116 11.2706 6.10847L14.122 3.6658C14.1767 3.62128 14.2441 3.59528 14.3146 3.59154C14.3851 3.58779 14.4549 3.6065 14.514 3.64497C14.5732 3.68343 14.6186 3.73968 14.6437 3.8056C14.6689 3.87152 14.6725 3.94372 14.654 4.0118L12.7646 10.8425C12.7261 10.9822 12.643 11.1056 12.528 11.1939C12.413 11.2822 12.2723 11.3306 12.1273 11.3318H3.87329C3.72818 11.3308 3.58736 11.2825 3.47222 11.1941C3.35707 11.1058 3.27389 10.9824 3.23529 10.8425L1.34662 4.01247C1.32812 3.94438 1.3317 3.87218 1.35685 3.80626C1.382 3.74034 1.42741 3.6841 1.48656 3.64563C1.5457 3.60717 1.61553 3.58846 1.68598 3.5922C1.75644 3.59595 1.82389 3.62195 1.87862 3.66647L4.72929 6.10914C4.80516 6.17183 4.89396 6.21695 4.98933 6.24125C5.0847 6.26556 5.18427 6.26845 5.28089 6.24971C5.37751 6.23097 5.46878 6.19107 5.54815 6.13288C5.62752 6.07469 5.69303 5.99964 5.73996 5.91314L7.70796 2.17647Z"
+        stroke="#6A7282"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.33301 14H12.6663"
+        stroke="#6A7282"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+
   warningIcon: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -424,6 +449,50 @@ export const IconSvgs = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  ),
+
+  CloseIcon: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M12 4L4 12"
+        stroke="#6A7282"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 4L12 12"
+        stroke="#6A7282"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+
+  mail: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      data-fg-gie60="3.49:2003.521:/components/TeamAssignment.tsx:211:43:8641:28:e:Mail::::::D4VR"
+      data-fgid-gie60=":rfd:"
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
     </svg>
   ),
 };

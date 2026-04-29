@@ -204,7 +204,7 @@ export const Tab = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 0.3125rem;
-  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+  border: 0.0625rem solid ${COLORS.adlr_light_gray};
   margin-bottom: 1.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -290,19 +290,39 @@ export const TeamAssignmentRole = styled.h1`
 export const RouteContainer = styled.div`
   display: flex;
   height: auto;
-  padding: 1.5625rem; /* 25px */
+  padding: 1.5625rem;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem; /* 16px */
+  gap: 1rem;
   align-self: stretch;
 
-  border-radius: 0.625rem; /* 10px */
-  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+  border-radius: 0.625rem;
+  border: 0.0625rem solid ${COLORS.adlr_light_gray};
   background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
-    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+    0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
+
+  @media print {
+    padding: 15mm !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    iframe {
+      width: 100% !important;
+      max-width: 100% !important;
+      border-radius: 0.5rem !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+  }
 `;
+
 export const RouteHeader = styled.div`
   display: flex;
   height: auto;
@@ -340,15 +360,30 @@ export const RouteHolder = styled.div`
   align-self: stretch;
 `;
 
-export const RoutePoints = styled.h1`
-  color: ${COLORS.black};
+export const AssignedUsers = styled.p`
+  color: #000;
   font-family: "DM Sans";
   font-size: 1.125rem; /* 18px */
   font-style: normal;
   font-weight: 700;
-  line-height: 1.6875rem; /* 27px */ /* 150% */
+  line-height: 1.6875rem; /* 27px */
   letter-spacing: -0.016875rem; /* -0.27px */
 `;
+
+export const RoutePoints = styled.div`
+  display: flex;
+  align-self: stretch;
+  width: 100%;
+  color: ${COLORS.black};
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  justify-content: space-between;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.6875rem;
+  letter-spacing: -0.016875rem;
+`;
+
 export const PropertiesHolder = styled.div`
   display: flex;
   height: auto;
@@ -377,4 +412,109 @@ export const PropertiesList = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 2rem;
+`;
+
+export const PrintButton = styled.button`
+  width: 1.65975rem;
+  height: 1.65975rem;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 0.240125rem;
+  border: 0.051875rem solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.adlr_white};
+`;
+
+export const PrintHeader = styled.h1`
+  display: flex;
+  flex-direction: row;
+  color: ${COLORS.print_header};
+  font-family: "DM Sans";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  gap: 0.5rem;
+`;
+
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const SearchInput = styled.input`
+  display: flex;
+  height: 2.625rem; /* 42px */
+  padding: 0.5rem 1rem; /* 8px 16px */
+  align-items: center;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 0.3125rem;
+  border: 0.0625rem solid ${COLORS.adlr_light_gray};
+  font-family: "DM Sans";
+  font-size: 1rem; /* 16px */
+  font-style: normal;
+  font-weight: 400;
+  color: ${COLORS.black};
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${COLORS.blue};
+  }
+`;
+
+export const SearchResultsDropdown = styled.div`
+  position: absolute;
+  display: flex;
+  background: white;
+  width: 100%;
+  border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+  border-top: none;
+  border-radius: 0 0 0.3125rem 0.3125rem;
+  max-height: 18.75rem; /* 300px */
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+
+  flex-direction: column;
+  gap: 0.5rem; /* 8px */
+  padding: 0.5rem; /* 8px */
+`;
+
+export const SearchMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem; /* 16px */
+  font-family: "DM Sans";
+  font-size: 0.875rem; /* 14px */
+  color: ${COLORS.adlr_light_gray};
+  position: center;
+`;
+
+export const PublishButton = styled.button<{ $hasChanges?: boolean }>`
+  display: flex;
+  padding: 0.625rem 7.0625rem 0.6875rem 7.0835rem; /* 10px 113px 11px 113.336px */
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 0.625rem; /* 10px */
+  background: #80bc51;
+  color: white;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.125rem; /* 18px */
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.6875rem; /* 27px */
+  letter-spacing: -0.016875rem; /* -0.27px */
+  border: none;
+  opacity: ${props => (props.$hasChanges ? 1 : 0.5)};
+  cursor: ${props => (props.$hasChanges ? "pointer" : "default")};
 `;
