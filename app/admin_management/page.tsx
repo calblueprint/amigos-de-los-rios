@@ -42,7 +42,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [newEmail, setNewEmail] = useState("");
-  const [newName, setNewName] = useState("");
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -84,10 +83,6 @@ export default function AdminPage() {
   }, [userId, authLoading, router]);
   async function handleGrantAdmin() {
     setFormError("");
-    if (!newName.trim()) {
-      setFormError("Full name is required.");
-      return;
-    }
     if (!newEmail.trim()) {
       setFormError("Email address is required.");
       return;
@@ -108,7 +103,6 @@ export default function AdminPage() {
       setAdmins(updated ?? []);
       setIsAdding(false);
       setNewEmail("");
-      setNewName("");
     } catch {
       setFormError("Failed to grant admin access. Please try again.");
     } finally {
@@ -161,16 +155,6 @@ export default function AdminPage() {
             <FormContainer>
               <FormField>
                 <FormLabel>
-                  Full Name<span>*</span>
-                </FormLabel>
-                <FormInput
-                  placeholder="Enter admin's full name"
-                  value={newName}
-                  onChange={e => setNewName(e.target.value)}
-                />
-              </FormField>
-              <FormField>
-                <FormLabel>
                   Email Address<span>*</span>
                 </FormLabel>
                 <FormInput
@@ -183,8 +167,8 @@ export default function AdminPage() {
               <FormActions>
                 <GrantButton
                   onClick={handleGrantAdmin}
-                  disabled={submitting || !newName.trim() || !newEmail.trim()}
-                  $isComplete={!!newName.trim() && !!newEmail.trim()}
+                  disabled={submitting || !newEmail.trim()}
+                  $isComplete={!!newEmail.trim()}
                 >
                   {submitting ? "Granting..." : "Grant Admin Access"}
                 </GrantButton>
@@ -193,7 +177,6 @@ export default function AdminPage() {
                     setIsAdding(false);
                     setFormError("");
                     setNewEmail("");
-                    setNewName("");
                   }}
                 >
                   Cancel
