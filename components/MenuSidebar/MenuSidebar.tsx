@@ -89,7 +89,7 @@ export default function MenuSidebar() {
                   <NavItem
                     icon={IconSvgs.admin_menu_gray}
                     label="Admin Management"
-                    active={pathname === "/"}
+                    active={pathname === "/admin_management"}
                     onClick={() => {
                       router.push("/admin_management");
                       setIsOpen(false);
