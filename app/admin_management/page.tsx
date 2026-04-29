@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { setUserAdminStatus } from "@/actions/supabase/mutations/users";
 import {
   getAdminUsers,
   getUserByEmail,
   getUserById,
+  setUserAdminStatus,
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import AdminCard from "@/components/AdminCard/Admin";
@@ -84,6 +84,10 @@ export default function AdminPage() {
   }, [userId, authLoading, router]);
   async function handleGrantAdmin() {
     setFormError("");
+    if (!newName.trim()) {
+      setFormError("Full name is required.");
+      return;
+    }
     if (!newEmail.trim()) {
       setFormError("Email address is required.");
       return;
@@ -177,7 +181,11 @@ export default function AdminPage() {
               </FormField>
               {formError && <ErrorMessage>{formError}</ErrorMessage>}
               <FormActions>
-                <GrantButton onClick={handleGrantAdmin} disabled={submitting}>
+                <GrantButton
+                  onClick={handleGrantAdmin}
+                  disabled={submitting || !newName.trim() || !newEmail.trim()}
+                  $isComplete={!!newName.trim() && !!newEmail.trim()}
+                >
                   {submitting ? "Granting..." : "Grant Admin Access"}
                 </GrantButton>
                 <CancelButton

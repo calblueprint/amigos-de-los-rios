@@ -46,3 +46,11 @@ export async function checkUserOnboarded(userId: string): Promise<boolean> {
 
   return true;
 }
+
+export async function setUserAdminStatus(userId: string, isAdmin: boolean) {
+  const { error } = await supabase
+    .from("Users")
+    .update({ is_admin: isAdmin })
+    .eq("id", userId);
+  if (error) throw error;
+}

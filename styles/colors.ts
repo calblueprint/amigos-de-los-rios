@@ -7,6 +7,7 @@ const COLORS = {
   adlr_forest_green: "#22AB72",
   adlr_light_green: "#E6F3DC",
   adlr_hover_green: "#3b8c3f",
+  adlr_gray_green: "#7A9068",
   adlr_navy: "#22354D",
   adlr_gray: "#CFCFCF",
   adlr_property_gray: "#707070",

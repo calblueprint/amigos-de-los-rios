@@ -133,7 +133,7 @@ export const AdminCountBadge = styled.span`
   font-weight: 400;
   line-height: 1.6875rem;
   letter-spacing: -0.015rem;
-  width: 8.46631rem;
+  width: fit-content;
   height: 2.6875rem;
   padding: 0 1rem;
   border-radius: 0.3125rem;
@@ -212,26 +212,35 @@ export const FormActions = styled.div`
   margin-top: 0.5rem;
 `;
 
-export const GrantButton = styled.button`
+export const GrantButton = styled.button<{ $isComplete?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1.25rem;
-  background-color: ${COLORS.adlr_green};
+  padding: 0.5rem 1.92675rem 0.5625rem 2rem;
+  background-color: ${({ $isComplete }) =>
+    $isComplete ? COLORS.adlr_green : COLORS.adlr_green};
   color: ${COLORS.white};
   border-radius: 0.3125rem;
-  opacity: 0.5;
-  border: 1px solid ${COLORS.adlr_light_gray};
+  opacity: ${({ $isComplete }) => ($isComplete ? 1 : 0.5)};
+  border: none;
   font-family: "DM Sans";
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.6875rem;
   letter-spacing: -0.01688rem;
-  cursor: pointer;
-  transition: opacity 0.2s;
+  cursor: ${({ $isComplete }) => ($isComplete ? "pointer" : "not-allowed")};
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
 
   &:hover {
-    opacity: 0.85;
+    background-color: ${({ $isComplete }) =>
+      $isComplete ? COLORS.adlr_hover_green : COLORS.adlr_gray_green};
+    opacity: 1;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `;
 
