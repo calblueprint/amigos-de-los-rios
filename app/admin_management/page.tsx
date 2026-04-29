@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/app/utils/AuthContext";
 import AdminCard from "@/components/AdminCard/Admin";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import { IconSvgs } from "@/lib/icons";
 import {
   AddAdminButton,
@@ -131,6 +132,7 @@ export default function AdminPage() {
   return (
     <PageContainer>
       <Banner />
+      <MenuSidebar />
       <ContentContainer>
         <TitleSection>
           <Title>Admin Management</Title>

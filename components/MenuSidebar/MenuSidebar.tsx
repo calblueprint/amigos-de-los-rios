@@ -87,7 +87,7 @@ export default function MenuSidebar() {
                     icon={IconSvgs.admin_menu_gray}
                     label="Admin Management"
                     onClick={() => {
-                      router.push("/");
+                      router.push("/admin_management");
                       setIsOpen(false);
                     }}
                   />
