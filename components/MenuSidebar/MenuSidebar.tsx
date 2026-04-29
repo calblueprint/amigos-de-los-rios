@@ -91,7 +91,7 @@ export default function MenuSidebar() {
                     label="Admin Management"
                     active={pathname === "/"}
                     onClick={() => {
-                      router.push("/");
+                      router.push("/admin_management");
                       setIsOpen(false);
                     }}
                   />
