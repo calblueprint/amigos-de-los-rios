@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateRoutes } from "@/actions/generateRoutes";
+import supabase from "@/actions/supabase/client";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
+import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import TeamCard from "@/components/TeamCard/TeamCard";
 import { IconSvgs } from "@/lib/icons";
 import {
@@ -65,12 +67,22 @@ export default function TeamsPage() {
       setGenerating(true);
       setError(null);
 
-      // Call the route generation API (mimics AWS Lambda call)
+      // Call the route generation API
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+
+      if (!accessToken) {
+        throw new Error(
+          "Missing auth session. Please sign in again and retry.",
+        );
+      }
+
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
         date: data.date,
         teams: data.teams,
+        accessToken,
       });
 
       // Navigate to the new session page
@@ -98,7 +110,9 @@ export default function TeamsPage() {
 
   return (
     <PageContainer>
+      <MenuSidebar />
       <Banner />
+
       <BackLink href="/sessions/new_session/basic_info">
         ← Back to Session Details
       </BackLink>

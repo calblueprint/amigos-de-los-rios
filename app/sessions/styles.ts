@@ -27,6 +27,13 @@ export const HeaderSection = styled.div`
   }
 `;
 
+export const ControlsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
 export const Header = styled.h1`
   font-size: 2.5rem;
   font-style: normal;
@@ -47,16 +54,14 @@ export const ButtonGroup = styled.div`
 `;
 
 export const AddButton = styled(Link)`
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1540094.5rem;
+  border: ${COLORS.adlr_green} 1.469px solid;
   background: ${COLORS.adlr_green};
-  color: white;
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: none;
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
-  cursor: pointer;
-  text-decoration: none;
   transition: background 0.2s;
   &:hover {
     background: ${COLORS.adlr_hover_green};
@@ -68,13 +73,14 @@ export const AddButton = styled(Link)`
 `;
 
 export const EditButton = styled.button`
-  background: ${COLORS.adlr_lighter_gray};
-  padding: 0.5625rem 0.625rem 0.625rem 0.75rem;
-  border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 1.25rem;
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  background: ${COLORS.white};
+  padding: 0.73438rem;
+  align-items: center;
+  border: ${COLORS.adlr_property_gray} 1px solid;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s;
   &:hover {
@@ -93,29 +99,51 @@ export const SessionsList = styled.div`
   margin: 0 15% 2rem 15%;
 `;
 
-export const SignOutButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: ${COLORS.adlr_lighter_gray};
-  color: ${COLORS.adlr_black};
-  padding: 0.5rem 1rem;
+export const ToggleContainer = styled.div`
+  display: flex;
+  display: flex;
+  width: 12.43406rem;
+  height: 3.0625rem;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 0.3125rem;
   border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.375rem;
-  font-family: ${Sans.style.fontFamily};
-  font-weight: 400;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  z-index: 10;
-  &:hover {
-    background: ${COLORS.adlr_gray};
-  }
+  background: ${COLORS.adlr_lighter_gray};
+  overflow: hidden;
+`;
 
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-    top: 0.5rem;
-    left: 0.5rem;
-  }
+export const UpcomingButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 0.3125rem 0 0 0.3125rem;
+  background: ${props =>
+    props.$active ? COLORS.adlr_light_gray : "transparent"};
+  color: ${props =>
+    props.$active ? COLORS.adlr_black : COLORS.adlr_property_gray};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+export const PastButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  padding: 0.59375rem 1.21094rem 0.65625rem 1.25rem;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0 0.3125rem 0.3125rem 0;
+  background: ${props =>
+    props.$active ? COLORS.adlr_light_gray : "transparent"};
+  color: ${props =>
+    props.$active ? COLORS.adlr_black : COLORS.adlr_property_gray};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
 `;

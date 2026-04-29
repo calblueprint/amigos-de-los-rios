@@ -79,6 +79,27 @@ export const DateHeader = styled.h1`
   }
 `;
 
+export const RoutesHeaderContainer = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: space-between;
+`;
+
+export const RoutesButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.75rem;
+`;
+
+export const LegendAnchor = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const RoutesHeader = styled.h1`
   color: ${COLORS.black};
   font-size: 1.75rem;
@@ -104,4 +125,59 @@ export const RoutesList = styled.div`
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+`;
+
+export const TrashIconButton = styled.button`
+  border-radius: 50%;
+  background: white;
+  aspect-ratio: 1 / 1;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+`;
+
+export const LegendIconButton = styled.button`
+  border-radius: 50%;
+  background: ${COLORS.adlr_light_gray};
+  aspect-ratio: 1 / 1;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+`;
+
+export const PrintAllButton = styled.button`
+  display: flex;
+  padding: 0 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  color: #4a5565;
+  border-radius: 0.625rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.adlr_white};
+
+  &:hover {
+    background: #f3f4f6;
+  }
+`;
+
+export const LegendDropdownWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.75rem;
+  z-index: 100;
 `;

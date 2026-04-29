@@ -18,10 +18,7 @@ export async function getUserById(userId: string) {
     .eq("id", userId)
     .maybeSingle();
 
-  if (error) {
-    console.error("Error loading user:", error);
-    return null;
-  }
+  if (error) throw error;
 
   return data;
 }
@@ -52,5 +49,28 @@ export async function setUserAdminStatus(userId: string, isAdmin: boolean) {
     .from("Users")
     .update({ is_admin: isAdmin })
     .eq("id", userId);
+  if (error) throw error;
+}
+
+export async function getUserProfile(userId: string) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("name, email, affiliation, phone_number")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function updateUserProfile(
+  userId: string,
+  updatedFields: Record<string, string>,
+) {
+  const { error } = await supabase
+    .from("Users")
+    .update(updatedFields)
+    .eq("id", userId);
+
   if (error) throw error;
 }
