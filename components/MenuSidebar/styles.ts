@@ -25,7 +25,7 @@ export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 40;
+  z-index: 110;
 `;
 
 export const Panel = styled.div`
@@ -35,7 +35,7 @@ export const Panel = styled.div`
   height: 100%;
   width: 17.5rem;
   background: ${COLORS.adlr_white};
-  z-index: 50;
+  z-index: 120;
   display: flex;
   flex-direction: column;
 `;
@@ -46,6 +46,9 @@ export const SidebarHead = styled.div`
   display: flex;
   align-items: center;
   gap: 1.25rem;
+  height: 11.275rem; /* fixed height */
+  width: 100%; /* or fixed width if needed */
+  overflow: hidden; /* prevents expansion */
 `;
 
 export const Avatar = styled.div`
@@ -57,6 +60,7 @@ export const Avatar = styled.div`
   align-items: center;
   justify-content: center;
   border: 1.5px solid rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
 `;
 
 export const UserName = styled.div`
@@ -66,6 +70,7 @@ export const UserName = styled.div`
   font-weight: 700;
   line-height: 1.5rem;
   color: #fff;
+  overflow-wrap: anywhere;
 `;
 
 export const UserRole = styled.div`
@@ -109,5 +114,9 @@ export const NavItemButton = styled.button<{ $active?: boolean }>`
   svg {
     display: block;
     flex-shrink: 0;
+  }
+
+  &:hover {
+    background: ${({ $active }) => ($active ? "#e5e7eb" : "#f9fafb")};
   }
 `;
