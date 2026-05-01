@@ -149,9 +149,7 @@ export default function SessionsPage() {
     }
   };
 
-  const activeList = isEditing ? drafts : sessions;
-
-  const filteredSessions = activeList
+  const filteredSessions = sessions
     .filter(session => {
       const sessionDate = session.date;
       const todayObj = new Date();
@@ -171,6 +169,9 @@ export default function SessionsPage() {
         return b.date.localeCompare(a.date);
       }
     });
+
+  if (loading || authLoading) return <p>Loading sessions...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -256,15 +257,20 @@ export default function SessionsPage() {
       </HeaderSection>
 
       <SessionsList>
-        {filteredSessions.map(session => (
-          <SessionCard
-            key={session.id}
-            session={session}
-            isEditing={isEditing}
-            onDeleteClick={() => setSessionToDelete(session)}
-            onDraftChange={handleDraftChange}
-          />
-        ))}
+        {filteredSessions.map(session => {
+          const displaySession = isEditing
+            ? drafts.find(d => d.id === session.id) || session
+            : session;
+          return (
+            <SessionCard
+              key={session.id}
+              session={displaySession}
+              isEditing={isEditing}
+              onDeleteClick={() => setSessionToDelete(session)}
+              onDraftChange={handleDraftChange}
+            />
+          );
+        })}
       </SessionsList>
       <WarningCard
         isOpen={sessionToDelete !== null}
