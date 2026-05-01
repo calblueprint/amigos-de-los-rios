@@ -89,7 +89,7 @@ export default function AccountDetails() {
 
         <S.InputGroup>
           <S.Label>
-            Affiliation<S.RequiredAsterisk>*</S.RequiredAsterisk> 
+            Affiliation<S.RequiredAsterisk>*</S.RequiredAsterisk>
           </S.Label>
           <S.Input
             name="affiliation"
