@@ -44,10 +44,9 @@ export async function updateSession(
   updatedFields: {
     date?: string;
     watering_event_name?: string;
-    central_hub?: string;
   },
 ): Promise<boolean> {
-  const { data, error } = await supabase
+  const { data: _, error } = await supabase
     .from("Watering Sessions")
     .update(updatedFields)
     .eq("id", sessionId)

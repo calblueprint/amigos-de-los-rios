@@ -2,19 +2,18 @@
 
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
-import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const SessionCard = styled.div<{ $isEditing?: boolean }>`
   display: flex;
-  padding: 24px;
+  padding: 1.5rem;
   position: relative;
   align-items: flex-start;
-  gap: 32px;
+  gap: 2rem;
   flex-shrink: 0;
   align-self: stretch;
-  border-radius: 10px;
-  border: 1px solid #d9d9d9;
-  background: #fff;
+  border-radius: 0.625rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: white;
 
   overflow: hidden;
   cursor: ${({ $isEditing }) => ($isEditing ? "default" : "pointer")};
@@ -22,39 +21,39 @@ export const SessionCard = styled.div<{ $isEditing?: boolean }>`
   transition: box-shadow 0.2s ease-in-out;
 
   &:hover {
-    box-shadow: 2px 2px 5px rgba(84, 84, 84, 0.15);
+    box-shadow: 0.125rem 0.125rem 0.3125rem rgba(84, 84, 84, 0.15);
   }
 `;
 
 export const SessionDateCard = styled.div`
   display: flex;
-  padding: 20px 20px 20px 24px;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 export const SessionDateDay = styled.p`
-  color: #000;
+  color: black;
   text-align: center;
   font-family: "DM Sans";
-  font-size: 44px;
+  font-size: 2.75rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 44px; /* 100% */
-  letter-spacing: -0.66px;
+  line-height: 2.75rem; /* 100% */
+  letter-spacing: -0.04125rem;
 `;
 
 export const SessionDateMonth = styled.p`
-  color: #000;
+  color: black;
   text-align: center;
   font-family: "DM Sans";
-  font-size: 28px;
+  font-size: 1.75rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 100% */
-  letter-spacing: -0.42px;
+  line-height: 1.75rem; /* 100% */
+  letter-spacing: -0.02625rem;
 `;
 
 export const SessionInfo = styled.div`
@@ -65,41 +64,41 @@ export const SessionInfo = styled.div`
 
 export const SessionHeader = styled.div`
   display: flex;
-  padding: 12px 0;
+  padding: 0.75rem 0;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 export const SessionName = styled.p`
-  color: #000;
+  color: black;
   font-family: "DM Sans";
-  font-size: 24px;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 30px; /* 125% */
-  letter-spacing: -0.36px;
+  line-height: 1.875rem; /* 125% */
+  letter-spacing: -0.0225rem;
 `;
 
 export const SessionHub = styled.p`
-  color: #707070;
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 16px;
+  font-size: 1rem;
   font-style: italic;
   font-weight: 400;
-  line-height: 24px; /* 150% */
-  letter-spacing: -0.24px;
+  line-height: 1.5rem; /* 150% */
+  letter-spacing: -0.015rem;
 `;
 
 export const SessionTitle = styled.h1`
-  color: #707070;
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 26px; /* 144.444% */
-  letter-spacing: -0.27px;
+  line-height: 1.625rem; /* 144.444% */
+  letter-spacing: -0.016875rem;
 `;
 
 export const DeleteButton = styled.button`
@@ -118,8 +117,8 @@ export const DeleteButton = styled.button`
   flex-shrink: 0;
 
   &:hover {
-    background: #fef3f3;
-    border-color: #ffa2a3;
+    background: ${COLORS.delete_background};
+    border-color: $${COLORS.delete_border};
   }
 
   img {
@@ -129,13 +128,13 @@ export const DeleteButton = styled.button`
 `;
 
 export const NameInput = styled.input`
-  color: #707070;
+  color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 16px;
+  font-size: 1rem;
   font-style: italic;
   font-weight: 400;
-  line-height: 24px; /* 150% */
-  letter-spacing: -0.24px;
+  line-height: 1.5rem; /* 150% */
+  letter-spacing: -0.015rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
@@ -148,22 +147,22 @@ export const NameInput = styled.input`
 
 export const DateInput = styled.input`
   font-family: "DM Sans";
-  font-size: 16px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #d9d9d9;
-  background: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: white;
   cursor: pointer;
 
   &:focus {
     outline: none;
-    border-color: #707070;
+    border-color: ${COLORS.adlr_property_gray};
   }
 `;
 
 export const BorderLine = styled.div`
   width: 1px;
-  height: 120px;
+  height: 7.5rem;
   flex-shrink: 0;
-  border: 1px solid #bfbfbf;
+  border: 1px solid ${COLORS.sessions_line};
 `;
