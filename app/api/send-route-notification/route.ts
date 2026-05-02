@@ -3,6 +3,7 @@ import React from "react";
 import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { RoutePDF } from "./RoutePDF";
+import { buildRouteStaticMapUrl } from "./staticRouteMap";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
@@ -121,11 +122,29 @@ export async function POST(req: NextRequest) {
   if (unregisteredUsers.length > 0) {
     let pdfBase64: string;
     try {
+      let routeMapImageSrc: string | undefined;
+      const staticMapUrl = buildRouteStaticMapUrl(route.maps_link);
+      if (staticMapUrl) {
+        try {
+          const mapRes = await fetch(staticMapUrl);
+          if (mapRes.ok) {
+            const mime =
+              mapRes.headers.get("content-type")?.split(";")[0]?.trim() ??
+              "image/png";
+            const buf = Buffer.from(await mapRes.arrayBuffer());
+            routeMapImageSrc = `data:${mime};base64,${buf.toString("base64")}`;
+          }
+        } catch {
+          /* Omit map from PDF if Static Maps fetch fails */
+        }
+      }
+
       const routePdfProps: React.ComponentProps<typeof RoutePDF> = {
         session,
         route,
         groupLeader,
         stops,
+        ...(routeMapImageSrc ? { routeMapImageSrc } : {}),
       };
       const pdfBuffer = await renderToBuffer(
         React.createElement(

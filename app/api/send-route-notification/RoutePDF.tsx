@@ -2,6 +2,7 @@ import {
   Document,
   Link,
   Page,
+  Image as PdfImage,
   StyleSheet,
   Text,
   View,
@@ -59,6 +60,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 11,
   },
+  /** Fits A4 page minus horizontal padding (~515pt); matches 640×360 static map aspect */
+  routeMapImage: {
+    width: 515,
+    height: 289,
+    objectFit: "contain",
+    marginTop: 4,
+  },
 });
 
 type RoutePDFProps = {
@@ -80,6 +88,8 @@ type RoutePDFProps = {
     order_to_visit: number;
     property_address: string;
   }[];
+  /** Data URI (e.g. data:image/png;base64,...) from Maps Static API */
+  routeMapImageSrc?: string | null;
 };
 
 export function RoutePDF({
@@ -87,6 +97,7 @@ export function RoutePDF({
   route,
   groupLeader,
   stops,
+  routeMapImageSrc,
 }: RoutePDFProps) {
   const sortedStops = [...stops].sort(
     (a, b) => a.order_to_visit - b.order_to_visit,
@@ -128,6 +139,13 @@ export function RoutePDF({
             </Link>
           </View>
         )}
+
+        {routeMapImageSrc ? (
+          <View style={styles.section}>
+            <Text style={styles.label}>Route Map</Text>
+            <PdfImage src={routeMapImageSrc} style={styles.routeMapImage} />
+          </View>
+        ) : null}
 
         <View style={styles.divider} />
 
