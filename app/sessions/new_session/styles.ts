@@ -234,31 +234,15 @@ export const ContentContainerWithPadding = styled(ContentContainer)`
   padding-bottom: 8rem;
 `;
 
-export const NextButton = styled.button`
-  padding: 1.19rem 11.44rem;
-  background: ${COLORS.adlr_navy};
-  color: ${COLORS.white};
-  font-family: ${Sans.style.fontFamily};
-  font-size: 1.75rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.125rem;
-  letter-spacing: -0.02625rem;
-  border-radius: 0.3125rem;
-  cursor: pointer;
-  margin: 2rem auto 0 auto;
-  display: block;
-
-  &:hover {
-    background: ${COLORS.adlr_blue};
-  }
-`;
-
 export const LegendAddContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
   gap: 0.75rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    gap: 0.5rem;
+  }
 `;
 
 export const LegendAnchor = styled.div`
@@ -279,6 +263,10 @@ export const LegendIconButton = styled.button`
   cursor: pointer;
   padding: 0.5rem;
   font-size: 1rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.75rem, 4vw, 1rem);
+  }
 `;
 
 export const Legend = styled.div`
