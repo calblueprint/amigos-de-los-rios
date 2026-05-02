@@ -99,6 +99,41 @@ export const SessionsList = styled.div`
   margin: 0 15% 2rem 15%;
 `;
 
+export const SyncButton = styled.button`
+  display: flex;
+  width: 2.9375rem;
+  height: 2.9375rem;
+  background: ${COLORS.white};
+  padding: 0.73438rem;
+  align-items: center;
+  border: ${COLORS.adlr_property_gray} 1px solid;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: ${COLORS.adlr_gray};
+  }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+  }
+`;
+
+export const Toast = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: ${COLORS.white};
+  border: 0.0625rem solid #eee;
+  border-radius: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+`;
+
 export const ToggleContainer = styled.div`
   display: flex;
   width: 12.43406rem;

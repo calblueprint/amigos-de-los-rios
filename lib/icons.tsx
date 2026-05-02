@@ -525,6 +525,54 @@ export const IconSvgs = {
       />
     </svg>
   ),
+
+  sync_checkmark: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M14.1667 12.5L9.58333 17.0833L7.5 15"
+        stroke="#80BC51"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.59658 13.392C3.77013 12.9175 3.07254 12.2477 2.56481 11.4412C2.05707 10.6347 1.75466 9.71611 1.68402 8.76573C1.61338 7.81536 1.77666 6.86214 2.15958 5.98946C2.5425 5.11678 3.1334 4.3512 3.8806 3.75968C4.62781 3.16816 5.50856 2.76872 6.44583 2.59628C7.3831 2.42385 8.34834 2.48367 9.25714 2.77053C10.1659 3.05738 10.9906 3.56253 11.6591 4.24179C12.3275 4.92105 12.8194 5.75373 13.0916 6.66703H14.5832C15.2911 6.66705 15.9844 6.86739 16.5831 7.24489C17.1819 7.62239 17.6615 8.16163 17.9667 8.80028C18.2719 9.43892 18.39 10.1509 18.3076 10.8539C18.2251 11.5569 17.9454 12.2222 17.5007 12.7729"
+        stroke="#80BC51"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+
+  sync_failure: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M12 4L4 12"
+        stroke="#D31919"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 4L12 12"
+        stroke="#D31919"
+        strokeWidth="1.33333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
 };
 
 export type IconType = keyof typeof IconSvgs;
