@@ -15,7 +15,8 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, isHub }: PropertyCardProps) {
-  const isHydrant = property.property_id === null;
+  console.log("FULL ROUTE STOP:", property);
+  const isHydrant = property.hydrant_id !== null;
   const numTrees = property.Property?.num_trees ?? 0;
 
   return (

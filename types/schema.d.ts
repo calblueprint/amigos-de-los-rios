@@ -14,11 +14,12 @@ export type Property = {
 export type RouteStop = {
   id: UUID;
   route_id: UUID;
-  property_id: UUID;
+  property_id: UUID | null;
+  hydrant_id: UUID | null;
   order_to_visit: number;
   property_address: string;
   Property?: {
-    num_trees: string;
+    num_trees: number;
   } | null;
 };
 
