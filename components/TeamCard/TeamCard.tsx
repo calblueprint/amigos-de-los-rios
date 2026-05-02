@@ -32,7 +32,15 @@ export default function TeamCard({
     <Card>
       <DeleteButton onClick={onDelete}>{IconSvgs.close}</DeleteButton>
 
-      <RouteNameInput placeholder={`Route ${index + 1}`} />
+      <RouteNameInput
+        value={team.name}
+        onChange={e =>
+          onUpdate({
+            ...team,
+            name: e.target.value,
+          })
+        }
+      />
       <Divider />
 
       <TeamFieldsRow>

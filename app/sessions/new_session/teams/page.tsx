@@ -90,7 +90,7 @@ export default function TeamsPage() {
         centralHub: data.centralHub,
         date: data.date,
         teams: data.teams,
-        accessToken,
+        //accessToken,
       });
 
       // Navigate to the new session page
