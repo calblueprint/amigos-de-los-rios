@@ -88,6 +88,7 @@ export default function TeamsPage() {
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
+        centralHubAddress: data.address,
         date: data.date,
         teams: data.teams,
         //accessToken,
