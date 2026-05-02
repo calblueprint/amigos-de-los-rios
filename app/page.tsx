@@ -11,9 +11,21 @@ export default function Home() {
   const { userId, loading } = useAuth();
   const router = useRouter();
 
-  // Redirect to login if not authenticated, or to onboarding if not onboarded
+  // Password-recovery links sometimes open the site root (Supabase Site URL) with
+  // tokens in the hash. Handle that before redirecting logged-in users to /sessions.
   useEffect(() => {
     const checkAuth = async () => {
+      if (typeof window !== "undefined") {
+        const hash = window.location.hash;
+        if (hash.length > 1) {
+          const params = new URLSearchParams(hash.slice(1));
+          if (params.get("type") === "recovery" && params.get("access_token")) {
+            router.replace(`/auth_callback${hash}`);
+            return;
+          }
+        }
+      }
+
       if (!loading) {
         if (!userId) {
           router.push("/login");

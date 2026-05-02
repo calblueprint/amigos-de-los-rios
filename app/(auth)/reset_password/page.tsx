@@ -30,7 +30,7 @@ export default function ResetPassword() {
     try {
       await resetPasswordForEmail(
         email,
-        `${window.location.origin}/set_new_password`,
+        `${window.location.origin}/auth_callback`,
       );
 
       setEmailSent(true);

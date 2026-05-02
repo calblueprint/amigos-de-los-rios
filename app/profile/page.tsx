@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import supabase from "@/actions/supabase/client";
 import {
   checkUserOnboarded,
   getUserById,
@@ -11,10 +12,16 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import ProfileCard from "@/components/ProfileCard";
+import { IconSvgs } from "@/lib/icons";
 import {
   CardsContainer,
   ContentContainer,
   PageContainer,
+  PasswordPanel,
+  PasswordPanelHelper,
+  PasswordPanelRow,
+  PasswordPanelTitle,
+  PasswordResetButton,
   Title,
   TitleSection,
 } from "./styles";
@@ -23,6 +30,7 @@ export default function ProfilePage() {
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [passwordResetSigningOut, setPasswordResetSigningOut] = useState(false);
 
   const [profile, setProfile] = useState<{
     name: string;
@@ -30,9 +38,6 @@ export default function ProfilePage() {
     affiliation: string;
     phone_number: string;
   } | null>(null);
-
-  //Password fields
-  const passwordFields = [{ label: "", value: "********" }];
 
   useEffect(() => {
     if (authLoading) return;
@@ -96,6 +101,16 @@ export default function ProfilePage() {
     setProfile(prev => (prev ? { ...prev, ...updatedFields } : prev));
   };
 
+  const handlePasswordResetClick = async () => {
+    setPasswordResetSigningOut(true);
+    try {
+      await supabase.auth.signOut({ scope: "global" });
+      window.location.assign(`${window.location.origin}/reset_password`);
+    } catch {
+      setPasswordResetSigningOut(false);
+    }
+  };
+
   if (loading || authLoading) return <p>Loading profile...</p>;
 
   return (
@@ -113,7 +128,26 @@ export default function ProfilePage() {
             fields={profileFields}
             onSave={handleSaveProfile}
           />
-          <ProfileCard title="Password" fields={passwordFields} />
+          <PasswordPanel>
+            <PasswordPanelTitle>Password</PasswordPanelTitle>
+            <PasswordPanelRow>
+              <PasswordPanelHelper>
+                Click to receive a password reset link via email
+              </PasswordPanelHelper>
+              <PasswordResetButton
+                type="button"
+                disabled={passwordResetSigningOut}
+                onClick={handlePasswordResetClick}
+              >
+                {React.cloneElement(IconSvgs.reset_password_send, {
+                  width: 18,
+                  height: 18,
+                  "aria-hidden": true,
+                })}
+                {passwordResetSigningOut ? "Signing out…" : "Reset Password"}
+              </PasswordResetButton>
+            </PasswordPanelRow>
+          </PasswordPanel>
         </CardsContainer>
       </ContentContainer>
     </PageContainer>
