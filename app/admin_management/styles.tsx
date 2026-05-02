@@ -20,7 +20,9 @@ export const ContentContainer = styled.div`
   padding-top: 2.62rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 0 1rem;
     padding-top: 1.5rem;
+    padding-bottom: 2rem;
   }
 `;
 
@@ -44,7 +46,7 @@ export const Title = styled.h1`
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
-    line-height: 1.3rem;
+    line-height: 1.2;
   }
 `;
 
@@ -70,6 +72,11 @@ export const Description = styled.p`
   line-height: 1.82813rem; /* 162.5% */
   letter-spacing: -0.01688rem;
   margin-bottom: 1.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 0.9375rem;
+    line-height: 1.5rem;
+  }
 `;
 
 export const SectionCard = styled.div`
@@ -79,12 +86,22 @@ export const SectionCard = styled.div`
   padding: 2rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+  }
 `;
 
 export const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 `;
 
 export const SectionTitle = styled.h2`
@@ -95,6 +112,11 @@ export const SectionTitle = styled.h2`
   font-weight: 400;
   line-height: 2.625rem; /* 150% */
   letter-spacing: -0.02625rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 `;
 
 export const AddAdminButton = styled.button`
@@ -119,6 +141,11 @@ export const AddAdminButton = styled.button`
   &:hover {
     opacity: 0.85;
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 0.9375rem;
+    padding: 0.4rem 0.75rem;
+  }
 `;
 
 export const AdminCountBadge = styled.span`
@@ -137,6 +164,12 @@ export const AdminCountBadge = styled.span`
   height: 2.6875rem;
   padding: 0 1rem;
   border-radius: 0.3125rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 0.9375rem;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+  }
 `;
 
 export const CardsContainer = styled.div`
@@ -179,6 +212,11 @@ export const FormLabel = styled.label`
   span {
     color: ${COLORS.red};
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 `;
 
 export const FormInput = styled.input`
@@ -210,6 +248,10 @@ export const FormActions = styled.div`
   display: flex;
   gap: 0.75rem;
   margin-top: 0.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export const GrantButton = styled.button<{ $isComplete?: boolean }>`
@@ -242,6 +284,11 @@ export const GrantButton = styled.button<{ $isComplete?: boolean }>`
   &:disabled {
     cursor: not-allowed;
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    padding: 0.625rem 1rem;
+  }
 `;
 
 export const CancelButton = styled.button`
@@ -264,5 +311,10 @@ export const CancelButton = styled.button`
 
   &:hover {
     opacity: 0.7;
+  }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    padding: 0.625rem 1rem;
   }
 `;

@@ -44,6 +44,7 @@ export const ProfileCardTitle = styled.h2`
   margin-bottom: -2rem;
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.125rem, 4vw, 1.5rem);
+    margin-bottom: 0;
   }
 `;
 
@@ -69,6 +70,7 @@ export const ProfileCardButton = styled.button`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;
     padding: 0.75rem 1.5rem;
+    margin-bottom: 0;
   }
 `;
 
@@ -158,6 +160,10 @@ export const ProfileCardButtonGroup = styled.div`
 export const ProfileCardSaveButton = styled(ProfileCardButton)`
   background: ${COLORS.adlr_green};
   margin-bottom: -2rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin-bottom: 0;
+  }
 `;
 
 export const ProfileCardCancelButton = styled.button`
@@ -182,6 +188,7 @@ export const ProfileCardCancelButton = styled.button`
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;
     padding: 0.75rem 1.5rem;
+    margin-bottom: 0;
   }
 `;
 
