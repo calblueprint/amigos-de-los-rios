@@ -2,6 +2,7 @@ const COLORS = {
   // Add colors here as needed
   black: "#000000",
   white: "#FBFBFB",
+  adlr_red: "#E8857A",
   adlr_blue: "#1A548A",
   adlr_green: "#80BC51",
   adlr_forest_green: "#22AB72",
@@ -21,6 +22,9 @@ const COLORS = {
   blue: "#2b7fff",
   orange: "#ff6900",
   purple: "#ad46ff",
+  delete_background: "#fef3f3",
+  delete_border: "#ffa2a3",
+  sessions_line: "#bfbfbf",
 };
 
 export default COLORS;

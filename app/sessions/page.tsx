@@ -8,6 +8,10 @@ import {
   fetchSessions,
 } from "@/actions/supabase/queries/routes";
 import {
+  deleteSessionById,
+  updateSession,
+} from "@/actions/supabase/queries/sessions";
+import {
   checkUserOnboarded,
   getUserById,
 } from "@/actions/supabase/queries/users";
@@ -15,16 +19,19 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import SessionCard from "@/components/SessionCard/SessionCard";
+import WarningCard from "@/components/WarningCard/WarningCard";
 import { WateringSession } from "@/types/schema";
 import {
   AddButton,
   ButtonGroup,
+  CancelButton,
   ControlsRow,
   EditButton,
   Header,
   HeaderSection,
   PageContainer,
   PastButton,
+  SaveButton,
   SessionsList,
   ToggleContainer,
   UpcomingButton,
@@ -32,7 +39,9 @@ import {
 
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
+  const [drafts, setDrafts] = useState<WateringSession[]>([]); // Holds unsaved edits
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -40,6 +49,9 @@ export default function SessionsPage() {
     "Upcoming",
   );
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [sessionToDelete, setSessionToDelete] =
+    useState<WateringSession | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -55,19 +67,16 @@ export default function SessionsPage() {
           return;
         }
 
-        // Check if user has completed onboarding
         const isOnboarded = await checkUserOnboarded(userId);
         if (!isOnboarded) {
           router.push("/account_details");
           return;
         }
 
-        // Load the user role
         const userRow = await getUserById(userId);
         const adminStatus = userRow?.is_admin ?? false;
         setIsAdmin(adminStatus);
 
-        // Load sessions based on role
         if (adminStatus) {
           const data = await fetchSessions();
           setSessions(data);
@@ -85,30 +94,100 @@ export default function SessionsPage() {
     }
 
     init();
-  }, [userId, router, authLoading]); // Remove isAdmin from dependencies to prevent infinite loop
+  }, [userId, router, authLoading]);
 
-  // Filter sessions based on selected date filter
+  const handleStartEditing = () => {
+    setDrafts([...sessions]);
+    setIsEditing(true);
+  };
+
+  const handleCancelEditing = () => {
+    setDrafts([]);
+    setIsEditing(false);
+  };
+
+  const handleDraftChange = (
+    id: string,
+    field: "date" | "watering_event_name",
+    value: string,
+  ) => {
+    setDrafts(prev =>
+      prev.map(draft =>
+        draft.id === id ? { ...draft, [field]: value } : draft,
+      ),
+    );
+  };
+
+  const handleSaveDrafts = async () => {
+    setIsSaving(true);
+    try {
+      const changedSessions = drafts.filter(draft => {
+        const original = sessions.find(s => s.id === draft.id);
+        return (
+          original &&
+          (original.date !== draft.date ||
+            original.watering_event_name !== draft.watering_event_name)
+        );
+      });
+
+      await Promise.all(
+        changedSessions.map(draft =>
+          updateSession(draft.id, {
+            date: draft.date,
+            watering_event_name: draft.watering_event_name,
+          }),
+        ),
+      );
+
+      setSessions(drafts);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to save changes:", err);
+      alert("Failed to save some changes. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const filteredSessions = sessions
     .filter(session => {
       const sessionDate = session.date;
-      const now = new Date().toISOString().split("T")[0];
+      const todayObj = new Date();
+      const year = todayObj.getFullYear();
+      const month = String(todayObj.getMonth() + 1).padStart(2, "0");
+      const day = String(todayObj.getDate()).padStart(2, "0");
+      const localNow = `${year}-${month}-${day}`;
+
       return filterState === "Upcoming"
-        ? sessionDate >= now
-        : sessionDate < now;
+        ? sessionDate >= localNow
+        : sessionDate < localNow;
     })
     .sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-
       if (filterState === "Upcoming") {
-        return dateA - dateB;
+        return a.date.localeCompare(b.date);
       } else {
-        return dateB - dateA;
+        return b.date.localeCompare(a.date);
       }
     });
 
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  if (loading || authLoading) return <p>Loading sessions...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  const handleConfirmDelete = async () => {
+    if (!sessionToDelete) return;
+    try {
+      await deleteSessionById(sessionToDelete.id);
+
+      setSessions(prev => prev.filter(s => s.id !== sessionToDelete.id));
+      setDrafts(prev => prev.filter(s => s.id !== sessionToDelete.id));
+      setSessionToDelete(null);
+    } catch (err) {
+      console.error("Failed to delete session:", err);
+    }
+  };
 
   return (
     <PageContainer>
@@ -140,33 +219,64 @@ export default function SessionsPage() {
           </ToggleContainer>
           {isAdmin && (
             <ButtonGroup>
-              <EditButton>
-                {" "}
-                <Image
-                  src="/icons/editicon.svg"
-                  alt="Edit"
-                  width={20}
-                  height={20}
-                />
-              </EditButton>
-              <AddButton href="/sessions/new_session">
-                <Image
-                  src="/icons/addicon.svg"
-                  alt="Add"
-                  width={30}
-                  height={30}
-                />
-              </AddButton>
+              {isEditing ? (
+                <>
+                  <SaveButton onClick={handleSaveDrafts} disabled={isSaving}>
+                    {isSaving ? "Saving..." : "Save"}
+                  </SaveButton>
+                  <CancelButton
+                    onClick={handleCancelEditing}
+                    disabled={isSaving}
+                  >
+                    Cancel
+                  </CancelButton>
+                </>
+              ) : (
+                <>
+                  <EditButton onClick={handleStartEditing}>
+                    <Image
+                      src="/icons/editicon.svg"
+                      alt="Edit"
+                      width={20}
+                      height={20}
+                    />
+                  </EditButton>
+                  <AddButton href="/sessions/new_session">
+                    <Image
+                      src="/icons/addicon.svg"
+                      alt="Add"
+                      width={30}
+                      height={30}
+                    />
+                  </AddButton>
+                </>
+              )}
             </ButtonGroup>
           )}
         </ControlsRow>
       </HeaderSection>
 
       <SessionsList>
-        {filteredSessions.map(session => (
-          <SessionCard key={session.id} session={session} />
-        ))}
+        {filteredSessions.map(session => {
+          const displaySession = isEditing
+            ? drafts.find(d => d.id === session.id) || session
+            : session;
+          return (
+            <SessionCard
+              key={session.id}
+              session={displaySession}
+              isEditing={isEditing}
+              onDeleteClick={() => setSessionToDelete(session)}
+              onDraftChange={handleDraftChange}
+            />
+          );
+        })}
       </SessionsList>
+      <WarningCard
+        isOpen={sessionToDelete !== null}
+        onClose={() => setSessionToDelete(null)}
+        onConfirm={handleConfirmDelete}
+      />
     </PageContainer>
   );
 }

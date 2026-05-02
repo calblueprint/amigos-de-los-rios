@@ -35,7 +35,7 @@ export default function WarningCard({
         <HeaderDivider />
 
         <ModalText>
-          Are you sure you want to delete a route?
+          Are you sure you want to delete this?
           <br />
           This action cannot be undone.
         </ModalText>

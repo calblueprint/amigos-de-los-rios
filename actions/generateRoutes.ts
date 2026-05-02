@@ -1,72 +1,74 @@
-import { fetchSessionById } from "@/actions/supabase/queries/sessions";
-import { Team, WateringSession } from "@/types/schema";
+import { UUID } from "crypto";
+import {
+  createProperties,
+  createRoute,
+} from "@/actions/supabase/queries/routes";
+import { createWateringSession } from "@/actions/supabase/queries/sessions";
+import { random } from "@/lib/utils";
+import { RouteStop, Team, WateringSession } from "@/types/schema";
+import { VolunteerType } from "@/types/volunteerType";
 
 interface GenerateRoutesRequest {
   sessionName: string;
   centralHub: string;
+  centralHubAddress: string;
   date: string;
   teams: Team[];
-  accessToken: string;
 }
 
 interface GenerateRoutesResponse {
   session: WateringSession;
 }
 
-const DEFAULT_HUB = { lat: 34.187457, lng: -118.149968 };
-const LAMBDA_ROUTE_URL = process.env.NEXT_PUBLIC_LAMBDA_ROUTE_URL;
+/**
+ * Generate mock properties for a route
+ */
+function generateMockProperties(
+  routeId: UUID,
+  count: number,
+): Omit<RouteStop, "id">[] {
+  const streetNames = [
+    "Oak Street",
+    "Elm Avenue",
+    "Maple Drive",
+    "Pine Road",
+    "Cedar Lane",
+    "Birch Way",
+    "Willow Court",
+    "Ash Boulevard",
+    "Spruce Street",
+    "Redwood Circle",
+  ];
 
-interface LambdaVehicle {
-  id: string;
-  team_type: "A" | "B" | "C" | "D";
-  team_time_budget_minutes: number;
-  team_size: number;
+  return Array.from({ length: count }, (_, index) => ({
+    route_id: routeId,
+    order_to_visit: index + 1,
+    property_address: `${random(100, 9999)} ${streetNames[random(0, streetNames.length - 1)]}, Berkeley, CA`,
+    property_id: "f1715554-3ef4-4156-8032-f02e91788d25",
+  }));
 }
 
-interface LambdaResponse {
-  persistence?: {
-    watering_session_id: string;
-  };
-  error?: string;
-  details?: string;
-}
-
-function parseTimeBudgetMinutes(time: string): number {
-  const match = time.match(/(\d+)/);
-  if (!match) return 60;
-  return parseInt(match[1], 10) * 60;
-}
-
-function toTeamTypeCode(type: string): "A" | "B" | "C" | "D" {
+/**
+ * Map Team.type string to VolunteerType enum
+ */
+function getVolunteerType(type: string): VolunteerType {
   switch (type) {
     case "Type A":
-      return "A";
+      return VolunteerType.TypeA;
     case "Type B":
-      return "B";
+      return VolunteerType.TypeB;
     case "Type C":
-      return "C";
+      return VolunteerType.TypeC;
     case "Type D":
-      return "D";
+      return VolunteerType.TypeD;
     default:
-      throw new Error(`Unsupported volunteer type for optimizer: ${type}`);
+      return VolunteerType.TypeA;
   }
-}
-
-function buildVehiclesPayload(teams: Team[]): LambdaVehicle[] {
-  return teams.map((team, index) => {
-    const teamTypeCode = toTeamTypeCode(team.type);
-    return {
-      id: `V-${teamTypeCode}${index + 1}`,
-      team_type: teamTypeCode,
-      team_time_budget_minutes: parseTimeBudgetMinutes(team.time),
-      team_size: team.size,
-    };
-  });
 }
 
 /**
  * Generate routes for a watering session.
- * Calls the route-optimization Lambda and returns the created session.
+ * This function mimics an AWS Lambda API call for route generation.
  *
  * @param request - The route generation request containing session details and teams
  * @returns The created watering session
@@ -75,72 +77,46 @@ function buildVehiclesPayload(teams: Team[]): LambdaVehicle[] {
 export async function generateRoutes(
   request: GenerateRoutesRequest,
 ): Promise<GenerateRoutesResponse> {
-  const { sessionName, centralHub, date, teams, accessToken } = request;
+  const { sessionName, centralHub, centralHubAddress, date, teams } = request;
 
-  if (!sessionName || !centralHub || !date || teams.length === 0) {
+  if (
+    !sessionName ||
+    !centralHub ||
+    !centralHubAddress ||
+    !date ||
+    teams.length === 0
+  ) {
     throw new Error(
       "Please ensure all session details and at least one team are provided",
     );
   }
 
-  if (!LAMBDA_ROUTE_URL) {
-    throw new Error(
-      "NEXT_PUBLIC_LAMBDA_ROUTE_URL environment variable is not configured",
-    );
-  }
-
-  const vehicles = buildVehiclesPayload(teams);
-
-  const lambdaPayload = {
-    session_name: sessionName,
+  // Create Watering Session
+  const session = await createWateringSession({
     date,
-    hub: DEFAULT_HUB,
-    vehicles,
-  };
-
-  const lambdaResponse = await fetch(LAMBDA_ROUTE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(lambdaPayload),
+    watering_event_name: sessionName,
+    central_hub: centralHub,
+    central_hub_address: centralHubAddress,
   });
 
-  const responseText = await lambdaResponse.text();
-  let result: LambdaResponse = {};
+  // Create routes for each team
+  for (let i = 0; i < teams.length; i++) {
+    const team = teams[i];
+    const route = await createRoute({
+      watering_event_id: session.id as UUID,
+      date,
+      watering_event_name: sessionName,
+      route_label: team.name?.trim() || `Route ${i + 1}`,
+      volunteer_type: getVolunteerType(team.type),
+      maps_link: null,
+      num_volunteers: team.size,
+      compatible_hydrant_types: team.hydrant_type,
+    });
 
-  if (responseText) {
-    try {
-      result = JSON.parse(responseText) as LambdaResponse;
-    } catch {
-      if (!lambdaResponse.ok) {
-        throw new Error(
-          `Route optimization failed (${lambdaResponse.status}): ${responseText}`,
-        );
-      }
-      throw new Error("Route optimizer returned an invalid JSON response");
-    }
-  }
-
-  if (!lambdaResponse.ok) {
-    const errorMessage =
-      result.error ??
-      `Route optimization failed with status ${lambdaResponse.status}`;
-    const details = result.details ? `: ${result.details}` : "";
-    throw new Error(`${errorMessage}${details}`);
-  }
-
-  const sessionId = result.persistence?.watering_session_id;
-  if (!sessionId) {
-    throw new Error("Route optimizer did not return a persisted session id");
-  }
-
-  const session = await fetchSessionById(sessionId);
-  if (!session) {
-    throw new Error(
-      "Routes were generated but the created session could not be loaded",
-    );
+    // Generate 3-5 mock properties for this route
+    const propertyCount = random(3, 5);
+    const properties = generateMockProperties(route.id, propertyCount);
+    await createProperties(properties);
   }
 
   return { session };
