@@ -124,7 +124,7 @@ export const Toast = styled.div`
   bottom: 1rem;
   right: 1rem;
   background: ${COLORS.white};
-  border: 1px solid #eee;
+  border: 0.0625rem solid #eee;
   border-radius: 1.25rem;
   padding: 0.625rem 1.25rem;
   display: flex;
