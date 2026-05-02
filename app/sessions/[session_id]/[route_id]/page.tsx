@@ -435,7 +435,7 @@ export default function RoutePage({
                 {stops.length === 0 ? (
                   <p>No properties found for your route.</p>
                 ) : (
-                  stops.map((stop, index) => {
+                  stops.map(stop => {
                     const isCentralHub = false;
                     return (
                       <PropertyCard

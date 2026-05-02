@@ -90,7 +90,25 @@ export const EditTeamsHeader = styled.div`
 
 export const AddButton = styled.div`
   display: flex;
-  margin-right: 1rem;
+
+  width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background: ${COLORS.adlr_lighter_gray};
+  }
+
+  svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
 `;
 
 export const TeamsContainer = styled.div`
@@ -186,4 +204,46 @@ export const NextButton = styled.button`
   &:hover {
     background: ${COLORS.adlr_blue};
   }
+`;
+
+export const LegendAddContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.75rem;
+`;
+
+export const LegendAnchor = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const LegendIconButton = styled.button`
+  border-radius: 50%;
+  background: ${COLORS.adlr_light_gray};
+  aspect-ratio: 1 / 1;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+`;
+
+export const Legend = styled.div`
+  position: "fixed",
+  inset: 0,
+  zIndex: 99,
+`;
+
+export const LegendDropdownWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.75rem;
+  z-index: 100;
 `;

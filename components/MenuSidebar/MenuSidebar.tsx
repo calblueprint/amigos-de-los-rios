@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { IconSvgs } from "@/lib/icons";
@@ -24,6 +24,7 @@ export default function MenuSidebar() {
   const [userName, setUserName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const { userId, signOut } = useAuth();
+  const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function MenuSidebar() {
       }
     }
     loadUser();
-  }, [userId]);
+  }, [userId, isOpen]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -68,7 +69,8 @@ export default function MenuSidebar() {
                 <NavItem
                   icon={IconSvgs.home_menu_gray}
                   label="Home"
-                  active
+                  // Active if the URL is exactly "/sessions" (or starts with it, if you want sub-pages highlighted)
+                  active={pathname.startsWith("/sessions")}
                   onClick={() => {
                     router.push("/sessions");
                     setIsOpen(false);
@@ -77,6 +79,7 @@ export default function MenuSidebar() {
                 <NavItem
                   icon={IconSvgs.personal_details_menu_gray}
                   label="Personal Details"
+                  active={pathname === "/profile"}
                   onClick={() => {
                     router.push("/profile");
                     setIsOpen(false);
@@ -86,8 +89,9 @@ export default function MenuSidebar() {
                   <NavItem
                     icon={IconSvgs.admin_menu_gray}
                     label="Admin Management"
+                    active={pathname === "/admin_management"}
                     onClick={() => {
-                      router.push("/");
+                      router.push("/admin_management");
                       setIsOpen(false);
                     }}
                   />

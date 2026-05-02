@@ -5,7 +5,7 @@ export async function getUserByEmail(email: string) {
     .from("Users")
     .select("*")
     .eq("email", email)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data;
@@ -20,6 +20,16 @@ export async function getUserById(userId: string) {
 
   if (error) throw error;
 
+  return data;
+}
+
+export async function getAdminUsers() {
+  const { data, error } = await supabase
+    .from("Users")
+    .select("id, name, email, affiliation")
+    .eq("is_admin", true);
+
+  if (error) throw error;
   return data;
 }
 
@@ -69,6 +79,14 @@ export async function searchUsersInDatabase(searchQuery: string) {
 
   return data || [];
 }
+export async function setUserAdminStatus(userId: string, isAdmin: boolean) {
+  const { error } = await supabase
+    .from("Users")
+    .update({ is_admin: isAdmin })
+    .eq("id", userId);
+  if (error) throw error;
+}
+
 export async function getUserProfile(userId: string) {
   const { data, error } = await supabase
     .from("Users")

@@ -33,6 +33,7 @@ export type Route = {
   maps_link: string | null;
   num_volunteers: number;
   group_leader_id: UUID | null;
+  compatible_hydrant_types: string[];
 };
 
 export type WateringSession = {
@@ -40,6 +41,7 @@ export type WateringSession = {
   date: string;
   watering_event_name: string;
   central_hub: string;
+  central_hub_address: string;
 };
 
 export type User = {
@@ -54,9 +56,11 @@ export type User = {
 };
 
 export type Team = {
+  name: string;
   type: string;
+  hydrant_type: string[];
   size: number;
-  time: string;
+  time: number;
 };
 
 export type RouteUserAssignment = {
