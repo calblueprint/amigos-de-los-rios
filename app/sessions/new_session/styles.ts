@@ -282,4 +282,9 @@ export const LegendDropdownWrapper = styled.div`
   transform: translateX(-50%);
   margin-top: 0.75rem;
   z-index: 100;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    transform: translateX(-65%) scale(0.75);
+    transform-origin: top center;
+  }
 `;
