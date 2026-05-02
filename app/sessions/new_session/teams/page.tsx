@@ -8,6 +8,7 @@ import { getUserById } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import { useSessionCreation } from "@/app/utils/SessionCreationContext";
 import Banner from "@/components/Banner/Banner";
+import LegendCard from "@/components/LegendCard/LegendCard";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import TeamCard from "@/components/TeamCard/TeamCard";
 import { IconSvgs } from "@/lib/icons";
@@ -20,6 +21,11 @@ import {
   FixedBottomContainer,
   GenerateButton,
   Label,
+  Legend,
+  LegendAddContainer,
+  LegendAnchor,
+  LegendDropdownWrapper,
+  LegendIconButton,
   NoTeams,
   PageContainer,
   TeamsContainer,
@@ -27,13 +33,15 @@ import {
 } from "../styles";
 
 export default function TeamsPage() {
+  const router = useRouter();
+
   const { data, addTeam, deleteTeam, updateTeams } = useSessionCreation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const { userId }: { userId?: string | null } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const router = useRouter();
+  const [showLegend, setShowLegend] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -80,9 +88,10 @@ export default function TeamsPage() {
       const response = await generateRoutes({
         sessionName: data.sessionName,
         centralHub: data.centralHub,
+        centralHubAddress: data.address,
         date: data.date,
         teams: data.teams,
-        accessToken,
+        //accessToken,
       });
 
       // Navigate to the new session page
@@ -118,17 +127,32 @@ export default function TeamsPage() {
       </BackLink>
 
       <ContentContainerWithPadding>
-        <Title>Team Assignment</Title>
+        <Title>Create Teams</Title>
 
         <EditTeamsHeader>
-          <Label>Edit Team Assignments</Label>
+          <Label>Edit Route Assignments</Label>
 
-          <AddButton>
-            {React.cloneElement(IconSvgs.add, {
-              onClick: addTeam,
-              style: { cursor: "pointer" },
-            })}
-          </AddButton>
+          <LegendAddContainer>
+            <LegendAnchor>
+              <LegendIconButton onClick={() => setShowLegend(!showLegend)}>
+                {IconSvgs.legend}
+              </LegendIconButton>
+              {showLegend && (
+                <>
+                  <Legend onClick={() => setShowLegend(false)} />
+                  <LegendDropdownWrapper>
+                    <LegendCard />
+                  </LegendDropdownWrapper>
+                </>
+              )}
+            </LegendAnchor>
+
+            <AddButton>
+              {React.cloneElement(IconSvgs.add, {
+                onClick: addTeam,
+              })}
+            </AddButton>
+          </LegendAddContainer>
         </EditTeamsHeader>
 
         <TeamsContainer>
@@ -139,6 +163,7 @@ export default function TeamsPage() {
               <TeamCard
                 key={index}
                 team={team}
+                index={index}
                 onDelete={() => deleteTeam(index)}
                 onUpdate={updatedTeam => {
                   const updatedTeams = [...data.teams];
