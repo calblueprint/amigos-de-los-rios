@@ -101,7 +101,6 @@ export const SessionsList = styled.div`
 
 export const ToggleContainer = styled.div`
   display: flex;
-  display: flex;
   width: 12.43406rem;
   height: 3.0625rem;
   align-items: center;
@@ -146,4 +145,41 @@ export const PastButton = styled.button<{ $active: boolean }>`
   font-weight: 100;
   font-size: 1rem;
   cursor: pointer;
+`;
+
+export const SaveButton = styled.button`
+  display: flex;
+  padding: 0.71875rem 1.28613rem 0.65625rem 1.3125rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid ${COLORS.adlr_green};
+  background: ${COLORS.adlr_green};
+  color: white;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6875rem; /* 150% */
+  letter-spacing: -0.016875rem;
+`;
+
+export const CancelButton = styled.button`
+  display: flex;
+  padding: 0.71875rem 1.25681rem 0.65625rem 1.3125rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 5px;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: ${COLORS.adlr_lighter_gray};
+  color: ${COLORS.adlr_property_gray};
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6875rem; /* 150% */
+  letter-spacing: -0.016875rem;
 `;
