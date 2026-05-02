@@ -18,15 +18,50 @@ export default function AuthCallback() {
     // Handle the OAuth callback
     const handleCallback = async () => {
       try {
-        // Get the hash fragment from the URL
         const hashParams = new URLSearchParams(
           window.location.hash.substring(1),
         );
         const accessToken = hashParams.get("access_token");
         const type = hashParams.get("type");
 
+        const finishAfterSession = async (
+          sessionUserId: string,
+          email: string,
+          recovery: boolean,
+        ) => {
+          const existingUser = await getUserById(sessionUserId);
+          if (!existingUser) {
+            try {
+              await upsertUserProfile({
+                id: sessionUserId,
+                email,
+                name: "",
+                affiliation: "",
+                phone_number: "",
+                onboarded: false,
+              });
+            } catch (profileError) {
+              console.error(
+                "Error creating user profile in auth callback:",
+                profileError,
+              );
+            }
+          }
+
+          if (recovery) {
+            router.push("/set_new_password");
+            return;
+          }
+
+          const isOnboarded = await checkUserOnboarded(sessionUserId);
+          if (isOnboarded) {
+            router.push("/sessions");
+          } else {
+            router.push("/account_details");
+          }
+        };
+
         if (accessToken) {
-          // Exchange the access token for a session
           const { data, error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: hashParams.get("refresh_token") || "",
@@ -39,47 +74,42 @@ export default function AuthCallback() {
           }
 
           if (data.session?.user) {
-            // Ensure user record exists (create if missing)
-            // This handles cases where signUp failed to create the record due to RLS policies
-            const existingUser = await getUserById(data.session.user.id);
-            if (!existingUser) {
-              try {
-                await upsertUserProfile({
-                  id: data.session.user.id,
-                  email: data.session.user.email || "",
-                  name: "",
-                  affiliation: "",
-                  phone_number: "",
-                  onboarded: false,
-                });
-              } catch (profileError) {
-                console.error(
-                  "Error creating user profile in auth callback:",
-                  profileError,
-                );
-                // Continue anyway - user can complete profile later
-              }
-            }
-
-            // Check if user has completed onboarding
-            const isOnboarded = await checkUserOnboarded(data.session.user.id);
-
-            if (type === "recovery") {
-              // Password reset flow - redirect to set new password
-              router.push("/set_new_password");
-            } else if (isOnboarded) {
-              // User is already onboarded, redirect to sessions
-              router.push("/sessions");
-            } else {
-              // User hasn't completed onboarding, redirect to account details
-              router.push("/account_details");
-            }
+            const user = data.session.user;
+            await finishAfterSession(
+              user.id,
+              user.email || "",
+              type === "recovery",
+            );
           } else {
             router.push("/sign_up");
           }
         } else {
-          // If no token, redirect to sign up
-          router.push("/sign_up");
+          const searchParams = new URLSearchParams(window.location.search);
+          const code = searchParams.get("code");
+          if (code) {
+            const { data, error } =
+              await supabase.auth.exchangeCodeForSession(code);
+
+            if (error) {
+              console.error("Error exchanging code for session:", error);
+              router.push("/sign_up");
+              return;
+            }
+
+            if (data.session?.user) {
+              const user = data.session.user;
+              const recoveryFromQuery = searchParams.get("type") === "recovery";
+              await finishAfterSession(
+                user.id,
+                user.email || "",
+                recoveryFromQuery,
+              );
+            } else {
+              router.push("/sign_up");
+            }
+          } else {
+            router.push("/sign_up");
+          }
         }
       } catch (error) {
         console.error("Error in auth callback:", error);

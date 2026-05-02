@@ -11,6 +11,7 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import ProfileCard from "@/components/ProfileCard";
+import PasswordResetPanel from "./PasswordResetPanel";
 import {
   CardsContainer,
   ContentContainer,
@@ -30,9 +31,6 @@ export default function ProfilePage() {
     affiliation: string;
     phone_number: string;
   } | null>(null);
-
-  //Password fields
-  const passwordFields = [{ label: "", value: "********" }];
 
   useEffect(() => {
     if (authLoading) return;
@@ -113,7 +111,7 @@ export default function ProfilePage() {
             fields={profileFields}
             onSave={handleSaveProfile}
           />
-          <ProfileCard title="Password" fields={passwordFields} />
+          <PasswordResetPanel />
         </CardsContainer>
       </ContentContainer>
     </PageContainer>
