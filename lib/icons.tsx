@@ -135,6 +135,105 @@ export const IconSvgs = {
     </svg>
   ),
 
+  add_admin: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <g clipPath="url(#clip0_4186_1429)">
+        <path
+          d="M13.3334 17.5V15.8333C13.3334 14.9493 12.9822 14.1014 12.3571 13.4763C11.732 12.8512 10.8841 12.5 10.0001 12.5H5.00008C4.11603 12.5 3.26818 12.8512 2.64306 13.4763C2.01794 14.1014 1.66675 14.9493 1.66675 15.8333V17.5"
+          stroke="white"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M7.50008 9.16667C9.34103 9.16667 10.8334 7.67428 10.8334 5.83333C10.8334 3.99238 9.34103 2.5 7.50008 2.5C5.65913 2.5 4.16675 3.99238 4.16675 5.83333C4.16675 7.67428 5.65913 9.16667 7.50008 9.16667Z"
+          stroke="white"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M15.8333 6.6665V11.6665"
+          stroke="white"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M18.3333 9.1665H13.3333"
+          stroke="white"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_4186_1429">
+          <rect width="20" height="20" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+
+  admin_green: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="19"
+      viewBox="0 0 15 19"
+      fill="none"
+    >
+      <path
+        d="M14.1666 10.0005C14.1666 14.1672 11.2499 16.2505 7.78325 17.4589C7.60172 17.5204 7.40453 17.5174 7.22492 17.4505C3.74992 16.2505 0.833252 14.1672 0.833252 10.0005V4.1672C0.833252 3.94619 0.921049 3.73423 1.07733 3.57795C1.23361 3.42167 1.44557 3.33387 1.66659 3.33387C3.33325 3.33387 5.41658 2.33387 6.86658 1.0672C7.04313 0.91637 7.26771 0.833496 7.49992 0.833496C7.73212 0.833496 7.95671 0.91637 8.13325 1.0672C9.59159 2.3422 11.6666 3.33387 13.3333 3.33387C13.5543 3.33387 13.7662 3.42167 13.9225 3.57795C14.0788 3.73423 14.1666 3.94619 14.1666 4.1672V10.0005Z"
+        stroke="#80BC51"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  admin_white: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="19"
+      viewBox="0 0 15 19"
+      fill="none"
+    >
+      <path
+        d="M14.1666 10.0005C14.1666 14.1672 11.2499 16.2505 7.78325 17.4589C7.60172 17.5204 7.40453 17.5174 7.22492 17.4505C3.74992 16.2505 0.833252 14.1672 0.833252 10.0005V4.1672C0.833252 3.94619 0.921049 3.73423 1.07733 3.57795C1.23361 3.42167 1.44557 3.33387 1.66659 3.33387C3.33325 3.33387 5.41658 2.33387 6.86658 1.0672C7.04313 0.91637 7.26771 0.833496 7.49992 0.833496C7.73212 0.833496 7.95671 0.91637 8.13325 1.0672C9.59159 2.3422 11.6666 3.33387 13.3333 3.33387C13.5543 3.33387 13.7662 3.42167 13.9225 3.57795C14.0788 3.73423 14.1666 3.94619 14.1666 4.1672V10.0005Z"
+        stroke="#FFFFFF"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  delete: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </svg>
+  ),
+
   BackArrow: (
     <svg
       xmlns="http://www.w3.org/2000/svg"

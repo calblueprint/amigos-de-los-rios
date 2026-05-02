@@ -2,45 +2,58 @@
 
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
-import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
-export const SessionCard = styled.div`
+export const SessionCard = styled.div<{ $isEditing?: boolean }>`
   display: flex;
-  align-items: center;
-  background: ${COLORS.adlr_lighter_gray};
+  padding: 1.5rem;
+  position: relative;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-shrink: 0;
+  align-self: stretch;
   border-radius: 0.625rem;
   border: 1px solid ${COLORS.adlr_light_gray};
-  padding: 1.3rem;
-  cursor: pointer;
+  background: white;
+
+  overflow: hidden;
+  cursor: ${({ $isEditing }) => ($isEditing ? "default" : "pointer")};
+  min-height: 6rem;
+  transition: box-shadow 0.2s ease-in-out;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    padding: 5%;
-  }
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0.125rem 0.125rem 0.3125rem rgba(84, 84, 84, 0.15);
   }
 `;
 
-export const SessionImage = styled.img`
-  width: 8.578rem;
-  height: auto;
-  flex-shrink: 0;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  margin-right: 2.19rem;
+export const SessionDateCard = styled.div`
+  display: flex;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    width: min(8.578rem, 37.5%);
-    margin-right: 1.25rem;
-  }
+export const SessionDateDay = styled.p`
+  color: black;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 2.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.75rem; /* 100% */
+  letter-spacing: -0.04125rem;
+`;
+
+export const SessionDateMonth = styled.p`
+  color: black;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.75rem; /* 100% */
+  letter-spacing: -0.02625rem;
 `;
 
 export const SessionInfo = styled.div`
@@ -51,63 +64,47 @@ export const SessionInfo = styled.div`
 
 export const SessionHeader = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 0.5rem;
+  padding: 0.75rem 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
 `;
 
-export const SessionDate = styled.p`
-  color: ${COLORS.black};
-  fontfamily: "DM Sans";
-  font-size: 1.3125rem;
+export const SessionName = styled.p`
+  color: black;
+  font-family: "DM Sans";
+  font-size: 1.5rem;
   font-style: normal;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02625rem;
-  margin: 0;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(1rem, 4vw, 1.3125rem);
-    margin-bottom: 0.5rem;
-  }
+  font-weight: 600;
+  line-height: 1.875rem; /* 125% */
+  letter-spacing: -0.0225rem;
 `;
 
 export const SessionHub = styled.p`
   color: ${COLORS.adlr_property_gray};
   font-family: "DM Sans";
-  font-size: 1.03rem;
+  font-size: 1rem;
   font-style: italic;
   font-weight: 400;
-  line-height: 2.03125rem;
-  letter-spacing: -0.01875rem;
-  margin-bottom: 0.45rem;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(0.875rem, 4vw, 1.17rem);
-    margin-bottom: 0.375rem;
-  }
+  line-height: 1.5rem; /* 150% */
+  letter-spacing: -0.015rem;
 `;
 
 export const SessionTitle = styled.h1`
   color: ${COLORS.adlr_property_gray};
-  fontfamily: "DM Sans";
-  font-size: 1.03rem;
+  font-family: "DM Sans";
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.02063rem;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(0.75rem, 4vw, 1.03rem);
-    margin-bottom: 0.25rem;
-  }
+  line-height: 1.625rem; /* 144.444% */
+  letter-spacing: -0.016875rem;
 `;
 
 export const DeleteButton = styled.button`
-  top: 0.5rem;
-  right: 1.75rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
   display: flex;
   width: 2rem;
   height: 2rem;
@@ -120,12 +117,52 @@ export const DeleteButton = styled.button`
   flex-shrink: 0;
 
   &:hover {
-    background: ${COLORS.adlr_white_hover};
-    border-color: ${COLORS.adlr_property_gray};
+    background: ${COLORS.delete_background};
+    border-color: $${COLORS.delete_border};
   }
 
   img {
     width: 1rem;
     height: 1rem;
   }
+`;
+
+export const NameInput = styled.input`
+  color: ${COLORS.adlr_property_gray};
+  font-family: "DM Sans";
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5rem; /* 150% */
+  letter-spacing: -0.015rem;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  border: 0;
+  width: 100%;
+`;
+
+export const DateInput = styled.input`
+  font-family: "DM Sans";
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  background: white;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: ${COLORS.adlr_property_gray};
+  }
+`;
+
+export const BorderLine = styled.div`
+  width: 1px;
+  height: 7.5rem;
+  flex-shrink: 0;
+  border: 1px solid ${COLORS.sessions_line};
 `;
