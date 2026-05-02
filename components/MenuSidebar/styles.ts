@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const MenuButton = styled.div`
   background: transparent;
@@ -19,6 +20,11 @@ export const MenuButton = styled.div`
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(4px);
   cursor: pointer;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    left: 1.25rem; /* Pushes it closer to the left edge */
+    top: 1.5rem; /* Adjusts the top so it sits neatly in the mobile corner */
+  }
 `;
 
 export const Overlay = styled.div`

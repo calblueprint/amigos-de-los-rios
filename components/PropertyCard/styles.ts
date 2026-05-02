@@ -21,7 +21,7 @@ export const OrderCircle = styled.div<{
   $isHub?: boolean;
 }>`
   display: flex;
-  border-radius: 16777200px;
+  border-radius: 50%;
   background-color: ${({ $isHub, $isHydrant }) => {
     if ($isHub) return "#AD46FF;";
     if ($isHydrant) return "#2B7FFF";
@@ -29,6 +29,7 @@ export const OrderCircle = styled.div<{
   }};
   width: 32px;
   height: 32px;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   color: white;

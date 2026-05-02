@@ -25,12 +25,12 @@ export const BackLink = styled(Link)`
   line-height: 0.72625rem;
   letter-spacing: -0.01875rem;
   cursor: pointer;
+  background: white;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(0.625rem, 4vw, 1rem);
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    line-height: 1rem;
+    font-size: 1rem;
+    margin: 1.5rem 1.5rem 0rem 1.5rem;
+    line-height: 1.2;
   }
 
   &:hover {
@@ -45,6 +45,15 @@ export const AllContent = styled.div`
   align-items: flex-start;
   gap: 1.5rem; /* 24px */
   margin: 0 15%;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin: 0;
+    gap: 0; /* Remove gap so borders touch seamlessly */
+    align-items: stretch;
+  }
 `;
 
 export const ContentContainer = styled.div`
@@ -53,6 +62,11 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem; /* 24px */
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    gap: 0;
+  }
 `;
 
 export const DotOrange = styled.div`
@@ -92,8 +106,19 @@ export const HeaderContainer = styled.div`
   background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
-    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+    0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
   border: 0.0625rem solid ${COLORS.adlr_light_gray}; /* 1px */
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid ${COLORS.adlr_light_gray};
+    box-shadow: none;
+    padding: 1.5rem;
+    background: transparent; /* Blends with the back */
+  }
 `;
 
 export const RouteValue = styled.div`
@@ -104,6 +129,13 @@ export const RouteValue = styled.div`
   gap: 1rem; /* 16px */
   flex-shrink: 0;
   align-self: stretch;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1.5rem;
+    column-gap: 1rem;
+  }
 `;
 
 export const RouteValueCard = styled.div`
@@ -111,7 +143,11 @@ export const RouteValueCard = styled.div`
   height: auto;
   align-items: flex-start;
   gap: 0.75rem; /* 12px */
-  padding-right: 61px;
+  padding-right: 3.8125rem; /* 61px */
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding-right: 0;
+  }
 `;
 
 export const RouteValueCardText = styled.div`
@@ -155,18 +191,20 @@ export const Header = styled.h1`
   margin-bottom: 0.25rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    line-height: 2rem;
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 0;
   }
 `;
 
 export const TeamContainer = styled.div`
   display: flex;
-  width: auto;
+  width: 100%;
   height: auto;
   padding: 1.5625rem; /* 25px */
   flex-direction: column;
   align-items: flex-start;
+  min-width: 24rem;
   gap: 1.5rem; /* 24px */
 
   border-radius: 0.625rem; /* 10px */
@@ -174,7 +212,20 @@ export const TeamContainer = styled.div`
   background: ${COLORS.adlr_white};
   box-shadow:
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
-    /* 0 1px 3px 0 */ 0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1); /* 0 1px 2px -1px */
+    0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    background: transparent; /* Blends with the back */
+  }
 `;
 
 export const TeamAssignment = styled.h1`
@@ -244,23 +295,13 @@ export const RouteContainer = styled.div`
     0 0.0625rem 0.1875rem 0 rgba(0, 0, 0, 0.1),
     0 0.0625rem 0.125rem -0.0625rem rgba(0, 0, 0, 0.1);
 
-  @media print {
-    padding: 15mm !important;
-    border: none !important;
-    box-shadow: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-
-    iframe {
-      width: 100% !important;
-      max-width: 100% !important;
-      border-radius: 0.5rem !important;
-    }
-
-    .no-print {
-      display: none !important;
-    }
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    padding: 1.5rem;
+    background: transparent; /* Blends with the back */
   }
 `;
 
@@ -271,6 +312,12 @@ export const RouteHeader = styled.div`
   align-items: center;
   flex-shrink: 0;
   align-self: stretch;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 `;
 
 export const RouteType = styled.div`
@@ -279,6 +326,11 @@ export const RouteType = styled.div`
   height: auto;
   align-items: center;
   gap: 0.5rem; /* 8px */
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
 `;
 
 export const RouteMap = styled.h1`
@@ -421,7 +473,7 @@ export const SearchMessage = styled.div`
 
 export const PublishButton = styled.button<{ $hasChanges?: boolean }>`
   display: flex;
-  padding: 0.625rem 7.0625rem 0.6875rem 7.0835rem; /* 10px 113px 11px 113.336px */
+  padding: 0.625rem 1rem;
   justify-content: center;
   align-items: center;
   align-self: stretch;
@@ -462,4 +514,11 @@ export const HeaderSpacer = styled.div`
   justify-content: space-between;
   width: 100%;
   align-items: center;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 `;

@@ -407,8 +407,7 @@ export default function RoutePage({
               </RouteType>
             </RouteHeader>
             <iframe
-              width="800"
-              height="400"
+              style={{ width: "100%", height: "400px", border: "none" }}
               loading="lazy"
               src={
                 embedUrl(route) ??

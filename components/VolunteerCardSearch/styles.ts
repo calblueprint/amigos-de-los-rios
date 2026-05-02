@@ -81,6 +81,7 @@ export const ProfileContainer = styled.div`
   background: #1a548a;
   color: #fff;
   font-family: "DM Sans";
+  flex-shrink: 0;
   font-size: 1rem; /* 16px */
   font-style: normal;
   font-weight: 400;

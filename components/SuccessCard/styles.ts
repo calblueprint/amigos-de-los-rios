@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -13,6 +14,8 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  padding: 1rem;
+  box-sizing: border-box;
 `;
 
 export const ModalContainer = styled.div`
@@ -21,11 +24,17 @@ export const ModalContainer = styled.div`
   align-items: flex-start;
   gap: 1.5rem;
 
-  width: 33.25rem;
+  width: 100%;
+  max-width: 33.25rem; /* Caps the size on desktop */
   padding: 3rem;
   background: white;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 1.5rem;
+  }
 `;
 
 export const ModalHeader = styled.header`
@@ -36,15 +45,18 @@ export const ModalHeader = styled.header`
   font-weight: 700;
   color: black;
   gap: 0.5rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.5rem; /* Scales text down slightly */
+  }
 `;
 
 export const HeaderDivider = styled.div`
-  width: 460px;
+  width: 100%;
   height: 2px;
   background: #80bc51;
 `;
 
-// Changed from styled.header to styled.p for better HTML semantics
 export const ModalText = styled.p`
   color: #000;
   font-family: "DM Sans", sans-serif;
@@ -54,11 +66,17 @@ export const ModalText = styled.p`
   line-height: 2.25rem;
   letter-spacing: -0.0225rem;
   margin: 0;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
 `;
 
 export const ContinueButton = styled.button`
   display: flex;
-  padding: 10px 183px;
+  width: 100%; /* Forces the button to take up the full width... */
+  padding: 10px 16px; /* ...which lets us remove the massive 183px side padding */
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -71,9 +89,14 @@ export const ContinueButton = styled.button`
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
-  line-height: 36px; /* 150% */
+  line-height: 36px;
   letter-spacing: -0.36px;
   border: none;
+  cursor: pointer;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1.25rem;
+  }
 
   &:hover {
     opacity: 0.5;
