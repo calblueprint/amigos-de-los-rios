@@ -180,9 +180,6 @@ export default function SessionsPage() {
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  if (loading || authLoading) return <p>Loading sessions...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   const handleConfirmDelete = async () => {
     if (!sessionToDelete) return;
     try {
@@ -269,6 +266,31 @@ export default function SessionsPage() {
                 </>
               ) : (
                 <>
+                  <SyncButton onClick={handleSync} disabled={syncing}>
+                    <Image
+                      src="/icons/syncicon.svg"
+                      alt="Sync"
+                      width={20}
+                      height={20}
+                      style={{
+                        animation: syncing
+                          ? "spin 0.7s linear infinite"
+                          : "none",
+                      }}
+                    />
+                  </SyncButton>
+
+                  {showToast && toastType && (
+                    <Toast>
+                      {toastType === "success"
+                        ? IconSvgs.sync_checkmark
+                        : IconSvgs.sync_failure}
+                      {toastType === "success"
+                        ? "Data Fetched"
+                        : "Fetch Failed"}
+                    </Toast>
+                  )}
+
                   <EditButton onClick={handleStartEditing}>
                     <Image
                       src="/icons/editicon.svg"
@@ -287,44 +309,6 @@ export default function SessionsPage() {
                   </AddButton>
                 </>
               )}
-              <SyncButton onClick={handleSync} disabled={syncing}>
-                <Image
-                  src="/icons/syncicon.svg"
-                  alt="Sync"
-                  width={20}
-                  height={20}
-                  style={{
-                    animation: syncing ? "spin 0.7s linear infinite" : "none",
-                  }}
-                />
-              </SyncButton>
-
-              {showToast && toastType && (
-                <Toast>
-                  {toastType === "success"
-                    ? IconSvgs.sync_checkmark
-                    : IconSvgs.sync_failure}
-                  {toastType === "success" ? "Data Fetched" : "Fetch Failed"}
-                </Toast>
-              )}
-
-              <EditButton>
-                {" "}
-                <Image
-                  src="/icons/editicon.svg"
-                  alt="Edit"
-                  width={20}
-                  height={20}
-                />
-              </EditButton>
-              <AddButton href="/sessions/new_session">
-                <Image
-                  src="/icons/addicon.svg"
-                  alt="Add"
-                  width={30}
-                  height={30}
-                />
-              </AddButton>
             </ButtonGroup>
           )}
         </ControlsRow>
