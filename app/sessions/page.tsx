@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import supabase from "@/actions/supabase/client";
 import {
   fetchAllSessionsForUser,
   fetchSessions,
@@ -15,6 +16,7 @@ import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import SessionCard from "@/components/SessionCard/SessionCard";
+import { IconSvgs } from "@/lib/icons";
 import { WateringSession } from "@/types/schema";
 import {
   AddButton,
@@ -26,6 +28,8 @@ import {
   PageContainer,
   PastButton,
   SessionsList,
+  SyncButton,
+  Toast,
   ToggleContainer,
   UpcomingButton,
 } from "./styles";
@@ -33,6 +37,9 @@ import {
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<WateringSession[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [toastType, setToastType] = useState<"success" | "error" | null>(null);
+  const [showToast, setShowToast] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -110,6 +117,35 @@ export default function SessionsPage() {
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const handleSync = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const token = session?.access_token;
+
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!res.ok) throw new Error("Sync failed");
+      setToastType("success");
+    } catch (err) {
+      console.log("Sync error:", err);
+      setToastType("error");
+    } finally {
+      setSyncing(false);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        setToastType(null);
+      }, 5000);
+    }
+  };
+
   return (
     <PageContainer>
       <MenuSidebar />
@@ -140,6 +176,27 @@ export default function SessionsPage() {
           </ToggleContainer>
           {isAdmin && (
             <ButtonGroup>
+              <SyncButton onClick={handleSync} disabled={syncing}>
+                <Image
+                  src="/icons/syncicon.svg"
+                  alt="Sync"
+                  width={20}
+                  height={20}
+                  style={{
+                    animation: syncing ? "spin 0.7s linear infinite" : "none",
+                  }}
+                />
+              </SyncButton>
+
+              {showToast && toastType && (
+                <Toast>
+                  {toastType === "success"
+                    ? IconSvgs.sync_checkmark
+                    : IconSvgs.sync_failure}
+                  {toastType === "success" ? "Data Fetched" : "Fetch Failed"}
+                </Toast>
+              )}
+
               <EditButton>
                 {" "}
                 <Image
