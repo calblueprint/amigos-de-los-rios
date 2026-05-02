@@ -118,7 +118,7 @@ export const DeleteButton = styled.button`
 
   &:hover {
     background: ${COLORS.delete_background};
-    border-color: $${COLORS.delete_border};
+    border-color: $ ${COLORS.delete_border};
   }
 
   img {
