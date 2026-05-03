@@ -98,6 +98,7 @@ export default function AccountDetails() {
             onChange={e => setAffiliation(e.target.value)}
             value={affiliation}
           />
+          <S.HintText>The company or organization you represent</S.HintText>
         </S.InputGroup>
 
         <S.InputGroup>

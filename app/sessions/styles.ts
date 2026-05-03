@@ -86,6 +86,59 @@ export const EditButton = styled.button`
   }
 `;
 
+export const EmptyStateText = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: -0.015em;
+  vertical-align: bottom;
+  color: ${COLORS.adlr_dark_gray};
+`;
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  width: 12.43406rem;
+  height: 3.0625rem;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 0.3125rem;
+  border: 1px solid #d9d9d9;
+  background: #efefef;
+  overflow: hidden;
+`;
+
+export const UpcomingButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 0.3125rem 0 0 0.3125rem;
+  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.$active ? "#000000" : "#707070")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+export const PastButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  height: 3.0625rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border: none;
+  border-radius: 0 0.3125rem 0.3125rem 0;
+  background: ${props => (props.$active ? "#D9D9D9" : "transparent")};
+  color: ${props => (props.$active ? "#000000" : "#707070")};
+  font-family: ${Sans.style.fontFamily};
+  font-weight: 100;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
 export const SessionsList = styled.div`
   display: flex;
   flex-direction: column;

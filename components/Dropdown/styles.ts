@@ -44,7 +44,7 @@ export const DropdownMenu = styled.div`
   border-radius: 0.5rem;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  z-index: 100;
+  z-index: 200;
 `;
 
 export const DropdownItem = styled.div`

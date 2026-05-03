@@ -5,8 +5,7 @@ import COLORS from "@/styles/colors";
 import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const BannerContainer = styled.div`
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
   background: ${COLORS.adlr_blue};
   display: flex;
   justify-content: center;
@@ -20,6 +19,7 @@ export const BannerContainer = styled.div`
 `;
 
 export const Logo = styled.img`
+  display: block;
   width: clamp(8rem, 4vw + 10rem, 14.375rem);
   height: auto;
 `;

@@ -18,11 +18,15 @@ import {
   AddButton,
   ButtonGroup,
   EditButton,
+  EmptyStateText,
   Header,
   HeaderSection,
   PageContainer,
+  PastButton,
   SessionsList,
   SignOutButton,
+  ToggleContainer,
+  UpcomingButton,
 } from "./styles";
 
 export default function SessionsPage() {
@@ -33,6 +37,7 @@ export default function SessionsPage() {
   const router = useRouter();
 
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
 
   useEffect(() => {
     async function init() {
@@ -94,25 +99,52 @@ export default function SessionsPage() {
       <Banner />
 
       <HeaderSection>
-        <Header>
-          {isAdmin === null
-            ? "Sessions"
-            : isAdmin
-              ? "Sessions [Admin View]"
-              : "Sessions [Volunteer View]"}
-        </Header>
+        <Header>{isAdmin ? "Sessions [Admin View]" : "Sessions"}</Header>
         {isAdmin && (
           <ButtonGroup>
             <AddButton href="/sessions/new_session">+ Add</AddButton>
             <EditButton>Edit</EditButton>
           </ButtonGroup>
         )}
+        {!isAdmin && (
+          <ToggleContainer>
+            <UpcomingButton
+              $active={activeTab === "upcoming"}
+              onClick={() => setActiveTab("upcoming")}
+            >
+              Upcoming
+            </UpcomingButton>
+            <PastButton
+              $active={activeTab === "past"}
+              onClick={() => setActiveTab("past")}
+            >
+              Past
+            </PastButton>
+          </ToggleContainer>
+        )}
       </HeaderSection>
 
       <SessionsList>
-        {sessions.map(session => (
-          <SessionCard key={session.id} session={session} />
-        ))}
+        {(() => {
+          const today = new Date().toISOString().split("T")[0];
+          const filtered = isAdmin
+            ? sessions
+            : sessions.filter(s =>
+                activeTab === "upcoming" ? s.date >= today : s.date < today,
+              );
+          if (filtered.length === 0 && !isAdmin) {
+            return (
+              <EmptyStateText>
+                You are currently not assigned to any watering sessions. Please
+                contact Amigos De Los Rios at volunteer@amigosdelosrios.org if
+                this is a mistake.
+              </EmptyStateText>
+            );
+          }
+          return filtered.map(session => (
+            <SessionCard key={session.id} session={session} />
+          ));
+        })()}
       </SessionsList>
     </PageContainer>
   );

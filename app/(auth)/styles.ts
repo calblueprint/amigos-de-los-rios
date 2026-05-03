@@ -104,6 +104,14 @@ export const ErrorText = styled.div`
   margin-top: 0.5rem;
 `;
 
+export const HintText = styled.p`
+  font-family: ${Sans.style.fontFamily};
+  color: #888;
+  font-size: 0.8125rem;
+  margin-top: 0.375rem;
+  margin-bottom: 0;
+`;
+
 // Button Components
 export const PrimaryButton = styled.button<{
   disabled?: boolean;
