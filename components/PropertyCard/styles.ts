@@ -6,80 +6,74 @@ import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const CardContainer = styled.div`
   display: flex;
+  padding: 12px;
   align-items: center;
-  padding-left: 15%;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  background: ${COLORS.adlr_lighter_gray};
+  gap: 12px;
+  flex-shrink: 0;
+  align-self: stretch;
+  border-radius: 10px;
   border: 1px solid ${COLORS.adlr_light_gray};
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  background: white;
 `;
 
-export const OrderCircle = styled.div`
-  width: 4.9375rem;
-  height: 4.9375rem;
-  border-radius: 50%;
-  background: linear-gradient(0deg, #1a548a 0%, #80bc51 100%);
-  color: white;
+export const OrderCircle = styled.div<{
+  $isHydrant: boolean;
+  $isHub?: boolean;
+}>`
   display: flex;
-  align-items: center;
+  border-radius: 16777200px;
+  background-color: ${({ $isHub, $isHydrant }) => {
+    if ($isHub) return "#AD46FF;";
+    if ($isHydrant) return "#2B7FFF";
+    return "#FF6900";
+  }};
+  width: 32px;
+  height: 32px;
   justify-content: center;
-  font-size: 1.975rem;
+  align-items: center;
+  color: white;
+  font-family: "DM Sans";
+  font-size: 14px;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.82688rem;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    width: 15vw;
-    height: 15vw;
-    max-width: 4.9375rem;
-    max-height: 4.9375rem;
-    min-width: 3rem;
-    min-height: 3rem;
-    font-size: clamp(1.25rem, 4vw, 1.975rem);
-  }
+  line-height: 20px; /* 142.857% */
 `;
 
 export const PropertyInfo = styled.div`
   display: flex;
+  width: 682.664px;
+  height: 45px;
   flex-direction: column;
-  gap: 1.43rem;
-  flex: 1;
-  margin-left: 15%;
-  margin-right: 5%;
-
-  @media (max-width: ${MOBILE_BREAKPOINT}) {
-    gap: clamp(0.75rem, 4vw, 1.43rem);
-  }
+  align-items: flex-start;
 `;
 
-export const PropertyName = styled.h3`
-  font-size: 1.75rem;
+export const PropertyAddress = styled.h3`
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  color: black;
+  font-family: "DM Sans";
+  font-size: 16px;
   font-style: normal;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02625rem;
-  color: ${COLORS.adlr_black};
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.24px;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1rem, 4vw, 1.75rem);
   }
 `;
 
-export const PropertyAddress = styled.p`
-  font-size: 1.375rem;
+export const PropertyType = styled.p`
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  color: #6a7282;
+  font-family: "DM Sans";
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.02063rem;
-  color: ${COLORS.adlr_property_gray};
+  line-height: 21px; /* 150% */
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(0.875rem, 4vw, 1.375rem);

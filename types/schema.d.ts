@@ -14,9 +14,13 @@ export type Property = {
 export type RouteStop = {
   id: UUID;
   route_id: UUID;
-  property_id: UUID;
+  property_id: UUID | null;
+  hydrant_id: UUID | null;
   order_to_visit: number;
   property_address: string;
+  Property?: {
+    num_trees: number;
+  } | null;
 };
 
 export type Route = {
@@ -28,6 +32,7 @@ export type Route = {
   volunteer_type: VolunteerType;
   maps_link: string | null;
   num_volunteers: number;
+  group_leader_id: UUID | null;
   compatible_hydrant_types: string[];
 };
 
@@ -47,6 +52,7 @@ export type User = {
   phone_number: string;
   onboarded: boolean;
   is_admin: boolean;
+  is_registered: boolean;
 };
 
 export type Team = {

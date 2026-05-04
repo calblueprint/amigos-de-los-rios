@@ -45,6 +45,7 @@ function generateMockProperties(
     order_to_visit: index + 1,
     property_address: `${random(100, 9999)} ${streetNames[random(0, streetNames.length - 1)]}, Berkeley, CA`,
     property_id: "f1715554-3ef4-4156-8032-f02e91788d25",
+    hydrant_id: null,
   }));
 }
 
@@ -111,6 +112,7 @@ export async function generateRoutes(
       maps_link: null,
       num_volunteers: team.size,
       compatible_hydrant_types: team.hydrant_type,
+      group_leader_id: null,
     });
 
     // Generate 3-5 mock properties for this route
