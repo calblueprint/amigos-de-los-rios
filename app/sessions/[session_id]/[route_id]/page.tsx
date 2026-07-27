@@ -292,23 +292,44 @@ export default function RoutePage({
   const embedUrl = (route: Route | null) => {
     if (!route?.maps_link) return null;
 
-    const url_params = new URL(route.maps_link).searchParams;
+    try {
+      const mapsUrl = new URL(route.maps_link);
 
-    const origin = url_params.get("origin");
-    const destination = url_params.get("destination");
-    const waypoints = url_params.get("waypoints");
-    const mode = url_params.get("travelmode") ?? "driving";
+      const pathSegments = mapsUrl.pathname
+        .replace(/^\/maps\/dir\//, "")
+        .split("/")
+        .filter(Boolean);
 
-    if (!origin || !destination) return null;
+      let origin: string | null = null;
+      let destination: string | null = null;
+      let waypoints: string | null = null;
 
-    const url = new URL("https://www.google.com/maps/embed/v1/directions");
-    url.searchParams.set("key", API_KEY!);
-    url.searchParams.set("origin", origin);
-    url.searchParams.set("destination", destination);
-    url.searchParams.set("mode", mode);
-    if (waypoints) url.searchParams.set("waypoints", waypoints);
+      if (pathSegments.length >= 2) {
+        // new format: /maps/dir/lat,lng/lat,lng/.../lat,lng
+        origin = pathSegments[0];
+        destination = pathSegments[pathSegments.length - 1];
+        waypoints = pathSegments.slice(1, -1).join("|") || null;
+      } else {
+        // old format: ?api=1&origin=...&destination=...&waypoints=...
+        origin = mapsUrl.searchParams.get("origin");
+        destination = mapsUrl.searchParams.get("destination");
+        waypoints = mapsUrl.searchParams.get("waypoints");
+      }
 
-    return url.toString();
+      const mode = mapsUrl.searchParams.get("travelmode") ?? "driving";
+      if (!origin || !destination) return null;
+
+      const url = new URL("https://www.google.com/maps/embed/v1/directions");
+      url.searchParams.set("key", API_KEY!);
+      url.searchParams.set("origin", origin);
+      url.searchParams.set("destination", destination);
+      url.searchParams.set("mode", mode);
+      if (waypoints) url.searchParams.set("waypoints", waypoints);
+
+      return url.toString();
+    } catch {
+      return null;
+    }
   };
 
   const hydrantCount = stops.filter(stop => stop.property_id === null).length;
