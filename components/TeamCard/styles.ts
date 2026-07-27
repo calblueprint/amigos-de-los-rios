@@ -3,6 +3,7 @@
 import { DM_Sans } from "next/font/google";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 const Sans = DM_Sans({
   subsets: ["latin"],
@@ -15,6 +16,10 @@ export const TeamCard = styled.div`
   border-radius: 0.75rem;
   padding: 1.25rem 1.25rem 1.5rem 1.25rem;
   position: relative;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 1rem 10% 1rem 10%;
+  }
 `;
 
 export const DeleteButton = styled.button`
@@ -59,18 +64,31 @@ export const RouteNameInput = styled.input`
   &::placeholder {
     color: ${COLORS.adlr_property_gray};
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+  }
 `;
 
 export const Divider = styled.hr`
   border: none;
   border-top: 2px solid ${COLORS.adlr_black};
   margin: 0 3rem 2.25rem 0;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 0 0 1rem 0;
+  }
 `;
 
 export const TeamFieldsRow = styled.div`
   display: flex;
   gap: 1.5rem;
   justify-content: flex-start;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 export const TeamField = styled.div`
@@ -89,6 +107,11 @@ export const TeamLabel = styled.span`
   line-height: 1.125rem;
   letter-spacing: -0.01rem;
   margin-bottom: 0.625rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const InputWrapper = styled.div`
@@ -100,28 +123,6 @@ export const InputWrapper = styled.div`
 interface DropdownIconProps {
   $isOpen?: boolean;
 }
-
-export const TeamInput = styled.input`
-  padding: 0.75rem 3rem 0.75rem 0.875rem;
-  background: ${COLORS.adlr_white};
-  appearance: none;
-  border: 1px solid ${COLORS.adlr_dark_gray};
-  border-radius: 0.375rem;
-  width: 100%;
-  box-sizing: border-box;
-
-  color: ${COLORS.adlr_property_gray};
-  font-family: ${Sans.style.fontFamily};
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.125rem;
-  letter-spacing: -0.01rem;
-
-  &::placeholder {
-    color: ${COLORS.adlr_light_gray};
-  }
-`;
 
 export const DropdownIcon = styled.div<DropdownIconProps>`
   position: absolute;

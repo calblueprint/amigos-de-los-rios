@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 export const CardContainer = styled.div`
   display: flex;
@@ -14,6 +15,13 @@ export const CardContainer = styled.div`
   border-radius: 0.625rem;
   margin-bottom: 1rem;
   border: 1px solid ${COLORS.adlr_gray};
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    height: auto;
+    min-height: 4.5rem;
+    padding: 0.75rem 1rem;
+    align-items: center;
+  }
 `;
 
 export const LeftSection = styled.div`
@@ -34,6 +42,11 @@ export const Avatar = styled.div`
   svg {
     stroke: ${COLORS.adlr_white};
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 `;
 
 export const AdminInfo = styled.div`
@@ -50,6 +63,11 @@ export const AdminName = styled.p`
   font-weight: 400;
   line-height: 1.875rem; /* 150% */
   letter-spacing: -0.01875rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 `;
 
 export const AdminEmail = styled.p`
