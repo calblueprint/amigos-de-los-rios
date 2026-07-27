@@ -6,20 +6,34 @@ import {
   OrderCircle,
   PropertyAddress,
   PropertyInfo,
-  PropertyName,
+  PropertyType,
 } from "./styles";
 
 interface PropertyCardProps {
   property: RouteStop;
+  isHub?: boolean;
 }
 
-export default function PropertyCard({ property }: PropertyCardProps) {
+export default function PropertyCard({ property, isHub }: PropertyCardProps) {
+  console.log("FULL ROUTE STOP:", property);
+  const isHydrant = property.hydrant_id !== null;
+  const numTrees = property.Property?.num_trees ?? 0;
+
   return (
     <CardContainer>
-      <OrderCircle>{property.order_to_visit}</OrderCircle>
+      <OrderCircle $isHydrant={isHydrant} $isHub={isHub}>
+        {property.order_to_visit}
+      </OrderCircle>
+
       <PropertyInfo>
-        <PropertyName>{property.id}</PropertyName>
         <PropertyAddress>{property.property_address}</PropertyAddress>
+        <PropertyType>
+          {isHub
+            ? "Central Hub"
+            : isHydrant
+              ? "Hydrant"
+              : `Property | ${numTrees} Trees`}
+        </PropertyType>
       </PropertyInfo>
     </CardContainer>
   );

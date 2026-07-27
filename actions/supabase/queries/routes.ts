@@ -29,7 +29,7 @@ export async function fetchUserRouteProperties(userId: string) {
 
   const { data: props, error: propError } = await supabase
     .from("Route Stops")
-    .select("*")
+    .select("*, Property(num_trees)")
     .eq("route_id", routeId)
     .order("order_to_visit", { ascending: true });
 
@@ -41,7 +41,7 @@ export async function fetchUserRouteProperties(userId: string) {
 export async function fetchPropertiesByRouteId(routeId: string) {
   const { data: props, error: propError } = await supabase
     .from("Route Stops")
-    .select("*")
+    .select(`*, Property (num_trees)`)
     .eq("route_id", routeId)
     .order("order_to_visit", { ascending: true });
 
@@ -186,4 +186,37 @@ export async function deleteRouteById(routeId: string) {
     console.error("Supabase delete route error:", routeDeleteError);
     throw new Error(routeDeleteError.message);
   }
+}
+
+export async function getGroupLeaderId(
+  route_id: string,
+): Promise<string | null> {
+  const { data, error } = await supabase
+    .from("Routes")
+    .select("group_leader_id") // Only grab the column we need!
+    .eq("id", route_id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // Return just the string ID (or null if there isn't one)
+  return data?.group_leader_id || null;
+}
+
+export async function updateGroupLeader(
+  route_id: string,
+  leader_id: string | null,
+) {
+  const { data, error } = await supabase
+    .from("Routes")
+    .update({ group_leader_id: leader_id })
+    .eq("id", route_id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }

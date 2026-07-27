@@ -22,6 +22,7 @@ const COLORS = {
   blue: "#2b7fff",
   orange: "#ff6900",
   purple: "#ad46ff",
+  print_header: "#4A5565",
   delete_background: "#fef3f3",
   delete_border: "#ffa2a3",
   sessions_line: "#bfbfbf",

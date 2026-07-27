@@ -1,11 +1,14 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   fetchPropertiesByRouteId,
   fetchRouteById,
+  getGroupLeaderId,
+  updateGroupLeader,
 } from "@/actions/supabase/queries/routes";
 import {
   assignUserToRoute,
@@ -15,16 +18,24 @@ import {
 import { fetchSessionById } from "@/actions/supabase/queries/sessions";
 import {
   checkUserOnboarded,
-  getUserByEmail,
+  createUnregisteredUser,
   getUserById,
+  searchUsersInDatabase,
 } from "@/actions/supabase/queries/users";
 import { useAuth } from "@/app/utils/AuthContext";
 import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import PropertyCard from "@/components/PropertyCard/PropertyCard";
+import SuccessCard from "@/components/SuccessCard/SuccessCard"; // Added SuccessCard import
+import VolunteerCard from "@/components/VolunteerCard/VolunteerCard";
+import VolunteerCardSearch from "@/components/VolunteerCardSearch/VolunteerCardSearch";
+import VolunteerEmailCard from "@/components/VolunteerEmailCard/VolunteerEmailCard";
+import VolunteerEmailCardSearch from "@/components/VolunteerEmailCardSearch/VolunteerEmailCardSearch";
+import { IconSvgs } from "@/lib/icons";
 import { Route, RouteStop, User, WateringSession } from "@/types/schema";
 import {
   AllContent,
+  AssignedUsers,
   BackLink,
   ContentContainer,
   DotBlue,
@@ -32,13 +43,13 @@ import {
   DotPurple,
   Header,
   HeaderContainer,
-  LargeDotBlue,
-  LargeDotOrange,
-  LargeDotPurple,
+  HeaderSpacer,
+  NavigateMaps,
   PageContainer,
-  PropertiesCard,
+  PrintButton,
+  PrintHeader,
   PropertiesHolder,
-  PropertiesList,
+  PublishButton,
   RouteContainer,
   RouteHeader,
   RouteHolder,
@@ -50,13 +61,11 @@ import {
   RouteValueCardText,
   RouteValueVar,
   RouteValueVarNum,
-  Tab,
-  TabContainer,
+  SearchContainer,
+  SearchInput,
+  SearchMessage,
+  SearchResultsDropdown,
   TeamAssignment,
-  TeamAssignmentCard,
-  TeamAssignmentName,
-  TeamAssignmentRole,
-  TeamAssignmentText,
   TeamContainer,
 } from "./styles";
 
@@ -71,22 +80,39 @@ export default function RoutePage({
   const { userId } = useAuth();
   const router = useRouter();
   const [stops, setStops] = useState<RouteStop[]>([]);
-  const [assignedUsers, setAssignedUsers] = useState<User[]>([]);
+  const [officialUsers, setOfficialUsers] = useState<User[]>([]);
+  const [draftUsers, setDraftUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [assignLoading, setAssignLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [route, setRoute] = useState<Route | null>(null);
   const [sessionInfo, setSessionInfo] = useState<WateringSession | null>(null);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // Added Modal state
+  const [officialGroupLeaderId, setOfficialGroupLeaderId] = useState<
+    string | null
+  >(null);
+  const [draftGroupLeaderId, setDraftGroupLeaderId] = useState<string | null>(
+    null,
+  );
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [emailInput, setEmailInput] = useState("");
+  const hasUnpublishedChanges =
+    JSON.stringify(draftUsers) !== JSON.stringify(officialUsers) ||
+    draftGroupLeaderId !== officialGroupLeaderId;
+
+  const printRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: `${sessionInfo?.watering_event_name || "Route"}-${route?.route_label || "Details"}`,
+  });
 
   useEffect(() => {
     async function init() {
       try {
         setLoading(true);
 
-        // Check authentication and onboarding
         if (!userId) {
           router.push("/login");
           return;
@@ -98,16 +124,19 @@ export default function RoutePage({
           return;
         }
 
-        // Load user role
         const userRow = await getUserById(userId);
         setIsAdmin(userRow?.is_admin ?? false);
 
-        // Load properties
         const props = await fetchPropertiesByRouteId(route_id);
         setStops(props);
 
         const assigned = await getAssignedUsersByRouteId(route_id);
-        setAssignedUsers(assigned);
+        setDraftUsers(assigned);
+        setOfficialUsers(assigned);
+
+        const leaderId = await getGroupLeaderId(route_id);
+        setOfficialGroupLeaderId(leaderId);
+        setDraftGroupLeaderId(leaderId);
 
         const route = await fetchRouteById(route_id);
         setRoute(route);
@@ -126,45 +155,132 @@ export default function RoutePage({
     init();
   }, [session_id, route_id, userId, router]);
 
-  async function handleAssign() {
+  useEffect(() => {
+    if (!searchQuery.trim()) return;
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const fetchedUsers = await searchUsersInDatabase(searchQuery);
+        const availableUsers = fetchedUsers.filter(
+          dbUser => !draftUsers.some(draftUser => draftUser.id === dbUser.id),
+        );
+
+        setSearchResults(availableUsers);
+      } catch (err) {
+        console.error("Failed to search users:", err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, draftUsers]);
+
+  function handleAssignFromSearch(user: User) {
+    setDraftUsers(prev => [...prev, user]);
+    setSearchQuery("");
+    setSearchResults([]);
+  }
+
+  function handleAssignNewEmail(email: string) {
+    const pendingUser = {
+      id: `pending-${email}`,
+      name: email.split("@")[0],
+      email: email,
+      affiliation: null,
+      is_admin: false,
+      is_registered: false,
+    } as unknown as User;
+
+    setDraftUsers(prev => [...prev, pendingUser]);
+    setSearchQuery("");
+    setSearchResults([]);
+  }
+
+  async function handlePublish() {
     try {
-      if (!emailInput) return;
+      setIsPublishing(true);
 
-      setAssignLoading(true);
+      const usersToRemove = officialUsers.filter(
+        officialUser =>
+          !draftUsers.some(draftUser => draftUser.id === officialUser.id),
+      );
 
-      const user = await getUserByEmail(emailInput);
+      const usersToAdd = draftUsers.filter(
+        draftUser =>
+          !officialUsers.some(officialUser => officialUser.id === draftUser.id),
+      );
 
-      const alreadyAssigned = assignedUsers.some(item => item.id === user.id);
+      const pendingUsersToAdd = usersToAdd.filter(u =>
+        u.id.startsWith("pending-"),
+      );
+      const realUsersToAdd = usersToAdd.filter(
+        u => !u.id.startsWith("pending-"),
+      );
 
-      if (alreadyAssigned) {
-        setEmailInput("");
-        return;
+      for (const user of usersToRemove) {
+        await unassignUserFromRoute(route_id, user.id);
       }
 
-      await assignUserToRoute(route_id, user.id, session_id);
+      for (const user of realUsersToAdd) {
+        await assignUserToRoute(route_id, user.id, session_id);
+      }
 
-      const updated = await getAssignedUsersByRouteId(route_id);
-      setAssignedUsers(updated);
-      setEmailInput("");
+      let currentDraftLeaderId = draftGroupLeaderId;
+      const updatedDraftUsers = [...draftUsers];
+
+      for (const pendingUser of pendingUsersToAdd) {
+        const newDbUser = await createUnregisteredUser({
+          email: pendingUser.email,
+          name: pendingUser.name,
+        });
+
+        await assignUserToRoute(route_id, newDbUser.id, session_id);
+
+        if (currentDraftLeaderId === pendingUser.id) {
+          currentDraftLeaderId = newDbUser.id;
+        }
+
+        const index = updatedDraftUsers.findIndex(u => u.id === pendingUser.id);
+        if (index !== -1) {
+          updatedDraftUsers[index] = newDbUser;
+        }
+      }
+
+      if (currentDraftLeaderId !== officialGroupLeaderId) {
+        await updateGroupLeader(route_id, currentDraftLeaderId);
+      }
+
+      setOfficialUsers([...updatedDraftUsers]);
+      setDraftUsers([...updatedDraftUsers]);
+      setOfficialGroupLeaderId(currentDraftLeaderId);
+      setDraftGroupLeaderId(currentDraftLeaderId);
+
+      setIsSuccessModalOpen(true); // Open Success Modal on completion
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Failed to assign user.";
+        err instanceof Error ? err.message : "Failed to publish changes.";
       alert(errorMessage);
     } finally {
-      setAssignLoading(false);
+      setIsPublishing(false);
     }
   }
 
   async function handleUnassign(userId: string) {
     try {
-      await unassignUserFromRoute(route_id, userId);
-      const updated = await getAssignedUsersByRouteId(route_id);
-      setAssignedUsers(updated);
+      setDraftUsers(prev => prev.filter(user => user.id !== userId));
+
+      if (draftGroupLeaderId === userId) {
+        setDraftGroupLeaderId(null);
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to unassign user.";
       alert(errorMessage);
     }
+  }
+
+  function handleGroupLeader(userId: string) {
+    setDraftGroupLeaderId(prev => (prev === userId ? null : userId));
   }
 
   if (loading) return <p>Loading route...</p>;
@@ -195,6 +311,9 @@ export default function RoutePage({
     return url.toString();
   };
 
+  const hydrantCount = stops.filter(stop => stop.property_id === null).length;
+  const propertyCount = stops.filter(stop => stop.property_id !== null).length;
+
   return (
     <PageContainer>
       <MenuSidebar />
@@ -205,9 +324,24 @@ export default function RoutePage({
       <AllContent>
         <ContentContainer>
           <HeaderContainer>
-            <Header>
-              {sessionInfo?.watering_event_name} — {route?.route_label}
-            </Header>
+            <HeaderSpacer>
+              <Header>
+                {sessionInfo?.watering_event_name} — {route?.route_label}
+              </Header>
+              <NavigateMaps
+                onClick={() => {
+                  if (route?.maps_link) {
+                    window.open(
+                      route.maps_link,
+                      "_blank",
+                      "noopener,noreferrer",
+                    );
+                  }
+                }}
+              >
+                {IconSvgs.open} Navigate in Google Maps
+              </NavigateMaps>
+            </HeaderSpacer>
             <RouteValue>
               <RouteValueCard>
                 <Image
@@ -235,32 +369,32 @@ export default function RoutePage({
               </RouteValueCard>
               <RouteValueCard>
                 <Image
-                  src="/images/tree_loc.svg"
+                  src="/images/property_loc.svg"
                   width={36}
                   height={36}
-                  alt="Tree points icon"
+                  alt="Properties icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Trees</RouteValueVar>
-                  <RouteValueVarNum>4 points</RouteValueVarNum>
+                  <RouteValueVar>Properties</RouteValueVar>
+                  <RouteValueVarNum>{propertyCount}</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
               <RouteValueCard>
                 <Image
-                  src="/images/checkpoint_loc.svg"
+                  src="/images/hydrant_loc.svg"
                   width={36}
                   height={36}
-                  alt="Checkpoints icon"
+                  alt="Hydrant icon"
                 />
                 <RouteValueCardText>
-                  <RouteValueVar>Checkpoints</RouteValueVar>
-                  <RouteValueVarNum>2 stops</RouteValueVarNum>
+                  <RouteValueVar>Hydrants</RouteValueVar>
+                  <RouteValueVarNum>{hydrantCount}</RouteValueVarNum>
                 </RouteValueCardText>
               </RouteValueCard>
             </RouteValue>
           </HeaderContainer>
 
-          <RouteContainer>
+          <RouteContainer ref={printRef}>
             <RouteHeader>
               <RouteMap>Route Map</RouteMap>
               <RouteType>
@@ -269,7 +403,7 @@ export default function RoutePage({
                 <DotBlue></DotBlue>
                 Hydrants
                 <DotPurple></DotPurple>
-                Central Hub
+                Checkpoints
               </RouteType>
             </RouteHeader>
             <iframe
@@ -282,95 +416,160 @@ export default function RoutePage({
               }
             ></iframe>
             <RouteHolder>
-              <RoutePoints>Route Points</RoutePoints>
+              <RoutePoints>
+                <span>Route Points</span>
+                <PrintHeader>
+                  <PrintButton onClick={() => handlePrint()}>
+                    <Image
+                      src="/images/print.svg"
+                      width={16.138}
+                      height={13.833}
+                      alt="Print"
+                    />
+                  </PrintButton>
+                  Print Route
+                </PrintHeader>
+              </RoutePoints>
+
               <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotPurple></LargeDotPurple>
-                </PropertiesCard>
-              </PropertiesHolder>
-              <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotBlue></LargeDotBlue>
-                </PropertiesCard>
-              </PropertiesHolder>
-              <PropertiesHolder>
-                <PropertiesCard>
-                  <LargeDotOrange></LargeDotOrange>
-                </PropertiesCard>
+                {stops.length === 0 ? (
+                  <p>No properties found for your route.</p>
+                ) : (
+                  stops.map(stop => {
+                    const isCentralHub = false;
+                    return (
+                      <PropertyCard
+                        key={stop.id}
+                        property={stop}
+                        isHub={isCentralHub} // Pass the flag down!
+                      />
+                    );
+                  })
+                )}
               </PropertiesHolder>
             </RouteHolder>
           </RouteContainer>
-
-          {/* temporary input styling */}
-          {isAdmin && (
-            <div style={{ marginBottom: "2rem" }}>
-              <h3>Assign User to Route</h3>
-
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
-                  type="email"
-                  placeholder="Enter user email"
-                  value={emailInput}
-                  onChange={e => setEmailInput(e.target.value)}
-                  style={{ padding: "0.5rem", width: "250px" }}
-                />
-
-                <button onClick={handleAssign} disabled={assignLoading}>
-                  {assignLoading ? "Assigning..." : "Assign"}
-                </button>
-              </div>
-
-              <div style={{ marginTop: "1.5rem" }}>
-                <h4>Assigned Users</h4>
-
-                {assignedUsers.length === 0 ? (
-                  <p>No users assigned.</p>
-                ) : (
-                  assignedUsers.map(item => (
-                    <div
-                      key={item.id}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "0.5rem 0",
-                      }}
-                    >
-                      <div>
-                        <strong>{item.name}</strong> — {item.email}
-                      </div>
-
-                      <button onClick={() => handleUnassign(item.id)}>
-                        Unassign
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
-          <TabContainer>
-            <Tab $active>Properties</Tab>
-          </TabContainer>
-          <PropertiesList>
-            {stops.length === 0 ? (
-              <p>No properties found for your route.</p>
-            ) : (
-              stops.map(stop => <PropertyCard key={stop.id} property={stop} />)
-            )}
-          </PropertiesList>
         </ContentContainer>
+
         <TeamContainer>
           <TeamAssignment>Team Assignment</TeamAssignment>
-          <TeamAssignmentCard>
-            <TeamAssignmentText>
-              <TeamAssignmentName>Placeholder</TeamAssignmentName>
-              <TeamAssignmentRole>Placeholder</TeamAssignmentRole>
-            </TeamAssignmentText>
-          </TeamAssignmentCard>
+          {isAdmin && (
+            <SearchContainer>
+              <SearchInput
+                type="text"
+                placeholder="Search by name, email, or affiliation..."
+                value={searchQuery}
+                onChange={e => {
+                  const val = e.target.value;
+                  setSearchQuery(val);
+                  if (!val.trim()) {
+                    setSearchResults([]);
+                    setIsSearching(false);
+                  } else {
+                    setIsSearching(true);
+                  }
+                }}
+              />
+
+              {searchQuery && (
+                <SearchResultsDropdown>
+                  {isSearching ? (
+                    <SearchMessage>Searching...</SearchMessage>
+                  ) : searchResults.length > 0 ? (
+                    searchResults.map(user => (
+                      <div
+                        key={user.id}
+                        onClick={() => handleAssignFromSearch(user)}
+                        style={{
+                          cursor: "pointer",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        <VolunteerCardSearch
+                          name={user.name}
+                          organization={user.affiliation || ""}
+                          email={user.email}
+                        />
+                      </div>
+                    ))
+                  ) : searchQuery.includes("@") ? (
+                    <div
+                      onClick={() => handleAssignNewEmail(searchQuery)}
+                      style={{
+                        cursor: "pointer",
+                        borderBottom: "1px solid #eee",
+                      }}
+                    >
+                      <VolunteerEmailCardSearch
+                        name={searchQuery.split("@")[0]}
+                        email={searchQuery}
+                      />
+                    </div>
+                  ) : (
+                    <SearchMessage>No volunteers found</SearchMessage>
+                  )}
+                </SearchResultsDropdown>
+              )}
+            </SearchContainer>
+          )}
+
+          <AssignedUsers>Assigned Team ({draftUsers.length})</AssignedUsers>
+
+          {[...draftUsers]
+            .sort(
+              (a, b) =>
+                Number(b.id === draftGroupLeaderId) -
+                Number(a.id === draftGroupLeaderId),
+            )
+            .map(user => {
+              if (
+                user.id.startsWith("pending-") ||
+                user.is_registered === false
+              ) {
+                return (
+                  <VolunteerEmailCard
+                    key={user.id}
+                    name={user.name}
+                    email={user.email}
+                    isAdmin={isAdmin}
+                    isGroupLeader={user.id === draftGroupLeaderId}
+                    onMakeLeader={() => handleGroupLeader(user.id)}
+                    onUnassign={() => handleUnassign(user.id)}
+                  />
+                );
+              }
+
+              return (
+                <VolunteerCard
+                  key={user.id}
+                  name={user.name}
+                  organization={user.affiliation || ""}
+                  email={user.email}
+                  isAdmin={isAdmin}
+                  isGroupLeader={user.id === draftGroupLeaderId}
+                  onMakeLeader={() => handleGroupLeader(user.id)}
+                  onUnassign={() => handleUnassign(user.id)}
+                />
+              );
+            })}
+
+          {isAdmin && (
+            <PublishButton
+              $hasChanges={hasUnpublishedChanges}
+              onClick={handlePublish}
+              disabled={!hasUnpublishedChanges || isPublishing}
+            >
+              Publish Team
+            </PublishButton>
+          )}
         </TeamContainer>
       </AllContent>
+
+      <SuccessCard
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        onConfirm={() => {}}
+      />
     </PageContainer>
   );
 }
