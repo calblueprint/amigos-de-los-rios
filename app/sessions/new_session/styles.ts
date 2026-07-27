@@ -5,6 +5,7 @@ import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 import styled from "styled-components";
 import COLORS from "@/styles/colors";
+import { MOBILE_BREAKPOINT } from "@/styles/containers";
 
 const Sans = DM_Sans({
   subsets: ["latin"],
@@ -25,7 +26,7 @@ export const BackLink = styled(Link)`
   font-style: normal;
   font-weight: 400;
   display: block;
-  margin: 2.63rem 17.19rem 2.81rem 17.19rem;
+  margin: 2.63rem 15% 2.81rem 15%;
   line-height: 0.72625rem;
   letter-spacing: -0.01875rem;
   cursor: pointer;
@@ -33,10 +34,19 @@ export const BackLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.75rem, 4vw, 1.25rem);
+    margin: 1rem 15% 1.1rem 15%;
+  }
 `;
 
 export const ContentContainer = styled.div`
-  margin: 0 17.19rem 1.5rem 17.19rem;
+  margin: 0 15% 1.5rem 15%;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 0 15% 0.6rem 15%;
+  }
 `;
 
 export const Title = styled.h1`
@@ -47,6 +57,11 @@ export const Title = styled.h1`
   line-height: 1.125rem;
   letter-spacing: -0.0375rem;
   margin-bottom: 2.75rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin-bottom: 1.5rem;
+  }
 `;
 
 export const Label = styled.label`
@@ -64,6 +79,11 @@ export const Label = styled.label`
     color: ${COLORS.red};
     margin-left: 0.25rem;
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(1.05rem, 4vw, 1.75rem);
+    margin: 0.75rem 0 0.25rem 0;
+  }
 `;
 
 export const Input = styled.input`
@@ -78,6 +98,11 @@ export const Input = styled.input`
   font-weight: 400;
   line-height: 1.125rem;
   letter-spacing: -0.01875rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.75rem, 4vw, 1.25rem);
+    padding: 0.7rem;
+  }
 `;
 
 export const EditTeamsHeader = styled.div`
@@ -86,11 +111,34 @@ export const EditTeamsHeader = styled.div`
   align-items: center;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 export const AddButton = styled.div`
   display: flex;
-  margin-right: 1rem;
+
+  width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background: ${COLORS.adlr_lighter_gray};
+  }
+
+  svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
 `;
 
 export const TeamsContainer = styled.div`
@@ -98,6 +146,11 @@ export const TeamsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 0.6rem 0 1.2rem 0;
+    gap: 0.5rem;
+  }
 `;
 
 export const NoTeams = styled.div`
@@ -108,6 +161,10 @@ export const NoTeams = styled.div`
   font-weight: 400;
   line-height: 1.125rem;
   letter-spacing: -0.01875rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.75rem, 4vw, 1.25rem);
+  }
 `;
 
 export const Divider = styled.div`
@@ -150,6 +207,11 @@ export const GenerateButton = styled.button`
   &:disabled {
     pointer-events: none;
   }
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 0.71rem 6.89rem;
+    font-size: clamp(1rem, 4vw, 1.75rem);
+  }
 `;
 
 export const FixedBottomContainer = styled.div`
@@ -162,28 +224,67 @@ export const FixedBottomContainer = styled.div`
   border-top: 1px solid ${COLORS.adlr_light_gray};
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 1rem 0 0 0;
+  }
 `;
 
 export const ContentContainerWithPadding = styled(ContentContainer)`
   padding-bottom: 8rem;
 `;
 
-export const NextButton = styled.button`
-  padding: 1.19rem 11.44rem;
-  background: ${COLORS.adlr_navy};
-  color: ${COLORS.white};
-  font-family: ${Sans.style.fontFamily};
-  font-size: 1.75rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.125rem;
-  letter-spacing: -0.02625rem;
-  border-radius: 0.3125rem;
-  cursor: pointer;
-  margin: 2rem auto 0 auto;
-  display: block;
+export const LegendAddContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.75rem;
 
-  &:hover {
-    background: ${COLORS.adlr_blue};
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    gap: 0.5rem;
+  }
+`;
+
+export const LegendAnchor = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const LegendIconButton = styled.button`
+  border-radius: 50%;
+  background: ${COLORS.adlr_light_gray};
+  aspect-ratio: 1 / 1;
+  border: 1px solid ${COLORS.adlr_light_gray};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: clamp(0.75rem, 4vw, 1rem);
+  }
+`;
+
+export const Legend = styled.div`
+  position: "fixed",
+  inset: 0,
+  zIndex: 99,
+`;
+
+export const LegendDropdownWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.75rem;
+  z-index: 100;
+
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    transform: translateX(-65%) scale(0.75);
+    transform-origin: top center;
   }
 `;

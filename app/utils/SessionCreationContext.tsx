@@ -70,7 +70,16 @@ export function SessionCreationProvider({ children }: { children: ReactNode }) {
   const addTeam = () => {
     setData(prev => ({
       ...prev,
-      teams: [...prev.teams, { type: "Type A", size: 5, time: "1 hour" }],
+      teams: [
+        ...prev.teams,
+        {
+          name: `Route ${prev.teams.length + 1}`,
+          type: "Type A",
+          size: 5,
+          time: 10,
+          hydrant_type: [],
+        },
+      ],
     }));
   };
 

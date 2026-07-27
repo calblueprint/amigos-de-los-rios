@@ -24,7 +24,9 @@ export const ContentContainer = styled.div`
   padding-top: 2.62rem;
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
+    margin: 0 1rem;
     padding-top: 1.5rem;
+    padding-bottom: 2rem;
   }
 `;
 
@@ -48,7 +50,7 @@ export const Title = styled.h1`
 
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
-    line-height: 1.3rem;
+    line-height: 1.2;
   }
 `;
 

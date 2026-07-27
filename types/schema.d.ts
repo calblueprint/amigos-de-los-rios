@@ -28,6 +28,7 @@ export type Route = {
   volunteer_type: VolunteerType;
   maps_link: string | null;
   num_volunteers: number;
+  compatible_hydrant_types: string[];
 };
 
 export type WateringSession = {
@@ -49,9 +50,11 @@ export type User = {
 };
 
 export type Team = {
+  name: string;
   type: string;
+  hydrant_type: string[];
   size: number;
-  time: string;
+  time: number;
 };
 
 export type RouteUserAssignment = {
