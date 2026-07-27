@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import supabase from "@/actions/supabase/client";
 import {
   fetchAllSessionsForUser,
   fetchSessions,
@@ -20,6 +21,7 @@ import Banner from "@/components/Banner/Banner";
 import MenuSidebar from "@/components/MenuSidebar/MenuSidebar";
 import SessionCard from "@/components/SessionCard/SessionCard";
 import WarningCard from "@/components/WarningCard/WarningCard";
+import { IconSvgs } from "@/lib/icons";
 import { WateringSession } from "@/types/schema";
 import {
   AddButton,
@@ -33,6 +35,8 @@ import {
   PastButton,
   SaveButton,
   SessionsList,
+  SyncButton,
+  Toast,
   ToggleContainer,
   UpcomingButton,
 } from "./styles";
@@ -42,6 +46,9 @@ export default function SessionsPage() {
   const [drafts, setDrafts] = useState<WateringSession[]>([]); // Holds unsaved edits
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [toastType, setToastType] = useState<"success" | "error" | null>(null);
+  const [showToast, setShowToast] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { userId, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -173,9 +180,6 @@ export default function SessionsPage() {
   if (loading || authLoading) return <p>Loading sessions...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  if (loading || authLoading) return <p>Loading sessions...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   const handleConfirmDelete = async () => {
     if (!sessionToDelete) return;
     try {
@@ -186,6 +190,35 @@ export default function SessionsPage() {
       setSessionToDelete(null);
     } catch (err) {
       console.error("Failed to delete session:", err);
+    }
+  };
+
+  const handleSync = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const token = session?.access_token;
+
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!res.ok) throw new Error("Sync failed");
+      setToastType("success");
+    } catch (err) {
+      console.log("Sync error:", err);
+      setToastType("error");
+    } finally {
+      setSyncing(false);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        setToastType(null);
+      }, 5000);
     }
   };
 
@@ -233,6 +266,31 @@ export default function SessionsPage() {
                 </>
               ) : (
                 <>
+                  <SyncButton onClick={handleSync} disabled={syncing}>
+                    <Image
+                      src="/icons/syncicon.svg"
+                      alt="Sync"
+                      width={20}
+                      height={20}
+                      style={{
+                        animation: syncing
+                          ? "spin 0.7s linear infinite"
+                          : "none",
+                      }}
+                    />
+                  </SyncButton>
+
+                  {showToast && toastType && (
+                    <Toast>
+                      {toastType === "success"
+                        ? IconSvgs.sync_checkmark
+                        : IconSvgs.sync_failure}
+                      {toastType === "success"
+                        ? "Data Fetched"
+                        : "Fetch Failed"}
+                    </Toast>
+                  )}
+
                   <EditButton onClick={handleStartEditing}>
                     <Image
                       src="/icons/editicon.svg"
